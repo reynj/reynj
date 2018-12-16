@@ -2,7 +2,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=vsts
 
 pool:
-  vmImage: 'Ubuntu 16.04'
+  vmImage: 'vs2017-win2016' # Ubuntu 16.04 cannot be used until GitVersion has support for Ubuntu (https://github.com/GitTools/GitVersion/issues/1542)
   
 variables:
   solution: "**/*.sln"
