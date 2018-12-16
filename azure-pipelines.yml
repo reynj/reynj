@@ -5,7 +5,6 @@ pool:
   vmImage: 'vs2017-win2016' # Ubuntu 16.04 cannot be used until GitVersion has support for Ubuntu (https://github.com/GitTools/GitVersion/issues/1542)
   
 variables:
-  solution: "**/*.sln"
   buildConfiguration: 'Release'
 
 steps:
@@ -18,27 +17,24 @@ steps:
 
 - task: GitVersion@4
   inputs:
-    updateAssemblyInfo: true
+    updateAssemblyInfo: false
 
 - task: DotNetCoreCLI@2
-  displayName: "dotnet build"
+  displayName: 'dotnet build'
   inputs:
     command: build
-    arguments: "--configuration $(buildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)"
+    arguments: '--configuration $(buildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)'
 
 - task: DotNetCoreCLI@2
-  displayName: "dotnet test"
+  displayName: 'dotnet test'
   inputs:
     command: test
-    arguments: "--configuration $(buildConfiguration) --logger:trx"
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
 - task: DotNetCoreCLI@2
-  displayName: "dotnet pack"
+  displayName: 'dotnet pack'
   inputs:
     command: pack
-    arguments: "--no-build --output nupkgs"
+    arguments: '--no-build --include-symbols --output $(Build.ArtifactStagingDirectory)'
 
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'VSTest'
-    testResultsFiles: '**/TEST-*.trx'
+- task: PublishBuildArtifacts@1
