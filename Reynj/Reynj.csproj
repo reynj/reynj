@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.2</LangVersion>
+    <Authors>Jochen Jonckheere</Authors>
+    <Company>JxK</Company>
+    <Copyright>Jochen Jonckheere</Copyright>
+    <PackageProjectUrl>https://github.com/reynj/reynj</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/reynj/reynj</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>Range,Period, Span</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+</Project>
