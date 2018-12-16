@@ -5,18 +5,35 @@ pool:
   vmImage: 'Ubuntu 16.04'
   
 variables:
+  solution: "**/*.sln"
   buildConfiguration: 'Release'
 
 steps:
-- script: |
-    dotnet build --configuration $(buildConfiguration)
-    dotnet test dotnetcore-tests --configuration $(buildConfiguration) --logger trx
-    dotnet publish --configuration $(buildConfiguration) --output $BUILD_ARTIFACTSTAGINGDIRECTORY
+  - task: NuGetToolInstaller@0
 
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
+  - task: GitVersion@4
+      inputs:
+        updateAssemblyInfo: true
 
-- task: PublishBuildArtifacts@1
+  - task: DotNetCoreCLI@2
+      displayName: "dotnet build"
+      inputs:
+        command: build
+        arguments: "--configuration $(buildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)"
+
+  - task: DotNetCoreCLI@2
+      displayName: "dotnet test"
+      inputs:
+        command: test
+        arguments: "--configuration $(buildConfiguration) --logger:trx"
+
+  - task: DotNetCoreCLI@2
+      displayName: "dotnet pack"
+      inputs:
+        command: pack
+        arguments: "--no-build --output nupkgs"
+
+  - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'VSTest'
+        testResultsFiles: '**/TEST-*.trx'
