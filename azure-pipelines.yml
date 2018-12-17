@@ -29,7 +29,7 @@ steps:
   displayName: 'dotnet test'
   inputs:
     command: test
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+    arguments: '--no-build --configuration $(buildConfiguration) --collect "Code coverage"'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack'
