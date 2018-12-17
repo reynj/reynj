@@ -15,9 +15,17 @@ steps:
   inputs:
     version: 2.2.101
 
-- task: gittools.gitversion.gitversion-task.GitVersion@4
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet tool'
   inputs:
-    updateAssemblyInfo: false
+    command: custom
+    arguments: 'tool install GitVersion.Tool --version 4.0.1-beta1-53'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet tool'
+  inputs:
+    command: custom
+    arguments: 'gitversion /showvariable FullSemVer'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
