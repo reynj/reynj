@@ -19,25 +19,14 @@ steps:
   inputs:
     updateAssemblyInfo: true
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet build'
-  inputs:
-    command: build
-    arguments: '/p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)'
+- script: |
+    dotnet build --configuration $(buildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)
+    dotnet test --no-build --configuration $(buildConfiguration) --logger trx --collect "Code coverage"
+    dotnet pack "**/Reynj.csproj" --no-build --configuration $(buildConfiguration) --include-symbols -p:PackageVersion=$(GitVersion.NuGetVersion) --output "$(Build.ArtifactStagingDirectory)"
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet test'
+- task: PublishTestResults@2
   inputs:
-    command: test
-    nobuild: true
-    arguments: '--collect "Code coverage"'
-
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet pack'
-  inputs:
-    command: pack
-    nobuild: true
-    packagesToPack: '**/Reynj.csproj'
-    arguments: '--include-symbols -p:PackageVersion=$(GitVersion.NuGetVersion)'
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
 
 - task: PublishBuildArtifacts@1
