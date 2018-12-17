@@ -15,7 +15,7 @@ steps:
   inputs:
     version: 2.2.101
 
-- task: GitVersion@4
+- task: gittools.gitversion.gitversion-task.GitVersion@4
   inputs:
     updateAssemblyInfo: false
 
