@@ -23,18 +23,21 @@ steps:
   displayName: 'dotnet build'
   inputs:
     command: build
-    arguments: '--configuration $(buildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)'
+    arguments: '/p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
   inputs:
     command: test
-    arguments: '--no-build --configuration $(buildConfiguration) --collect "Code coverage"'
+    nobuild: true
+    arguments: '--collect "Code coverage"'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack'
   inputs:
     command: pack
-    arguments: '--no-build --include-symbols --output $(Build.ArtifactStagingDirectory) -p:PackageVersion=$(GitVersion.NuGetVersion)'
+    nobuild: true
+    packagesToPack: '**/Reynj.csproj'
+    arguments: '--include-symbols -p:PackageVersion=$(GitVersion.NuGetVersion)'
 
 - task: PublishBuildArtifacts@1
