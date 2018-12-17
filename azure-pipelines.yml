@@ -22,7 +22,8 @@ steps:
 - script: |
     dotnet build --configuration $(buildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)
     dotnet test --no-build --configuration $(buildConfiguration) --logger trx --collect "Code coverage"
-    dotnet pack "**/Reynj.csproj" --no-build --configuration $(buildConfiguration) --include-symbols -p:PackageVersion=$(GitVersion.NuGetVersion) --output "$(Build.ArtifactStagingDirectory)"
+    dotnet pack --no-build --configuration $(buildConfiguration) --include-symbols -p:PackageVersion=$(GitVersion.NuGetVersion) --output "$(Build.ArtifactStagingDirectory)"
+  displayName: DotNet Build
 
 - task: PublishTestResults@2
   inputs:
