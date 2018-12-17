@@ -35,6 +35,6 @@ steps:
   displayName: 'dotnet pack'
   inputs:
     command: pack
-    arguments: '--no-build --include-symbols --output $(Build.ArtifactStagingDirectory)'
+    arguments: '--no-build --include-symbols --output $(Build.ArtifactStagingDirectory) -p:PackageVersion=$(GitVersion.NuGetVersion)'
 
 - task: PublishBuildArtifacts@1
