@@ -2,7 +2,7 @@
 
 namespace Reynj
 {
-    public class Range<T> : IEquatable<Range<T>> //, IComparable<Range<T>>
+    public class Range<T> : IEquatable<Range<T>>, IComparable<Range<T>>, IComparable
         where T : IComparable
     {
         private readonly T _start;
@@ -24,7 +24,7 @@ namespace Reynj
         public bool Equals(Range<T> other)
         {
             // If parameter is null, return false.
-            if (ReferenceEquals(other, null))
+            if (other is null)
             {
                 return false;
             }
@@ -54,12 +54,30 @@ namespace Reynj
             return (_start.GetHashCode() << 2) ^ _end.GetHashCode();
         }
 
+        public int CompareTo(Range<T> other)
+        {
+            // If other is not a valid object reference, this instance is greater.
+            if (other is null) return 1;
+
+            // First compare the Start, if they are the same compare the End
+            var result = _start.CompareTo(other._start);
+            if (result == 0)
+                result = _end.CompareTo(other._end);
+
+            return result;
+        }
+
+        public int CompareTo(object obj)
+        {
+            return CompareTo(obj as Range<T>);
+        }
+
         public static bool operator ==(Range<T> leftRange, Range<T> rightRange)
         {
             // Check for null.
-            if (ReferenceEquals(leftRange, null))
+            if (leftRange is null)
             {
-                if (ReferenceEquals(rightRange, null))
+                if (rightRange is null)
                 {
                     // null == null = true.
                     return true;
@@ -76,6 +94,26 @@ namespace Reynj
         public static bool operator !=(Range<T> leftRange, Range<T> rightRange)
         {
             return !(leftRange == rightRange);
+        }
+
+        public static bool operator >(Range<T> leftRange, Range<T> rightRange)
+        {
+            return leftRange.CompareTo(rightRange) == 1;
+        }
+
+        public static bool operator <(Range<T> leftRange, Range<T> rightRange)
+        {
+            return leftRange.CompareTo(rightRange) == -1;
+        }
+
+        public static bool operator >=(Range<T> leftRange, Range<T> rightRange)
+        {
+            return leftRange.CompareTo(rightRange) >= 0;
+        }
+
+        public static bool operator <=(Range<T> leftRange, Range<T> rightRange)
+        {
+            return leftRange.CompareTo(rightRange) <= 0;
         }
 
         public override string ToString()

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using Xunit;
 
@@ -8,9 +9,10 @@ namespace Reynj.UnitTests
     {
         [Theory]
         [InlineData(10, 9)]
-        public void Ctor_EndMustBeLowerThanOrEqualToStart(int start, int end)
+        public void Ctor_EndMustBeLessThanOrEqualToStart(int start, int end)
         {
             // Arrange - Act
+            // ReSharper disable once ObjectCreationAsStatement
             Action act = () => new Range<int>(start, end);
 
             // Assert
@@ -84,6 +86,77 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        public void CompareTo_IsOne_WhenOtherIsNull()
+        {
+            // Arrange
+            var range = new Range<int>(1, 99);
+
+            // Act - Assert
+            range.CompareTo(null).Should().Be(1);
+            range.CompareTo((object) null).Should().Be(1);
+        }
+
+        [Fact]
+        public void CompareTo_IsZero_WhenRangesAreEqual()
+        {
+            // Arrange
+            var range = new Range<int>(1, 99);
+            var otherRange = new Range<int>(1, 99);
+
+            // Act - Assert
+            range.CompareTo(otherRange).Should().Be(0);
+            range.CompareTo((object) otherRange).Should().Be(0);
+        }
+
+        [Fact]
+        public void CompareTo_IsMinusOne_WhenOtherHasAHigherStart()
+        {
+            // Arrange
+            var range = new Range<int>(1, 99);
+            var otherRange = new Range<int>(2, 99);
+
+            // Act - Assert
+            range.CompareTo(otherRange).Should().Be(-1);
+            range.CompareTo((object) otherRange).Should().Be(-1);
+        }
+
+        [Fact]
+        public void CompareTo_IsOne_WhenOtherHasALowerStart()
+        {
+            // Arrange
+            var range = new Range<int>(1, 99);
+            var otherRange = new Range<int>(-2, 99);
+
+            // Act - Assert
+            range.CompareTo(otherRange).Should().Be(1);
+            range.CompareTo((object) otherRange).Should().Be(1);
+        }
+
+        [Fact]
+        public void CompareTo_IsMinusOne_WhenStartIsSameAndOtherHasAHigherEnd()
+        {
+            // Arrange
+            var range = new Range<int>(1, 99);
+            var otherRange = new Range<int>(1, 100);
+
+            // Act - Assert
+            range.CompareTo(otherRange).Should().Be(-1);
+            range.CompareTo((object) otherRange).Should().Be(-1);
+        }
+
+        [Fact]
+        public void CompareTo_IsOne_WhenStartIsSameAndOtherHasALowerEnd()
+        {
+            // Arrange
+            var range = new Range<int>(1, 99);
+            var otherRange = new Range<int>(1, 98);
+
+            // Act - Assert
+            range.CompareTo(otherRange).Should().Be(1);
+            range.CompareTo((object) otherRange).Should().Be(1);
+        }
+
+        [Fact]
         public void GetHashCode_IsSame_WhenStartAndEndAreEqual()
         {
             // Arrange
@@ -95,7 +168,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
-        public void ComparisonOperator_Equals_IsTrue_WhenPeriodsAreEqual()
+        public void EqualityOperator_IsTrue_WhenRangesAreEqual()
         {
             // Arrange
             var range = new Range<int>(1, 99);
@@ -106,7 +179,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
-        public void ComparisonOperator_Equals_IsTrue_WhenBothPeriodsAreNull()
+        public void EqualityOperator_IsTrue_WhenBothRangesAreNull()
         {
             // Arrange
             var range = (Range<int>) null;
@@ -118,7 +191,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
-        public void ComparisonOperator_Equals_IsFalse_WhenOnePeriodIsNull()
+        public void EqualityOperator_IsFalse_WhenOneRangeIsNull()
         {
             // Arrange
             var range = (Range<int>) null;
@@ -130,7 +203,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
-        public void ComparisonOperator_Equals_IsFalse_WhenTheOtherPeriodIsNull()
+        public void EqualityOperator_IsFalse_WhenTheOtherRangeIsNull()
         {
             // Arrange
             var range = new Range<int>(1, 99);
@@ -142,7 +215,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
-        public void ComparisonOperator_Equals_IsFalse_WhenPeriodsAreNotEqual()
+        public void EqualityOperator_IsFalse_WhenRangesAreNotEqual()
         {
             // Arrange
             var range = new Range<int>(1, 99);
@@ -150,6 +223,160 @@ namespace Reynj.UnitTests
 
             // Act - Assert
             (range == otherRange).Should().BeFalse();
+        }
+
+        [Fact]
+        public void InequalityOperator_IsFalse_WhenRangesAreEqual()
+        {
+            // Arrange
+            var range = new Range<int>(1, 99);
+            var otherRange = new Range<int>(1, 99);
+
+            // Act - Assert
+            (range != otherRange).Should().BeFalse();
+        }
+
+        [Fact]
+        public void InequalityOperator_IsFalse_WhenBothRangesAreNull()
+        {
+            // Arrange
+            var range = (Range<int>) null;
+            var otherRange = (Range<int>) null;
+
+            // Act - Assert
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            (range != otherRange).Should().BeFalse();
+        }
+
+        [Fact]
+        public void InequalityOperator_IsTrue_WhenOneRangeIsNull()
+        {
+            // Arrange
+            var range = (Range<int>) null;
+            var otherRange = new Range<int>(1, 99);
+
+            // Act - Assert
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            (range != otherRange).Should().BeTrue();
+        }
+
+        [Fact]
+        public void InequalityOperator_IsTrue_WhenTheOtherRangeIsNull()
+        {
+            // Arrange
+            var range = new Range<int>(1, 99);
+            var otherRange = (Range<int>) null;
+
+            // Act - Assert
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            (range != otherRange).Should().BeTrue();
+        }
+
+        [Fact]
+        public void InequalityOperator_IsTrue_WhenRangesAreNotEqual()
+        {
+            // Arrange
+            var range = new Range<int>(1, 99);
+            var otherRange = new Range<int>(2, 100);
+
+            // Act - Assert
+            (range != otherRange).Should().BeTrue();
+        }
+
+        [Theory]
+        [MemberData(nameof(GreaterThanOperatorData))]
+        public void GreaterThanOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
+        {
+            // Act - Assert
+            (range > otherRange).Should().Be(expectedResult);
+        }
+
+        public static IEnumerable<object[]> GreaterThanOperatorData()
+        {
+            // Both are the same
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 99), false};
+
+            // First is greater than
+            yield return new object[] {new Range<int>(2, 99), new Range<int>(1, 99), true};
+            yield return new object[] {new Range<int>(1, 100), new Range<int>(1, 99), true};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(-99, -1), true};
+
+            // First is lower than
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(2, 99), false};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 100), false};
+            yield return new object[] {new Range<int>(-99, -1), new Range<int>(1, 99), false};
+        }
+
+        [Theory]
+        [MemberData(nameof(LessThanOperatorData))]
+        public void LessThanOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
+        {
+            // Act - Assert
+            (range < otherRange).Should().Be(expectedResult);
+        }
+
+        public static IEnumerable<object[]> LessThanOperatorData()
+        {
+            // Both are the same
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 99), false};
+
+            // First is less than
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(2, 99), true};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 100), true};
+            yield return new object[] {new Range<int>(-99, -1), new Range<int>(1, 99), true};
+
+            // First is greater than
+            yield return new object[] {new Range<int>(2, 99), new Range<int>(1, 99), false};
+            yield return new object[] {new Range<int>(1, 100), new Range<int>(1, 99), false};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(-99, -1), false};
+        }
+
+        [Theory]
+        [MemberData(nameof(GreaterThanOrEqualOperatorData))]
+        public void GreaterThanOrEqualOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
+        {
+            // Act - Assert
+            (range >= otherRange).Should().Be(expectedResult);
+        }
+
+        public static IEnumerable<object[]> GreaterThanOrEqualOperatorData()
+        {
+            // Both are the same
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 99), true};
+
+            // First is greater than
+            yield return new object[] {new Range<int>(2, 99), new Range<int>(1, 99), true};
+            yield return new object[] {new Range<int>(1, 100), new Range<int>(1, 99), true};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(-99, -1), true};
+
+            // First is lower than
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(2, 99), false};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 100), false};
+            yield return new object[] {new Range<int>(-99, -1), new Range<int>(1, 99), false};
+        }
+
+        [Theory]
+        [MemberData(nameof(LessThanOrEqualOperatorData))]
+        public void LessThanOrEqualOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
+        {
+            // Act - Assert
+            (range <= otherRange).Should().Be(expectedResult);
+        }
+
+        public static IEnumerable<object[]> LessThanOrEqualOperatorData()
+        {
+            // Both are the same
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 99), true};
+
+            // First is less than
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(2, 99), true};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 100), true};
+            yield return new object[] {new Range<int>(-99, -1), new Range<int>(1, 99), true};
+
+            // First is greater than
+            yield return new object[] {new Range<int>(2, 99), new Range<int>(1, 99), false};
+            yield return new object[] {new Range<int>(1, 100), new Range<int>(1, 99), false};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(-99, -1), false};
         }
 
         [Fact]
