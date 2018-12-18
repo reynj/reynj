@@ -7,6 +7,13 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
+trigger:
+  batch: false
+  branches:
+    include:
+    - master
+    - refs/tags/*
+
 steps:
 - task: DotNetCoreInstaller@0
   displayName: 'Use .NET Core SDK 2.2.101'
