@@ -8,8 +8,6 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@0
-
 - task: DotNetCoreInstaller@0
   displayName: 'Use .NET Core SDK 2.2.101'
   inputs:
@@ -23,11 +21,10 @@ steps:
     dotnet build --configuration $(buildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)
     dotnet test --no-build --configuration $(buildConfiguration) --logger trx --collect "Code coverage"
     dotnet pack --no-build --configuration $(buildConfiguration) --include-symbols -p:PackageVersion=$(GitVersion.NuGetVersion) --output "$(Build.ArtifactStagingDirectory)"
-  displayName: DotNet Build
+  displayName: 'DotNet Build'
 
 - task: PublishTestResults@2
   inputs:
-    testRunner: VSTest
     testResultsFiles: '**/*.trx'
 
 - task: PublishBuildArtifacts@1
