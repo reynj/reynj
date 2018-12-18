@@ -85,13 +85,26 @@ var res3 = range1 > range2;
 var res4 = range1 <= range2;
 var res5 = range1 >= range2;
 ```
-##### Includes
+##### Other functions
+###### Includes(T value)
 Includes will return true if the the given value is a part of the Range, otherwise false.
 
 ```c#
 var range = new Range<int>(0, 10);
 
-// CompareTo
+// Includes
 var res1 = range1.Includes(5); // returns true
 var res2 = range1.Includes(20); // returns false
+```
+
+###### IsEmpty()
+IsEmpty will return true if the start and the end of the Range are equal, otherwise false.
+
+```c#
+var range1 = new Range<int>(0, 10);
+var range2 = new Range<int>(10, 10);
+
+// IsEmpty
+var res1 = range1.IsEmpty(); // returns false
+var res2 = range2.IsEmpty(); // returns true
 ```

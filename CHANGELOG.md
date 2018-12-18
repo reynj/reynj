@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- The Includes method was added to Range<T>, it returns true if the the given value is a part of the Range.
+- The Includes method was added to Range<T>, it returns true if the given value is a part of the Range.
+- The IsEmpty method was added to Range<T>, it returns true if the start and end of the Range are equal.
 
 ## [0.1.3] - 2018-12-18
 ### Changed

@@ -3,8 +3,8 @@
 namespace Reynj
 {
     /// <summary>
-    /// An immutable class that is a representation of Range.
-    /// Where a range is a range of values determined by a start and an end.
+    /// An immutable class that is a representation of a Range.
+    /// Where a Range is a range of values determined by a start and an end.
     /// </summary>
     /// <typeparam name="T">Every type that implements <see cref="IComparable"/></typeparam>
     public class Range<T> : IEquatable<Range<T>>, IComparable<Range<T>>, IComparable
@@ -52,6 +52,15 @@ namespace Reynj
                 return false;
 
             return _start.CompareTo(value) > 0 && _end.CompareTo(value) < 0;
+        }
+
+        /// <summary>
+        /// Returns true if the Range starts and ends with the same value
+        /// </summary>
+        /// <returns>true if the specified <see cref="Start"/> is equal to the <see cref="End"/>; otherwise, false.</returns>
+        public bool IsEmpty()
+        {
+            return _start.Equals(_end);
         }
 
         /// <summary>

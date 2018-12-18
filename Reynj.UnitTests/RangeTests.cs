@@ -72,6 +72,26 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        public void IsEmpty_ReturnsFalse_WhenStartAndEndAreNotEqual()
+        {
+            // Arrange 
+            var range = new Range<int>(0, 10);
+
+            // Act - Assert
+            range.IsEmpty().Should().BeFalse();
+        }
+
+        [Fact]
+        public void IsEmpty_ReturnsTrue_WhenStartAndEndAreEqual()
+        {
+            // Arrange 
+            var range = new Range<int>(10, 10);
+
+            // Act - Assert
+            range.IsEmpty().Should().BeTrue();
+        }
+
+        [Fact]
         public void Equals_IsFalse_WhenOtherIsNull()
         {
             // Arrange
