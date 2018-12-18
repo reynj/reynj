@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Reynj
 {
@@ -51,7 +53,28 @@ namespace Reynj
             if (value == null)
                 return false;
 
-            return _start.CompareTo(value) > 0 && _end.CompareTo(value) < 0;
+            return value.CompareTo(_start) >= 0 && value.CompareTo(_end) < 0;
+        }
+
+        /// <summary>
+        /// Determines whether all <paramref name="values"/> are part of the <see cref="Range{T}"/>
+        /// </summary>
+        /// <param name="value">First value to check against the <see cref="Range{T}"/></param>
+        /// <param name="values">Other values to check against the <see cref="Range{T}"/></param>
+        /// <returns>true if al of the specified <paramref name="values"/> are within the <see cref="Range{T}"/>; otherwise, false.</returns>
+        public bool IncludesAll(T value, params T[] values)
+        {
+            return Includes(value) && values.All(Includes);
+        }
+
+        /// <summary>
+        /// Determines whether all <paramref name="values"/> are part of the <see cref="Range{T}"/>
+        /// </summary>
+        /// <param name="values">Values the check against the <see cref="Range{T}"/></param>
+        /// <returns>true if al of the specified <paramref name="values"/> are within the <see cref="Range{T}"/>; otherwise, false.</returns>
+        public bool IncludesAll(IEnumerable<T> values)
+        {
+            return values.All(Includes);
         }
 
         /// <summary>

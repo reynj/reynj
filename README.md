@@ -86,8 +86,9 @@ var res4 = range1 <= range2;
 var res5 = range1 >= range2;
 ```
 ##### Other functions
-###### Includes(T value)
-Includes will return true if the the given value is a part of the Range, otherwise false.
+###### Includes(T value) and IncludesAll(IEnumerable<T> values)
+Includes will return true if the given value is a part of the Range, otherwise false.
+IncludesAll will return true if all of the given values are part of the Range, otherwise false.
 
 ```c#
 var range = new Range<int>(0, 10);
@@ -95,6 +96,10 @@ var range = new Range<int>(0, 10);
 // Includes
 var res1 = range1.Includes(5); // returns true
 var res2 = range1.Includes(20); // returns false
+
+// IncludesAll
+var res1 = range1.IncludesAll(0, 1, 2, 3, 4, 5, 6, 7, 8, 9); // returns true
+var res2 = range1.IncludesAll(0, 1, 2, 3, 4, 20, 6, 7, 8, 9); // returns false
 ```
 
 ###### IsEmpty()

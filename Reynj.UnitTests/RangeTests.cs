@@ -53,7 +53,7 @@ namespace Reynj.UnitTests
             var range = new Range<int>(0, 10);
 
             // Act - Assert
-            range.Includes(value).Should().BeFalse();
+            range.Includes(value).Should().BeTrue();
         }
 
         [Theory]
@@ -69,6 +69,28 @@ namespace Reynj.UnitTests
 
             // Act - Assert
             range.Includes(value).Should().BeFalse();
+        }
+
+        [Fact]
+        public void IncludesAll_ReturnsTrue_GivenAllValuesArePartOfTheRange()
+        {
+            // Arrange 
+            var range = new Range<int>(0, 10);
+
+            // Act - Assert
+            range.IncludesAll(0, 1, 2, 3, 4, 5, 6, 7, 8, 9).Should().BeTrue();
+            range.IncludesAll(new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }).Should().BeTrue();
+        }
+
+        [Fact]
+        public void IncludesAll_ReturnsFalse_GivenOneOfTheValuesAreNotPartOfTheRange()
+        {
+            // Arrange 
+            var range = new Range<int>(0, 10);
+
+            // Act - Assert
+            range.IncludesAll(0, 1, 2, 3, 4, 99, 6, 7, 8, 9).Should().BeFalse();
+            range.IncludesAll(new List<int> {0, 1, 2, 3, 4, 99, 6, 7, 8, 9 }).Should().BeFalse();
         }
 
         [Fact]
