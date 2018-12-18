@@ -85,3 +85,13 @@ var res3 = range1 > range2;
 var res4 = range1 <= range2;
 var res5 = range1 >= range2;
 ```
+##### Includes
+Includes will return true if the the given value is a part of the Range, otherwise false.
+
+```c#
+var range = new Range<int>(0, 10);
+
+// CompareTo
+var res1 = range1.Includes(5); // returns true
+var res2 = range1.Includes(20); // returns false
+```

@@ -23,12 +23,52 @@ namespace Reynj.UnitTests
         [Fact]
         public void Ctor_StartAndEndPropertyAreSet()
         {
-            // Arrange - Act
+            // Arrange
             var range = new Range<int>(1, 99);
 
-            // Assert
+            // Act - Assert
             range.Start.Should().Be(1);
             range.End.Should().Be(99);
+        }
+
+        [Fact]
+        public void Includes_ReturnsFalse_GivenNullAsValue()
+        {
+            // Arrange 
+            var range = new Range<string>("a", "z");
+
+            // Act - Assert
+            range.Includes(null).Should().BeFalse();
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(7)]
+        [InlineData(5)]
+        [InlineData(9)]
+        public void Includes_ReturnsTrue_GivenAValueThatIsPartOfTheRange(int value)
+        {
+            // Arrange 
+            var range = new Range<int>(0, 10);
+
+            // Act - Assert
+            range.Includes(value).Should().BeFalse();
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(10)]
+        [InlineData(11)]
+        [InlineData(-99)]
+        [InlineData(99)]
+        public void Includes_ReturnsFalse_GivenAValueThatIsNotPartOfTheRange(int value)
+        {
+            // Arrange 
+            var range = new Range<int>(0, 10);
+
+            // Act - Assert
+            range.Includes(value).Should().BeFalse();
         }
 
         [Fact]

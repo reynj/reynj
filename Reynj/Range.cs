@@ -18,7 +18,7 @@ namespace Reynj
         /// </summary>
         /// <param name="start">Start of the Range</param>
         /// <param name="end">End of the Range</param>
-        /// <exception cref="ArgumentException">If <paramref name="start"/> is greater than <paramref name="end"/></exception>
+        /// <exception cref="ArgumentException">If <paramref name="start"/> is greater than <paramref name="end"/>.</exception>
         public Range(T start, T end)
         {
             if (start.CompareTo(end) > 0)
@@ -37,8 +37,22 @@ namespace Reynj
         /// <summary>
         /// End of the <see cref="Range{T}"/>
         /// </summary>
-        /// <remarks>The End is not part of the range, it marks the ending via &lt; End</remarks>
+        /// <remarks>The End is not part of the range, it marks the ending via &lt; End.</remarks>
         public T End => _end;
+
+        /// <summary>
+        /// Determines whether the specified <paramref name="value"/> is part of the <see cref="Range{T}"/>
+        /// </summary>
+        /// <param name="value">Value the check against the <see cref="Range{T}"/></param>
+        /// <returns>true if the specified <paramref name="value"/> is within the <see cref="Range{T}"/>; otherwise, false.</returns>
+        /// <remarks>When specified <paramref name="value"/> is null, false is returned.</remarks>
+        public bool Includes(T value)
+        {
+            if (value == null)
+                return false;
+
+            return _start.CompareTo(value) > 0 && _end.CompareTo(value) < 0;
+        }
 
         /// <summary>
         /// Determines whether the specified <see cref="Range{T}"/> is equal to the current <see cref="Range{T}"/>.
