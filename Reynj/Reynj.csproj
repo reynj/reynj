@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Authors>Jochen Jonckheere</Authors>
     <Company>JxK</Company>
     <Copyright>Jochen Jonckheere</Copyright>
@@ -10,6 +10,8 @@
     <RepositoryUrl>https://github.com/reynj/reynj</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Range,Period, Span</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageLicenseUrl>https://github.com/reynj/reynj/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

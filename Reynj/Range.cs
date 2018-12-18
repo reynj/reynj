@@ -2,12 +2,23 @@
 
 namespace Reynj
 {
+    /// <summary>
+    /// An immutable class that is a representation of Range.
+    /// Where a range is a range of values determined by a start and an end.
+    /// </summary>
+    /// <typeparam name="T">Every type that implements <see cref="IComparable"/></typeparam>
     public class Range<T> : IEquatable<Range<T>>, IComparable<Range<T>>, IComparable
         where T : IComparable
     {
         private readonly T _start;
         private readonly T _end;
 
+        /// <summary>
+        /// Creates a new <see cref="Range{T}"/>
+        /// </summary>
+        /// <param name="start">Start of the Range</param>
+        /// <param name="end">End of the Range</param>
+        /// <exception cref="ArgumentException">If <paramref name="start"/> is greater than <paramref name="end"/></exception>
         public Range(T start, T end)
         {
             if (start.CompareTo(end) > 0)
@@ -18,9 +29,22 @@ namespace Reynj
             _end = end;
         }
 
+        /// <summary>
+        /// Start of the <see cref="Range{T}"/>
+        /// </summary>
         public T Start => _start;
+
+        /// <summary>
+        /// End of the <see cref="Range{T}"/>
+        /// </summary>
+        /// <remarks>The End is not part of the range, it marks the ending via &lt; End</remarks>
         public T End => _end;
 
+        /// <summary>
+        /// Determines whether the specified <see cref="Range{T}"/> is equal to the current <see cref="Range{T}"/>.
+        /// </summary>
+        /// <param name="other">The <see cref="Range{T}"/> to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="Range{T}"/> is equal to the current <see cref="Range{T}"/>; otherwise, false.</returns>
         public bool Equals(Range<T> other)
         {
             // If parameter is null, return false.
@@ -44,16 +68,19 @@ namespace Reynj
             return _start.Equals(other._start) && _end.Equals(other._end);
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             return Equals(obj as Range<T>);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return (_start.GetHashCode() << 2) ^ _end.GetHashCode();
         }
 
+        /// <inheritdoc />
         public int CompareTo(Range<T> other)
         {
             // If other is not a valid object reference, this instance is greater.
@@ -67,11 +94,18 @@ namespace Reynj
             return result;
         }
 
+        /// <inheritdoc />
         public int CompareTo(object obj)
         {
             return CompareTo(obj as Range<T>);
         }
 
+        /// <summary>
+        /// Determines whether two specified Ranges have the same value.
+        /// </summary>
+        /// <param name="leftRange">The first <see cref="Range{T}"/> to compare, or null.</param>
+        /// <param name="rightRange">The second <see cref="Range{T}"/> to compare, or null.</param>
+        /// <returns><c>true</c> if the <paramref name="leftRange"/> and <paramref name="rightRange"/> parameters have the same value; otherwise, <c>false</c>.</returns>
         public static bool operator ==(Range<T> leftRange, Range<T> rightRange)
         {
             // Check for null.
@@ -91,31 +125,62 @@ namespace Reynj
             return leftRange.Equals(rightRange);
         }
 
+        /// <summary>
+        /// Determines whether two specified Ranges have different values.
+        /// </summary>
+        /// <param name="leftRange">The first <see cref="Range{T}"/> to compare, or null.</param>
+        /// <param name="rightRange">The second <see cref="Range{T}"/> to compare, or null.</param>
+        /// <returns>true if the value of <paramref name="leftRange" /> is different from the value of <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator !=(Range<T> leftRange, Range<T> rightRange)
         {
-            return !(leftRange == rightRange);
+            return !(leftRange == rightRange); 
         }
 
+        /// <summary>
+        /// Determines whether one specified <see cref="Range{T}"/> is greater than another specified <see cref="Range{T}"/>.
+        /// </summary>
+        /// <param name="leftRange">The first <see cref="Range{T}"/> to compare, or null.</param>
+        /// <param name="rightRange">The second <see cref="Range{T}"/> to compare, or null.</param>
+        /// <returns>true if <paramref name="leftRange" /> is greater than <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator >(Range<T> leftRange, Range<T> rightRange)
         {
             return leftRange.CompareTo(rightRange) == 1;
         }
 
+        /// <summary>
+        /// Determines whether one specified <see cref="Range{T}"/> is lower than another specified <see cref="Range{T}"/>.
+        /// </summary>
+        /// <param name="leftRange">The first <see cref="Range{T}"/> to compare, or null.</param>
+        /// <param name="rightRange">The second <see cref="Range{T}"/> to compare, or null.</param>
+        /// <returns>true if <paramref name="leftRange" /> is lower than <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator <(Range<T> leftRange, Range<T> rightRange)
         {
             return leftRange.CompareTo(rightRange) == -1;
         }
 
+        /// <summary>
+        /// Determines whether one specified <see cref="Range{T}"/> represents a range that is the same as or lower than another specified <see cref="Range{T}"/>.
+        /// </summary>
+        /// <param name="leftRange">The first <see cref="Range{T}"/> to compare, or null.</param>
+        /// <param name="rightRange">The second <see cref="Range{T}"/> to compare, or null.</param>
+        /// <returns>true if <paramref name="leftRange" /> is the same as or lower than <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator >=(Range<T> leftRange, Range<T> rightRange)
         {
             return leftRange.CompareTo(rightRange) >= 0;
         }
 
+        /// <summary>
+        /// Determines whether one specified <see cref="Range{T}"/> represents a range that is the same as or greater than another specified <see cref="Range{T}"/>.
+        /// </summary>
+        /// <param name="leftRange">The first <see cref="Range{T}"/> to compare, or null.</param>
+        /// <param name="rightRange">The second <see cref="Range{T}"/> to compare, or null.</param>
+        /// <returns>true if <paramref name="leftRange" /> is the same as or greater than <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator <=(Range<T> leftRange, Range<T> rightRange)
         {
             return leftRange.CompareTo(rightRange) <= 0;
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return $"Range({_start}, {_end})";
