@@ -1,4 +1,4 @@
-mode: Mainline
+mode: ContinuousDeployment
 continuous-delivery-fallback-tag: pre
 branches: {}
 ignore:
