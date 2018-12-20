@@ -59,14 +59,18 @@ Because Range<T> implements the [IEquatable<T>](https://docs.microsoft.com/en-us
   
 ```c#
 var range1 = new Range<int>(0, 10);
-var range2 = new Range<int>(5, 9);
+var range2 = new Range<int>(0, 10);
+var range3 = new Range<int>(5, 9);
 
 // Equals
-var res1 = range1.Equals(range2);
+var res1 = range1.Equals(range2); // returns true
+var res2 = range1.Equals(range3); // returns false
 
 // Equality Operators
-var res2 = range1 == range2;
-var res3 = range1 != range2;
+var res3 = range1 == range2; // returns true
+var res4 = range1 != range2; // returns false
+var res5 = range1 == range3; // returns false
+var res6 = range1 != range3; // returns true
 ```
 
 ##### Ordering or Sorting
@@ -86,20 +90,24 @@ var res4 = range1 <= range2;
 var res5 = range1 >= range2;
 ```
 ##### Other functions
-###### Includes(T value) and IncludesAll(IEnumerable<T> values)
+###### Includes(T value), Includes(Range<T> range) and IncludesAll(IEnumerable<T> values)
 Includes will return true if the given value is a part of the Range, otherwise false.
 IncludesAll will return true if all of the given values are part of the Range, otherwise false.
 
 ```c#
 var range = new Range<int>(0, 10);
 
-// Includes
+// Includes(T value)
 var res1 = range1.Includes(5); // returns true
 var res2 = range1.Includes(20); // returns false
 
+// Includes(Range<T> range)
+var res1 = range1.Includes(new Range<int>(2, 7)); // returns true
+var res2 = range1.Includes(new Range<int>(20, 30)); // returns false
+
 // IncludesAll
-var res1 = range1.IncludesAll(0, 1, 2, 3, 4, 5, 6, 7, 8, 9); // returns true
-var res2 = range1.IncludesAll(0, 1, 2, 3, 4, 20, 6, 7, 8, 9); // returns false
+var res3 = range1.IncludesAll(0, 1, 2, 3, 4, 5, 6, 7, 8, 9); // returns true
+var res4 = range1.IncludesAll(0, 1, 2, 3, 4, 20, 6, 7, 8, 9); // returns false
 ```
 
 ###### IsEmpty()

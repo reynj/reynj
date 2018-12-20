@@ -57,6 +57,20 @@ namespace Reynj
         }
 
         /// <summary>
+        /// Determines whether the specified <see cref="Range{T}"/> is completely part of the <see cref="Range{T}"/>
+        /// </summary>
+        /// <param name="range"><see cref="Range{T}"/> the check against the current <see cref="Range{T}"/></param>
+        /// <returns>true if the specified <see cref="Range{T}"/> is within the <see cref="Range{T}"/>; otherwise, false.</returns>
+        /// <remarks>When specified <see cref="Range{T}"/> is null, false is returned.</remarks>
+        public bool Includes(Range<T> range)
+        {
+            if (range == null)
+                return false;
+
+            return Includes(range.Start) && (Includes(range._end) || _end.Equals(range._end));
+        }
+
+        /// <summary>
         /// Determines whether all <paramref name="values"/> are part of the <see cref="Range{T}"/>
         /// </summary>
         /// <param name="value">First value to check against the <see cref="Range{T}"/></param>

@@ -38,7 +38,8 @@ namespace Reynj.UnitTests
             var range = new Range<string>("a", "z");
 
             // Act - Assert
-            range.Includes(null).Should().BeFalse();
+            range.Includes((string) null).Should().BeFalse();
+            range.Includes((Range<string>) null).Should().BeFalse();
         }
 
         [Theory]
@@ -69,6 +70,32 @@ namespace Reynj.UnitTests
 
             // Act - Assert
             range.Includes(value).Should().BeFalse();
+        }
+
+        [Theory]
+        [MemberData(nameof(IncludesRangeData))]
+        public void Includes_ForRange_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
+        {
+            // Act - Assert
+            range.Includes(otherRange).Should().Be(expectedResult);
+        }
+
+        public static IEnumerable<object[]> IncludesRangeData()
+        {
+            // Both are the same
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 99), true};
+
+            // Includes
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(2, 99), true};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(10, 49), true};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 98), true};
+
+            // Does not include
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 100), false};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(0, 99), false};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(-99, -1), false};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(0, 50), false};
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(50, 100), false};
         }
 
         [Fact]
