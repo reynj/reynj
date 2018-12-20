@@ -6,10 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- The Includes(T value) method was added to Range<T>, it returns true if the given value is a part of the Range.
-- The Includes(Range<T> range) method was added to Range<T>, it returns true if the given Range is completely a part of the Range.
-- The IncludesAll(params T value) method was added to Range<T>, it returns true if all of the given values are a part of the Range.
-- The IsEmpty method was added to Range<T>, it returns true if the start and end of the Range are equal.
+- The Includes(T value) method was added to Range<T>, it returns true if the given value is a part of the Range
+- The Includes(Range<T> range) method was added to Range<T>, it returns true if the given Range is completely a part of the Range
+- The IncludesAll(params T value) method was added to Range<T>, it returns true if all of the given values are a part of the Range
+- The IsEmpty method was added to Range<T>, it returns true if the start and end of the Range are equal
+- Support for conversion to and from a Tuple/ValueTuple has been added
 
 ## [0.1.3] - 2018-12-18
 ### Changed

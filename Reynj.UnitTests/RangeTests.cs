@@ -7,13 +7,12 @@ namespace Reynj.UnitTests
 {
     public class RangeTests
     {
-        [Theory]
-        [InlineData(10, 9)]
-        public void Ctor_EndMustBeLessThanOrEqualToStart(int start, int end)
+        [Fact]
+        public void Ctor_StartEnd_EndMustBeLessThanOrEqualToStart()
         {
             // Arrange - Act
             // ReSharper disable once ObjectCreationAsStatement
-            Action act = () => new Range<int>(start, end);
+            Action act = () => new Range<int>(99, 1);
 
             // Assert
             act.Should().Throw<ArgumentException>()
@@ -21,10 +20,33 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
-        public void Ctor_StartAndEndPropertyAreSet()
+        public void Ctor_StartEnd_StartAndEndPropertyAreSet()
         {
             // Arrange
             var range = new Range<int>(1, 99);
+
+            // Act - Assert
+            range.Start.Should().Be(1);
+            range.End.Should().Be(99);
+        }
+
+        [Fact]
+        public void Ctor_Tuple_EndMustBeLessThanOrEqualToStart()
+        {
+            // Arrange - Act
+            // ReSharper disable once ObjectCreationAsStatement
+            Action act = () => new Range<int>((99, 1));
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+                .And.Message.Should().StartWith("end must be greater than or equal to start");
+        }
+
+        [Fact]
+        public void Ctor_Tuple_StartAndEndPropertyAreSet()
+        {
+            // Arrange
+            var range = new Range<int>((1, 99));
 
             // Act - Assert
             range.Start.Should().Be(1);
@@ -266,6 +288,19 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        public void AsTuple_ReturnsThePeriodAsValueTuple()
+        {
+            // Arrange
+            var range = new Range<int>(1, 99);
+
+            // Act
+            var tuple = range.AsTuple();
+
+            // Assert
+            tuple.Should().Be((1, 99));
+        }
+
+        [Fact]
         public void GetHashCode_IsSame_WhenStartAndEndAreEqual()
         {
             // Arrange
@@ -486,6 +521,48 @@ namespace Reynj.UnitTests
             yield return new object[] {new Range<int>(2, 99), new Range<int>(1, 99), false};
             yield return new object[] {new Range<int>(1, 100), new Range<int>(1, 99), false};
             yield return new object[] {new Range<int>(1, 99), new Range<int>(-99, -1), false};
+        }
+
+        [Fact]
+        public void ExplicitConversionOperator_FromTupleToRange()
+        {
+            // Arrange
+            var tuple = (1, 10);
+
+            // Act
+            var range = (Range<int>) tuple;
+            
+            // - Assert
+            range.Should().Be(new Range<int>(1, 10));
+        }
+
+        [Fact]
+        public void ExplicitConversionOperator_FromTupleToRangeWithItem1GreaterThanItem2_ThrowsAnArgumentException()
+        {
+            // Arrange - Act
+            // ReSharper disable once ObjectCreationAsStatement
+            Action act = () =>
+            {
+                // ReSharper disable once UnusedVariable
+                var range = (Range<int>) (99, 1);
+            };
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+                .And.Message.Should().StartWith("end must be greater than or equal to start");
+        }
+
+        [Fact]
+        public void ImplicitConversionOperator_FromRangeToTuple()
+        {
+            // Arrange
+            var range = new Range<int>(1, 10);
+
+            // Act
+            ValueTuple<int, int> tuple = range;
+            
+            // - Assert
+            tuple.Should().Be((1, 10));
         }
 
         [Fact]

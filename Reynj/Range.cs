@@ -16,7 +16,7 @@ namespace Reynj
         private readonly T _end;
 
         /// <summary>
-        /// Creates a new <see cref="Range{T}"/>
+        /// Creates a new <see cref="Range{T}"/> for a given start and end
         /// </summary>
         /// <param name="start">Start of the Range</param>
         /// <param name="end">End of the Range</param>
@@ -29,6 +29,15 @@ namespace Reynj
 
             _start = start;
             _end = end;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Range{T}"/> based on a Tuple
+        /// </summary>
+        /// <param name="tuple">Tuple representing a Range</param>
+        /// <exception cref="ArgumentException">If <paramref name="tuple"/> Item1 is greater than <paramref name="tuple"/> Item2.</exception>
+        public Range(ValueTuple<T, T> tuple) : this(tuple.Item1, tuple.Item2)
+        {
         }
 
         /// <summary>
@@ -161,6 +170,15 @@ namespace Reynj
         }
 
         /// <summary>
+        /// Returns the <see cref="Range{T}"/> as <see cref="ValueTuple{T, T}"/>
+        /// </summary>
+        /// <returns><see cref="ValueTuple{T, T}"/></returns>
+        public ValueTuple<T, T> AsTuple()
+        {
+            return (_start, _end);
+        }
+
+        /// <summary>
         /// Determines whether two specified Ranges have the same value.
         /// </summary>
         /// <param name="leftRange">The first <see cref="Range{T}"/> to compare, or null.</param>
@@ -193,7 +211,7 @@ namespace Reynj
         /// <returns>true if the value of <paramref name="leftRange" /> is different from the value of <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator !=(Range<T> leftRange, Range<T> rightRange)
         {
-            return !(leftRange == rightRange); 
+            return !(leftRange == rightRange);
         }
 
         /// <summary>
@@ -238,6 +256,25 @@ namespace Reynj
         public static bool operator <=(Range<T> leftRange, Range<T> rightRange)
         {
             return leftRange.CompareTo(rightRange) <= 0;
+        }
+
+        /// <summary>
+        /// Implicitly converts a <see cref="Range{T}"/> to a <see cref="ValueTuple{T, T}"/>
+        /// </summary>
+        /// <param name="range"><see cref="Range{T}"/> to convert</param>
+        public static implicit operator ValueTuple<T, T>(Range<T> range)
+        {
+            return range.AsTuple();
+        }
+
+        /// <summary>
+        /// Explicitly converts a <see cref="ValueTuple{T, T}"/> to a <see cref="Range{T}"/>
+        /// </summary>
+        /// <param name="tuple"><see cref="ValueTuple{T, T}"/> to convert</param>
+        /// <remarks>Explicit because not every <see cref="ValueTuple{T, T}"/> can safely be converted to a <see cref="Range{T}"/></remarks>
+        public static explicit operator Range<T>(ValueTuple<T, T> tuple)
+        {
+            return new Range<T>(tuple);
         }
 
         /// <inheritdoc />

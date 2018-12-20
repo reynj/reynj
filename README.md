@@ -89,6 +89,25 @@ var res3 = range1 > range2;
 var res4 = range1 <= range2;
 var res5 = range1 >= range2;
 ```
+
+##### Tuples
+A Range<T> has two primary properties, Start and End, because of that a Range<T> can also be represented as a Tuple, in the lastest versions of .Net as a [ValueTuple](https://docs.microsoft.com/en-us/dotnet/api/system.valuetuple?view=netcore-2.2).
+The constructor of a Range<T> accepts a Tuple of two elements and there is an AsTuple method to convert a Range<T> to a ValueTuple<T, T>.
+Conversion operators have been implemented to makes this even more smoothly.
+
+```c#
+var tuple = (0, 10);
+var range = new Range<int>(tuple);
+
+// AsTuple
+var otherTuple = range.AsTuple();
+
+// Conversion Operators
+var otherTuple2 = range; // implicit from Range to Tuple
+var otherRange = (Range<int>) tuple; // explicit from Tuple to Range
+
+```
+
 ##### Other functions
 ###### Includes(T value), Includes(Range<T> range) and IncludesAll(IEnumerable<T> values)
 Includes will return true if the given value is a part of the Range, otherwise false.
