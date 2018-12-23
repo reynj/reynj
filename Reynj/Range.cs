@@ -16,13 +16,35 @@ namespace Reynj
         private readonly T _end;
 
         /// <summary>
+        ///  Represents the empty Range
+        /// </summary>
+        public static readonly Range<T> Empty;
+
+        static Range()
+        {
+            Empty = new Range<T>();
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Range{T}"/> with start and end equal to their default value
+        /// </summary>
+        /// <remarks>Only used to create an Empty range</remarks>
+        private Range()
+        {
+        }
+
+        /// <summary>
         /// Creates a new <see cref="Range{T}"/> for a given start and end
         /// </summary>
         /// <param name="start">Start of the Range</param>
         /// <param name="end">End of the Range</param>
+        /// <exception cref="ArgumentNullException">If <paramref name="start"/> is null.</exception>
         /// <exception cref="ArgumentException">If <paramref name="start"/> is greater than <paramref name="end"/>.</exception>
         public Range(T start, T end)
         {
+            if (start == null) 
+                throw new ArgumentNullException(nameof(start));
+
             if (start.CompareTo(end) > 0)
                 throw new ArgumentException($"{nameof(end)} must be greater than or equal to {nameof(start)}",
                     nameof(end));
@@ -107,6 +129,49 @@ namespace Reynj
         public bool IsEmpty()
         {
             return _start.Equals(_end);
+        }
+
+        /// <summary>
+        /// Returns true if this <see cref="Range{T}"/> overlaps with the specified <see cref="Range{T}"/>
+        /// </summary>
+        /// <param name="range"><see cref="Range{T}"/> to check overlapping against</param>
+        /// <returns>true if the specified <see cref="Range{T}"/> is overlapping with the specified <see cref="Range{T}"/>; otherwise, false.</returns>
+        public bool Overlaps(Range<T> range) {
+            return range._start.CompareTo(_end) < 0  && range._end.CompareTo(_start) > 0;
+        }
+
+        /// <summary>
+        /// Returns true if this <see cref="Range{T}"/> touches the specified <see cref="Range{T}"/>
+        /// </summary>
+        /// <param name="range"><see cref="Range{T}"/> to check touching against</param>
+        /// <returns>true if the specified <see cref="Range{T}"/> touches with the specified <see cref="Range{T}"/>; otherwise, false.</returns>
+        public bool Touches(Range<T> range) {
+            return range._start.CompareTo(_end) == 0  || range._end.CompareTo(_start) == 0;
+        }
+
+        /// <summary>
+        /// Returns the gap between this <see cref="Range{T}"/> and a specified <see cref="Range{T}"/>
+        /// </summary>
+        /// <param name="range"><see cref="Range{T}"/> to compare with</param>
+        /// <returns>A <see cref="Range{T}"/> that represents the gap between the two, or <see cref="Empty"/> if there is no gap</returns>
+        public Range<T> Gap(Range<T> range)
+        {
+            if (Overlaps(range) || Touches(range))
+                return Empty;
+
+            Range<T> lowerRange, higherRange;
+            if (CompareTo(range) < 0)
+            {
+                lowerRange = this;
+                higherRange = range;
+            }
+            else
+            {
+                lowerRange = range;
+                higherRange = this;
+            }
+
+            return new Range<T>(lowerRange._end, higherRange._start);
         }
 
         /// <summary>

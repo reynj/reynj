@@ -1,21 +1,46 @@
 # Reynj
 
 [![Build Status](https://dev.azure.com/reynj/reynj/_apis/build/status/reynj.reynj?branchName=master)](https://dev.azure.com/reynj/reynj/_build/latest?definitionId=1?branchName=master)
-[![NuGet Badge](https://buildstats.info/nuget/Reynj?includePreReleases=true)](https://www.nuget.org/packages/Reynj)
+[![NuGet Badge](https://buildstats.info/nuget/Reynj?includePreReleases=false)](https://www.nuget.org/packages/Reynj)
 
 ### What is Reynj?
 
-.Net Library that aids in comparison and handling values ranges or time bounded periods.
+.Net Library that aids in comparison and handling value ranges or time bounded periods.
 
 This implementation is based on the [Range](https://martinfowler.com/eaaDev/Range.html "Martin Fowler Range") class as described by Martin Fowler.
 
-The class itself is easily copied around and does not need a library to pull via NuGet into your project. But my aim is to also add other features on top of the Range class, ideas are:
+The aim of this library is to provide a base Range class with all possible methods that can be performed on a Range, but also a RangeCollection that can be used to handle and compare list of Ranges.
+Below is my list of features I want to implement, feel free to open an issue if something is missing on my list.
 
-* Specific implemenations like DateRange, TimeRange, NumericRange
-* Functions like Union, Intersect, CompareTo, ...
-* Collections of Ranges with ways to remove doubles and overlapping ranges, sorting, combining, reversing, ...
-* JsonConvertor so that ranges can be used in WebApis
-* Entity Framework and NHibernate support
+- [ ] Range
+  - [x] Implements
+    - [x] IEquatable
+	- [x] IComparable
+  - [x] Operators
+     - [x] Equals
+	 - [x] CompareTo
+	 - [x] Convert to/from Tuple
+  - [ ] Methods
+    - [x] Includes & IncludesAll
+	- [x] Overlaps
+	- [x] Touches
+    - [x] Gap
+    - [ ] Union
+    - [ ] Intersect
+	- [ ] Enumerate
+  - [ ] Specific implemenations 
+    - [ ] DateRange
+    - [ ] TimeRange
+    - [ ] NumericRange
+- [ ] RangeCollection
+  - [ ] Methods
+    - [ ] Sort
+    - [ ] Combine
+	- [ ] Reverse
+	- [ ] Combine
+- [ ] Serialize/Deserialize
+  - [ ] JsonConvertor
+  - [ ] Entity Framework/NHibernate support
 
 ### Where can I get it?
 
@@ -108,7 +133,7 @@ var otherRange = (Range<int>) tuple; // explicit from Tuple to Range
 
 ```
 
-##### Other functions
+##### Methods
 ###### Includes(T value), Includes(Range<T> range) and IncludesAll(IEnumerable<T> values)
 Includes will return true if the given value is a part of the Range, otherwise false.
 IncludesAll will return true if all of the given values are part of the Range, otherwise false.
@@ -127,6 +152,57 @@ var res2 = range1.Includes(new Range<int>(20, 30)); // returns false
 // IncludesAll
 var res3 = range1.IncludesAll(0, 1, 2, 3, 4, 5, 6, 7, 8, 9); // returns true
 var res4 = range1.IncludesAll(0, 1, 2, 3, 4, 20, 6, 7, 8, 9); // returns false
+```
+
+###### Overlaps(Range<T> range)
+Overlaps will return true if two Ranges overlap. The following example are two overlapping ranges.
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBPdmVybGFwc1xuICAgIFxuICAgIFJhbmdlWzAsMTBdICAgICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDEwaFxuICAgIFJhbmdlWzUsMTVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wNSwgMTBoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
+![Overlaps](https://mermaid.now.sh//?q=gantt%0A%20%20%20%20dateFormat%20%20YYYY-MM-DD.HH%0A%20%20%20%20axisFormat%20%25-H%0A%20%20%20%20title%20Overlaps%0A%20%20%20%20%0A%20%20%20%20Range%5B0%2C10%5D%20%20%20%20%20%20%20%20%20%20%20%3A%202018-01-01.00%2C%2010h%0A%20%20%20%20Range%5B5%2C15%5D%20%20%20%20%20%20%20%20%20%20%20%3A%20active%2C%202018-01-01.05%2C%2010h)
+
+```c#
+var range1 = new Range<int>(0, 10);
+var range2 = new Range<int>(5, 15);
+var range3 = new Range<int>(15, 25);
+
+// Overlaps
+var res1 = range1.Overlaps(range2); // returns true
+var res2 = range2.Overlaps(range1); // returns true
+
+var res3 = range1.Overlaps(range3); // returns false
+```
+
+###### Touches(Range<T> range)
+Touches will return true if two Ranges touch each other. The following example are two touching ranges.
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBUb3VjaGVzXG4gICAgXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzUsMTBdICAgICAgIDogMjAxOC0wMS0wMS4wNSwgNWgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
+![Overlaps](https://mermaid.now.sh//?q=gantt%0A%20%20%20%20dateFormat%20%20YYYY-MM-DD.HH%0A%20%20%20%20axisFormat%20%25-H%0A%20%20%20%20title%20Touches%0A%20%20%20%20%0A%20%20%20%20Range%5B0%2C5%5D%20%20%20%20%20%20%20%20%20%20%20%3A%202018-01-01.00%2C%205h%0A%20%20%20%20Range%5B5%2C10%5D%20%20%20%20%20%20%20%3A%202018-01-01.05%2C%205h)
+
+```c#
+var range1 = new Range<int>(0, 10);
+var range2 = new Range<int>(10, 20);
+var range3 = new Range<int>(11, 20);
+
+// Overlaps
+var res1 = range1.Touches(range2); // returns true
+var res2 = range2.Touches(range1); // returns true
+
+var res3 = range1.Touches(range3); // returns false
+```
+
+###### Gap(Range<T> range)
+Gap return a new Range that represents the gap between two Ranges
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBHYXBcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuXG4gICAgc2VjdGlvbiBHYXBcbiAgICBSYW5nZVs1LDEwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDUsIDVoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
+![Gap](https://mermaid.now.sh//?q=https%3A%2F%2Fmermaidjs.github.io%2Fmermaid-live-editor%2F%23%2Fedit%2FeyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBHYXBcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuXG4gICAgc2VjdGlvbiBHYXBcbiAgICBSYW5nZVs1LDEwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDUsIDVoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
+
+```c#
+var range1 = new Range<int>(0, 10);
+var range2 = new Range<int>(15, 20);
+
+// Gap
+var gap1 = range1.Gap(range2); // returns new Range<int>(5, 10)
+var gap2 = range2.Gap(range1); // returns new Range<int>(5, 10)
 ```
 
 ###### IsEmpty()

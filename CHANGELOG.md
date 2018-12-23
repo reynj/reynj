@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The IncludesAll(params T value) method was added to Range<T>, it returns true if all of the given values are a part of the Range
 - The IsEmpty method was added to Range<T>, it returns true if the start and end of the Range are equal
 - Support for conversion to and from a Tuple/ValueTuple has been added
+- Static property Empty that is a representation of an Empty Range
+- The Overlaps to determine if two Ranges overlap
+- The Touches to determine if two Ranges touch each other
+- The Gap method that returns the difference or gap between two Ranges as a new Range<T>
 
 ## [0.1.3] - 2018-12-18
 ### Changed
