@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.4] - 2018-12-23
 ### Added
 - The Includes(T value) method was added to Range<T>, it returns true if the given value is a part of the Range
 - The Includes(Range<T> range) method was added to Range<T>, it returns true if the given Range is completely a part of the Range
@@ -33,5 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - This CHANGELOG file to hopefully serve as an evolving example of a
   standardized open source project CHANGELOG.
 
-[Unreleased]: https://github.com/reynj/reynj/compare/0.1.3...HEAD
+[Unreleased]: https://github.com/reynj/reynj/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/reynj/reynj/compare/0.1.2...v0.1.4
 [0.1.3]: https://github.com/reynj/reynj/compare/0.1.2...0.1.3
