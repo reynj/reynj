@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.5] - 2018-12-27
 ### Added
 - A static IsNullOrEmpty method, to check if a Range<T> is null or Range<T>.Empty
 - The Merge method, to create a single Range<T> from two overlapping or touching Ranges, including the | operator
@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - This CHANGELOG file to hopefully serve as an evolving example of a
   standardized open source project CHANGELOG.
 
-[Unreleased]: https://github.com/reynj/reynj/compare/v0.1.4...HEAD
+[Unreleased]: https://github.com/reynj/reynj/compare/v0.1.5...HEAD
+[0.1.5]: https://github.com/reynj/reynj/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/reynj/reynj/compare/v0.1.2...v0.1.4
 [0.1.3]: https://github.com/reynj/reynj/compare/v0.1.2...v0.1.3
