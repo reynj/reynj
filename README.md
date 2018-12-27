@@ -30,6 +30,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
     - [x] Merge (Union)
 	- [x] Split
     - [x] Intersection
+	- [ ] Exclusive
 	- [ ] Enumerate
 	- [ ] Expand
   - [ ] Specific implemenations 
@@ -62,7 +63,7 @@ PM> Install-Package Reynj
 A Range is best visualized as a bar. It has a start and en end and contains everything between those two. Below is a visualization of Range of integers that start at 0 and end at 10. All whole numbers between 0 and 10 are included in the Range, except 10.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSYW5nZTxpbnQ-XG4gICAgXG4gICAgUmFuZ2VbMCwxMF0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgMTBoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Range<int>](https://mermaid.now.sh//?q=gantt%0A%20%20%20%20dateFormat%20%20YYYY-MM-DD.HH%0A%20%20%20%20axisFormat%20%25-H%0A%20%20%20%20title%20Range%3Cint%3E%0A%20%20%20%20%0A%20%20%20%20Range%5B0%2C10%5D%20%20%20%20%20%20%20%20%20%20%20%3A%202018-01-01.00%2C%2010h)
+![Range<int>](./images/range.svg)
 
 To create this Range in code, you can do the following:
 
@@ -179,7 +180,7 @@ var res4 = range1.IncludesAll(0, 1, 2, 3, 4, 20, 6, 7, 8, 9); // returns false
 Overlaps will return true if two Ranges overlap. The following example are two overlapping ranges.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBPdmVybGFwc1xuICAgIFxuICAgIFJhbmdlWzAsMTBdICAgICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDEwaFxuICAgIFJhbmdlWzUsMTVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wNSwgMTBoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Overlaps](https://mermaid.now.sh//?q=gantt%0A%20%20%20%20dateFormat%20%20YYYY-MM-DD.HH%0A%20%20%20%20axisFormat%20%25-H%0A%20%20%20%20title%20Overlaps%0A%20%20%20%20%0A%20%20%20%20Range%5B0%2C10%5D%20%20%20%20%20%20%20%20%20%20%20%3A%202018-01-01.00%2C%2010h%0A%20%20%20%20Range%5B5%2C15%5D%20%20%20%20%20%20%20%20%20%20%20%3A%20active%2C%202018-01-01.05%2C%2010h)
+![Overlaps](./images/overlaps.svg)
 
 ```c#
 var range1 = new Range<int>(0, 10);
@@ -197,7 +198,7 @@ var res3 = range1.Overlaps(range3); // returns false
 Touches will return true if two Ranges touch each other. The following example are two touching ranges.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBUb3VjaGVzXG4gICAgXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzUsMTBdICAgICAgIDogMjAxOC0wMS0wMS4wNSwgNWgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
-![Overlaps](https://mermaid.now.sh//?q=gantt%0A%20%20%20%20dateFormat%20%20YYYY-MM-DD.HH%0A%20%20%20%20axisFormat%20%25-H%0A%20%20%20%20title%20Touches%0A%20%20%20%20%0A%20%20%20%20Range%5B0%2C5%5D%20%20%20%20%20%20%20%20%20%20%20%3A%202018-01-01.00%2C%205h%0A%20%20%20%20Range%5B5%2C10%5D%20%20%20%20%20%20%20%3A%202018-01-01.05%2C%205h)
+![Touches](./images/overlaps.svg)
 
 ```c#
 var range1 = new Range<int>(0, 10);
@@ -215,7 +216,7 @@ var res3 = range1.Touches(range3); // returns false
 Gap returns a new Range that represents the gap between two Ranges.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBHYXBcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuXG4gICAgc2VjdGlvbiBHYXBcbiAgICBSYW5nZVs1LDEwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDUsIDVoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Gap](https://mermaid.now.sh//?q=https%3A%2F%2Fmermaidjs.github.io%2Fmermaid-live-editor%2F%23%2Fedit%2FeyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBHYXBcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuXG4gICAgc2VjdGlvbiBHYXBcbiAgICBSYW5nZVs1LDEwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDUsIDVoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
+![Gap](./images/gap.svg)
 
 ```c#
 var range1 = new Range<int>(0, 10);
@@ -231,7 +232,7 @@ Merge returns a new Range that represents the combined/merged Range, a [Logical 
 An exception is thrown when the ranges doe not overlap or touch each other.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBNZXJnZVxuICAgIFxuICAgIHNlY3Rpb24gUmFuZ2VzXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzUsMjBdICAgICAgICAgOiAyMDE4LTAxLTAxLjA1LCAxNWhcblxuICAgIHNlY3Rpb24gTWVyZ2VcbiAgICBSYW5nZVswLDIwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDAsIDIwaCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19)
-![Merge](https://mermaid.now.sh//?width=600&height=400&q=gantt%0A%20%20%20%20dateFormat%20%20YYYY-MM-DD.HH%0A%20%20%20%20axisFormat%20%25-H%0A%20%20%20%20title%20Merge%0A%20%20%20%20%0A%20%20%20%20section%20Ranges%0A%20%20%20%20Range%5B0%2C5%5D%20%20%20%20%20%20%20%20%20%20%20%3A%202018-01-01.00%2C%205h%0A%20%20%20%20Range%5B5%2C20%5D%20%20%20%20%20%20%20%20%20%3A%202018-01-01.05%2C%2015h%0A%0A%20%20%20%20section%20Merge%0A%20%20%20%20Range%5B0%2C20%5D%20%20%20%20%20%20%20%20%20%20%20%3A%20active%2C%202018-01-01.00%2C%2020h)
+![Merge](./images/merge.svg)
 
 ```c#
 var range1 = new Range<int>(0, 10);
@@ -247,7 +248,7 @@ Split returns a Tuple of two Ranges that have been split on the given value.
 An exception is thrown when the value is not included in the Range.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBTcGxpdFxuICAgIFxuICAgIHNlY3Rpb24gUmFuZ2VcbiAgICBSYW5nZVswLDEwXSAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCAxMGhcbiAgICBcblxuICAgIHNlY3Rpb24gU3BsaXRcbiAgICBSYW5nZVswLDVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVs1LDEwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDUsIDVoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Merge](https://mermaid.now.sh//?width=600&height=400&q=gantt%0A%20%20%20%20dateFormat%20%20YYYY-MM-DD.HH%0A%20%20%20%20axisFormat%20%25-H%0A%20%20%20%20title%20Split%0A%20%20%20%20%0A%20%20%20%20section%20Range%0A%20%20%20%20Range%5B0%2C10%5D%20%20%20%20%20%20%20%20%20%20%20%3A%202018-01-01.00%2C%2010h%0A%20%20%20%20%0A%0A%20%20%20%20section%20Split%0A%20%20%20%20Range%5B0%2C5%5D%20%20%20%20%20%20%20%20%20%20%20%3A%20active%2C%202018-01-01.00%2C%205h%0A%20%20%20%20Range%5B5%2C10%5D%20%20%20%20%20%20%20%20%20%20%20%3A%20active%2C%202018-01-01.05%2C%205h)
+![Split](./images/merge.svg)
 
 ```c#
 var range = new Range<int>(0, 10);
@@ -261,7 +262,7 @@ Intersection returns a new Range that represents the the intersection be, a [Log
 An exception is thrown when the ranges doe not overlap each other.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJbnRlcnNlY3Rpb25cbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsMTBdICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCAxMGhcbiAgICBSYW5nZVs1LDIwXSAgICAgICAgIDogMjAxOC0wMS0wMS4wNSwgMTVoXG5cbiAgICBzZWN0aW9uIEludGVyc2VjdGlvblxuICAgIFJhbmdlWzUsMTBdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wNSwgNWgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
-![Intersection](https://mermaid.now.sh//?width=600&height=400&q=gantt%0A%20%20%20%20dateFormat%20%20YYYY-MM-DD.HH%0A%20%20%20%20axisFormat%20%25-H%0A%20%20%20%20title%20Intersection%0A%20%20%20%20%0A%20%20%20%20section%20Ranges%0A%20%20%20%20Range%5B0%2C10%5D%20%20%20%20%20%20%20%20%20%3A%202018-01-01.00%2C%2010h%0A%20%20%20%20Range%5B5%2C20%5D%20%20%20%20%20%20%20%20%20%3A%202018-01-01.05%2C%2015h%0A%0A%20%20%20%20section%20Intersection%0A%20%20%20%20Range%5B5%2C10%5D%20%20%20%20%20%20%20%20%20%20%20%3A%20active%2C%202018-01-01.05%2C%205h)
+![Intersection](./images/intersection.svg)
 
 ```c#
 var range1 = new Range<int>(0, 10);
