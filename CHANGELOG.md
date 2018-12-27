@@ -4,11 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- The Exclusive method, that returns a Tuple of two Ranges that represent the parts they do not have in common, including the ^ operator
+
 ## [0.1.5] - 2018-12-27
 ### Added
 - A static IsNullOrEmpty method, to check if a Range<T> is null or Range<T>.Empty
 - The Merge method, to create a single Range<T> from two overlapping or touching Ranges, including the | operator
-- The Split method, to split the Range<T> at a given value
+- The Split method, to split the Range<T> at a given value into a Tuple of two Ranges
 - The Intersection method, that returns the Range<T> that is part of both Ranges, including the & operator
 
 ### Changed

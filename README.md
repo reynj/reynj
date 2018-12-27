@@ -198,7 +198,7 @@ var res3 = range1.Overlaps(range3); // returns false
 Touches will return true if two Ranges touch each other. The following example are two touching ranges.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBUb3VjaGVzXG4gICAgXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzUsMTBdICAgICAgIDogMjAxOC0wMS0wMS4wNSwgNWgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
-![Touches](./images/overlaps.svg)
+![Touches](./images/touches.svg)
 
 ```c#
 var range1 = new Range<int>(0, 10);
@@ -229,7 +229,7 @@ var gap2 = range2.Gap(range1); // returns new Range<int>(5, 10)
 
 ###### Merge(Range<T> range)
 Merge returns a new Range that represents the combined/merged Range, a [Logical disjunction](https://en.wikipedia.org/wiki/Logical_disjunction).
-An exception is thrown when the ranges doe not overlap or touch each other.
+An exception is thrown when the ranges do not overlap or touch each other.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBNZXJnZVxuICAgIFxuICAgIHNlY3Rpb24gUmFuZ2VzXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzUsMjBdICAgICAgICAgOiAyMDE4LTAxLTAxLjA1LCAxNWhcblxuICAgIHNlY3Rpb24gTWVyZ2VcbiAgICBSYW5nZVswLDIwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDAsIDIwaCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19)
 ![Merge](./images/merge.svg)
@@ -248,7 +248,7 @@ Split returns a Tuple of two Ranges that have been split on the given value.
 An exception is thrown when the value is not included in the Range.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBTcGxpdFxuICAgIFxuICAgIHNlY3Rpb24gUmFuZ2VcbiAgICBSYW5nZVswLDEwXSAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCAxMGhcbiAgICBcblxuICAgIHNlY3Rpb24gU3BsaXRcbiAgICBSYW5nZVswLDVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVs1LDEwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDUsIDVoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Split](./images/merge.svg)
+![Split](./images/split.svg)
 
 ```c#
 var range = new Range<int>(0, 10);
@@ -259,7 +259,7 @@ var split = range.Split(5); // returns (new Range<int>(0, 5), new Range<int>(5, 
 
 ###### Intersection(Range<T> range)
 Intersection returns a new Range that represents the the intersection be, a [Logical conjunction](https://en.wikipedia.org/wiki/Logical_conjunction).
-An exception is thrown when the ranges doe not overlap each other.
+An exception is thrown when the ranges do not overlap each other.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJbnRlcnNlY3Rpb25cbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsMTBdICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCAxMGhcbiAgICBSYW5nZVs1LDIwXSAgICAgICAgIDogMjAxOC0wMS0wMS4wNSwgMTVoXG5cbiAgICBzZWN0aW9uIEludGVyc2VjdGlvblxuICAgIFJhbmdlWzUsMTBdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wNSwgNWgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
 ![Intersection](./images/intersection.svg)
@@ -271,6 +271,21 @@ var range2 = new Range<int>(5, 20);
 // Intersection
 var intersection1 = range1.Intersection(range2); // returns new Range<int>(5, 10)
 var intersection2 = range1 & range2; // returns new Range<int>(5, 10)
+```
+
+###### Exclusive(Range<T> range)
+Exclusive returns a tuple of Ranges that that represent the parts they do not have in common, a [Exclusive or](https://en.wikipedia.org/wiki/Exclusive_or).
+An exception is thrown when the ranges are null or Empty.
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBFeGNsdXNpdmVcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsMTBdICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCAxMGhcbiAgICBSYW5nZVs1LDIwXSAgICAgICAgIDogMjAxOC0wMS0wMS4wNSwgMTVoXG5cbiAgICBzZWN0aW9uIEV4Y2x1c2l2ZVxuICAgIFJhbmdlWzAsIDVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwgMjBdICAgICAgIDogYWN0aXZlLCAyMDE4LTAxLTAxLjEwLCAxMGgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
+![Intersection](./images/exclusive.svg)
+
+```c#
+var range1 = new Range<int>(0, 10);
+var range2 = new Range<int>(5, 20);
+
+// Intersection
+var exclusive = range1.Exlusive(range2); // returns (new Range<int>(0, 5), new Range<int>(10, 20))
 ```
 
 ###### IsEmpty()
