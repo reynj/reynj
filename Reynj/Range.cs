@@ -25,6 +25,14 @@ namespace Reynj
             Empty = new Range<T>();
         }
 
+        /// <summary>Indicates whether the specified <see cref="Range{T}"/> is null or an <see cref="Range{T}.Empty"></see> <see cref="Range{T}"/>.</summary>
+        /// <param name="range">The <see cref="Range{T}"/> to test</param>
+        /// <returns>true if the <paramref name="range">range</paramref> parameter is null or an empty <see cref="Range{T}"/>; otherwise, false.</returns>
+        public static bool IsNullOrEmpty(Range<T> range)
+        {
+            return range == null || range == Empty;
+        }
+
         /// <summary>
         /// Creates a new <see cref="Range{T}"/> with start and end equal to their default value
         /// </summary>
@@ -92,10 +100,10 @@ namespace Reynj
         /// </summary>
         /// <param name="range"><see cref="Range{T}"/> the check against the current <see cref="Range{T}"/></param>
         /// <returns>true if the specified <see cref="Range{T}"/> is within the <see cref="Range{T}"/>; otherwise, false.</returns>
-        /// <remarks>When specified <see cref="Range{T}"/> is null, false is returned.</remarks>
+        /// <remarks>When specified <see cref="Range{T}"/> is null or Empty, false is returned.</remarks>
         public bool Includes(Range<T> range)
         {
-            if (range == null)
+            if (IsNullOrEmpty(this) || IsNullOrEmpty(range))
                 return false;
 
             return Includes(range.Start) && (Includes(range._end) || _end.Equals(range._end));
@@ -136,16 +144,24 @@ namespace Reynj
         /// </summary>
         /// <param name="range"><see cref="Range{T}"/> to check overlapping against</param>
         /// <returns>true if the specified <see cref="Range{T}"/> is overlapping with the specified <see cref="Range{T}"/>; otherwise, false.</returns>
+        /// <remarks>When specified <see cref="Range{T}"/> is null or Empty, false is returned.</remarks>
         public bool Overlaps(Range<T> range) {
+            if (IsNullOrEmpty(this) || IsNullOrEmpty(range))
+                return false;
+
             return range._start.CompareTo(_end) < 0  && range._end.CompareTo(_start) > 0;
         }
 
         /// <summary>
-        /// Returns true if this <see cref="Range{T}"/> touches the specified <see cref="Range{T}"/>
+        /// Returns true if this <see cref="Range{T}"/> touches or abuts the specified <see cref="Range{T}"/>
         /// </summary>
         /// <param name="range"><see cref="Range{T}"/> to check touching against</param>
         /// <returns>true if the specified <see cref="Range{T}"/> touches with the specified <see cref="Range{T}"/>; otherwise, false.</returns>
+        /// <remarks>When specified <see cref="Range{T}"/> is null or Empty, false is returned.</remarks>
         public bool Touches(Range<T> range) {
+            if (IsNullOrEmpty(this) || IsNullOrEmpty(range))
+                return false;
+
             return range._start.CompareTo(_end) == 0  || range._end.CompareTo(_start) == 0;
         }
 
@@ -156,7 +172,7 @@ namespace Reynj
         /// <returns>A <see cref="Range{T}"/> that represents the gap between the two, or <see cref="Empty"/> if there is no gap</returns>
         public Range<T> Gap(Range<T> range)
         {
-            if (Overlaps(range) || Touches(range))
+            if (IsNullOrEmpty(this) || IsNullOrEmpty(range) || Overlaps(range) || Touches(range))
                 return Empty;
 
             Range<T> lowerRange, higherRange;
@@ -175,6 +191,53 @@ namespace Reynj
         }
 
         /// <summary>
+        /// Merges two Ranges into a single <see cref="Range{T}"/>
+        /// Also called Union or a Logical disjunction (OR)
+        /// </summary>
+        /// <param name="range"><see cref="Range{T}"/> to merge with</param>
+        /// <returns>A <see cref="Range{T}"/> that represents the merged ranges</returns>
+        /// <exception cref="ArgumentException">If <paramref name="range"/> does not overlap or touches the current <see cref="Range{T}"/></exception>
+        public Range<T> Merge(Range<T> range)
+        {
+            if (!Overlaps(range) && !Touches(range))
+                throw new ArgumentException($"Merging {this} with {range} is not possible because they do not overlap nor touch each other", nameof(range));
+
+            var start = range._start.CompareTo(_start) < 0 ? range._start : _start;
+            var end = range._end.CompareTo(_end) > 0 ? range._end : _end;
+
+            return new Range<T>(start, end);
+        }
+
+        /// <summary>
+        /// Split the <see cref="Range{T}"/> in two Ranges on the given <paramref name="value"/>
+        /// </summary>
+        /// <param name="value">Value within the Range where the split should occur</param>
+        /// <returns>A ValueTuple containing both Ranges</returns>
+        /// <exception cref="ArgumentException">If <paramref name="value"/> is not included in the <see cref="Range{T}"/></exception>
+        public (Range<T>, Range<T>) Split(T value)
+        {
+            if (!Includes(value) && !_end.Equals(value))
+                throw new ArgumentException($"Splitting is not possible because the {value} is not included in {this}", nameof(value));
+
+            return (new Range<T>(_start, value), new Range<T>(value, _end));
+        }
+
+        /// <summary>
+        /// Returns the intersection between two ranges
+        /// Also called a Logical conjunction (AND)
+        /// </summary>
+        /// <param name="range"><see cref="Range{T}"/> to intersect with</param>
+        /// <returns>A <see cref="Range{T}"/> that represents the intersection between the ranges</returns>
+        /// <exception cref="ArgumentException">If <paramref name="range"/> does not overlap with the current <see cref="Range{T}"/></exception>
+        public Range<T> Intersection(Range<T> range)
+        {
+            if (!Overlaps(range))
+                throw new ArgumentException($"Intersecting {this} with {range} is not possible because they do not overlap each other", nameof(range));
+
+            return new Range<T>(_start.CompareTo(range._start) > 0  ? _start : range._start, _end.CompareTo(range._end) < 0 ? _end : range._end);
+        }
+
+        /// <summary>
         /// Determines whether the specified <see cref="Range{T}"/> is equal to the current <see cref="Range{T}"/>.
         /// </summary>
         /// <param name="other">The <see cref="Range{T}"/> to compare with the current object.</param>
@@ -183,21 +246,18 @@ namespace Reynj
         {
             // If parameter is null, return false.
             if (other is null)
-            {
                 return false;
-            }
 
             // Optimization for a common success case.
             if (ReferenceEquals(this, other))
-            {
                 return true;
-            }
 
             // If run-time types are not exactly the same, return false.
             if (GetType() != other.GetType())
-            {
                 return false;
-            }
+
+            if (IsEmpty() && other.IsEmpty())
+                return true;
 
             return _start.Equals(other._start) && _end.Equals(other._end);
         }
@@ -218,7 +278,12 @@ namespace Reynj
         public int CompareTo(Range<T> other)
         {
             // If other is not a valid object reference, this instance is greater.
-            if (other is null) return 1;
+            if (other is null)
+                return 1;
+
+            // Both are empty, then they are the same
+            if (IsEmpty() && other.IsEmpty())
+                return 0;
 
             // First compare the Start, if they are the same compare the End
             var result = _start.CompareTo(other._start);
@@ -345,7 +410,7 @@ namespace Reynj
         /// <inheritdoc />
         public override string ToString()
         {
-            return $"Range({_start}, {_end})";
+            return this != Empty ? $"Range({_start}, {_end})" : "Range.Empty";
         }
     }
 }

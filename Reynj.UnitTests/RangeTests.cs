@@ -41,6 +41,35 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        public void Empty_IsEqualToAnotherRangeThatIsEmpty_ButDoesNotHaveDefaultValues()
+        {
+            // Arrange
+            var empty = Range<int>.Empty;
+            var range = new Range<int>(10, 10);
+
+            // Act - Assert
+            empty.Should().Be(range);
+        }
+
+        [Theory]
+        [MemberData(nameof(IsNullOrEmptyRangeData))]
+        public void IsNullOrEmpty_ReturnsTheExpectedResult(Range<int> range, bool expectedResult)
+        {
+            // Act - Assert
+            Range<int>.IsNullOrEmpty(range).Should().Be(expectedResult);
+        }
+
+        public static IEnumerable<object[]> IsNullOrEmptyRangeData()
+        {
+            // True
+            yield return new object[] {new Range<int>(1, 99), false};
+
+            // False
+            yield return new object[] {Range<int>.Empty, true};
+            yield return new object[] {null, true};
+        }
+
+        [Fact]
         public void Ctor_Start_CannotBeNull()
         {
             // Arrange - Act
@@ -74,6 +103,39 @@ namespace Reynj.UnitTests
             range.Start.Should().Be(1);
             range.End.Should().Be(99);
         }
+
+        // TODO: Find a way to fix this
+        //[Fact]
+        //public void Ctor_StartEnd_WhenTheStartOrEndReferenceChangesTheyAreNotChangedInsideTheRange()
+        //{
+        //    // Arrange
+        //    var start = new MyComparable { Value = 1 };
+        //    var end = new MyComparable { Value = 2 };
+
+        //    var range = new Range<MyComparable>(start, end);
+
+        //    // Act
+        //    start.Value = 3;
+            
+        //    // - Assert
+        //    range.Start.Should().Be(new MyComparable { Value = 1 });
+        //    range.End.Should().Be(new MyComparable { Value = 2 });
+        //}
+
+        //private class MyComparable : IComparable, IComparable<MyComparable>
+        //{
+        //    public int Value { get; set; }
+
+        //    public int CompareTo(MyComparable other)
+        //    {
+        //        return Value.CompareTo(other.Value);
+        //    }
+
+        //    public int CompareTo(object obj)
+        //    {
+        //        return CompareTo(obj as MyComparable);
+        //    }
+        //}
 
         [Fact]
         public void Ctor_Tuple_Item1CannotBeNull()
@@ -178,6 +240,11 @@ namespace Reynj.UnitTests
             yield return new object[] {new Range<int>(1, 99), new Range<int>(-99, -1), false};
             yield return new object[] {new Range<int>(1, 99), new Range<int>(0, 50), false};
             yield return new object[] {new Range<int>(1, 99), new Range<int>(50, 100), false};
+            yield return new object[] {new Range<int>(1, 99), Range<int>.Empty, false};
+            yield return new object[] {new Range<int>(0, 99), Range<int>.Empty, false};
+            yield return new object[] {new Range<int>(-10, 10), Range<int>.Empty, false};
+            yield return new object[] {new Range<int>(0, 99), null, false};
+            yield return new object[] {Range<int>.Empty, new Range<int>(0, 99), false};
         }
 
         [Fact]
@@ -222,13 +289,24 @@ namespace Reynj.UnitTests
             range.IsEmpty().Should().BeTrue();
         }
 
+        [Fact]
+        public void IsEmpty_ReturnsTrue_WhenRangeEmpty()
+        {
+            // Arrange 
+            var range = Range<int>.Empty;
+
+            // Act - Assert
+            range.IsEmpty().Should().BeTrue();
+        }
+
         [Theory]
         [MemberData(nameof(OverlapsRangeData))]
         public void Overlaps_ForRange_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
         {
             // Act - Assert
             range.Overlaps(otherRange).Should().Be(expectedResult);
-            otherRange.Overlaps(range).Should().Be(expectedResult);
+            if (otherRange != null)
+                otherRange.Overlaps(range).Should().Be(expectedResult);
         }
 
         public static IEnumerable<object[]> OverlapsRangeData()
@@ -245,6 +323,9 @@ namespace Reynj.UnitTests
             yield return new object[] {new Range<int>(0, 10), new Range<int>(10, 20), false};
             yield return new object[] {new Range<int>(0, 10), new Range<int>(15, 25), false};
             yield return new object[] {new Range<int>(0, 10), new Range<int>(-10, 0), false};
+            yield return new object[] {new Range<int>(0, 10), Range<int>.Empty, false};
+            yield return new object[] {new Range<int>(-10, 10), Range<int>.Empty, false};
+            yield return new object[] {new Range<int>(0, 10), null, false};
         }
 
         [Theory]
@@ -253,7 +334,8 @@ namespace Reynj.UnitTests
         {
             // Act - Assert
             range.Touches(otherRange).Should().Be(expectedResult);
-            otherRange.Touches(range).Should().Be(expectedResult);
+            if (otherRange != null)
+                otherRange.Touches(range).Should().Be(expectedResult);
         }
 
         public static IEnumerable<object[]> TouchesRangeData()
@@ -269,6 +351,10 @@ namespace Reynj.UnitTests
             // Do not touch because they have a gap
             yield return new object[] {new Range<int>(0, 10), new Range<int>(15, 25), false};
 
+            // Do not touch because of null or Empty
+            yield return new object[] {new Range<int>(0, 10), Range<int>.Empty, false};
+            yield return new object[] {new Range<int>(0, 10), null, false};
+
             // Touch
             yield return new object[] {new Range<int>(0, 10), new Range<int>(10, 20), true};
             yield return new object[] {new Range<int>(10, 20), new Range<int>(0, 10), true};
@@ -280,7 +366,8 @@ namespace Reynj.UnitTests
         {
             // Act - Assert
             range.Gap(otherRange).Should().Be(expectedGap);
-            otherRange.Gap(range).Should().Be(expectedGap);
+            if (otherRange != null)
+                otherRange.Gap(range).Should().Be(expectedGap);
         }
 
         public static IEnumerable<object[]> GapRangeData()
@@ -294,10 +381,169 @@ namespace Reynj.UnitTests
             // Both touch each other, no gap
             yield return new object[] { new Range<int>(0, 10), new Range<int>(10, 20), Range<int>.Empty };
 
+            // Null or Empty
+            yield return new object[] {new Range<int>(0, 10), Range<int>.Empty, Range<int>.Empty};
+            yield return new object[] {new Range<int>(10, 20), Range<int>.Empty, Range<int>.Empty};
+            yield return new object[] {new Range<int>(0, 10), null, Range<int>.Empty};
+
             // Gap
             yield return new object[] {new Range<int>(0, 10), new Range<int>(20, 30), new Range<int>(10, 20)};
         }
 
+        [Fact]
+        public void Merge_MustOverlapOrTouch()
+        {
+            // Arrange
+            var range = new Range<int>(0, 10);
+            var otherRange = new Range<int>(15, 20);
+            
+            // Act
+            Action act = () => range.Merge(otherRange);
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+                .And.Message.Should().StartWith("Merging Range(0, 10) with Range(15, 20) is not possible because they do not overlap nor touch each other");
+        }
+
+        [Fact]
+        public void Merge_WithEmpty_IsNotPossible()
+        {
+            // Arrange
+            var range = new Range<int>(0, 10);
+            var otherRange = Range<int>.Empty;
+            
+            // Act
+            Action act1 = () => range.Merge(otherRange);
+            Action act2 = () => otherRange.Merge(range);
+
+            // Assert
+            act1.Should().Throw<ArgumentException>()
+                .And.Message.Should().StartWith("Merging Range(0, 10) with Range.Empty is not possible because they do not overlap nor touch each other");
+            act2.Should().Throw<ArgumentException>()
+                .And.Message.Should().StartWith("Merging Range.Empty with Range(0, 10) is not possible because they do not overlap nor touch each other");
+        }
+
+        [Theory]
+        [MemberData(nameof(MergeRangeData))]
+        public void Merge_ReturnsARange_ThatHasTheLowestStartAndHighestEndOfBothRanges(Range<int> range, Range<int> otherRange, Range<int> expectedMerge)
+        {
+            // Act - Assert
+            range.Merge(otherRange).Should().Be(expectedMerge);
+            otherRange.Merge(range).Should().Be(expectedMerge);
+        }
+
+        public static IEnumerable<object[]> MergeRangeData()
+        {
+            // Both are the same, the merged is the same
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(0, 10), new Range<int>(0, 10) };
+
+            // Both overlap
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(5, 15), new Range<int>(0, 15) };
+
+            // Both touch each other
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(10, 20), new Range<int>(0, 20) };
+        }
+
+        [Fact]
+        public void Split_CannotBePerformedOnAnEmptyRange()
+        {
+            // Arrange
+            var range = Range<int>.Empty;
+            
+            // Act
+            Action act = () => range.Split(20);
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+                .And.Message.Should().StartWith("Splitting is not possible because the 20 is not included in Range.Empty");
+        }
+
+        [Fact]
+        public void Split_ValueMustBeIncludedInTheRange()
+        {
+            // Arrange
+            var range = new Range<int>(0, 10);
+            
+            // Act
+            Action act = () => range.Split(20);
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+                .And.Message.Should().StartWith("Splitting is not possible because the 20 is not included in Range(0, 10)");
+        }
+
+        [Theory]
+        [MemberData(nameof(SplitRangeData))]
+        public void Split_ReturnsATupleOfRanges_ThatAreSplitOnTheValue(Range<int> range, int value, (Range<int>, Range<int>) expectedSplit)
+        {
+            // Act - Assert
+            range.Split(value).Should().Be(expectedSplit);
+        }
+
+        public static IEnumerable<object[]> SplitRangeData()
+        {
+            // Split in the middle
+            yield return new object[] { new Range<int>(0, 10), 5, (new Range<int>(0, 5), new Range<int>(5, 10)) };
+            yield return new object[] { new Range<int>(0, 10), 2, (new Range<int>(0, 2), new Range<int>(2, 10)) };
+            yield return new object[] { new Range<int>(0, 10), 7, (new Range<int>(0, 7), new Range<int>(7, 10)) };
+
+            // Split at the start
+            yield return new object[] { new Range<int>(0, 10), 0, (Range<int>.Empty, new Range<int>(0, 10)) };
+
+            // Split at the end
+            yield return new object[] { new Range<int>(0, 10), 10, (new Range<int>(0, 10), Range<int>.Empty) };
+        }
+
+        [Fact]
+        public void Intersection_MustOverlap()
+        {
+            // Arrange
+            var range = new Range<int>(0, 10);
+            var otherRange = new Range<int>(10, 20);
+            
+            // Act
+            Action act = () => range.Intersection(otherRange);
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+                .And.Message.Should().StartWith("Intersecting Range(0, 10) with Range(10, 20) is not possible because they do not overlap each other");
+        }
+
+        [Fact]
+        public void Intersection_WithEmpty_IsNotPossible()
+        {
+            // Arrange
+            var range = new Range<int>(0, 10);
+            var otherRange = Range<int>.Empty;
+            
+            // Act
+            Action act1 = () => range.Intersection(otherRange);
+            Action act2 = () => otherRange.Intersection(range);
+
+            // Assert
+            act1.Should().Throw<ArgumentException>()
+                .And.Message.Should().StartWith("Intersecting Range(0, 10) with Range.Empty is not possible because they do not overlap each other");
+            act2.Should().Throw<ArgumentException>()
+                .And.Message.Should().StartWith("Intersecting Range.Empty with Range(0, 10) is not possible because they do not overlap each other");
+        }
+
+        [Theory]
+        [MemberData(nameof(IntersectionRangeData))]
+        public void Intersection_ReturnsARange_ThatHasTheLowestStartAndHighestEndOfBothRanges(Range<int> range, Range<int> otherRange, Range<int> expectedIntersection)
+        {
+            // Act - Assert
+            range.Intersection(otherRange).Should().Be(expectedIntersection);
+            otherRange.Intersection(range).Should().Be(expectedIntersection);
+        }
+
+        public static IEnumerable<object[]> IntersectionRangeData()
+        {
+            // Both are the same, the intersection is the same
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(0, 10), new Range<int>(0, 10) };
+
+            // Both overlap
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(5, 15), new Range<int>(5, 10) };
+        }
 
         [Fact]
         public void Equals_IsFalse_WhenOtherIsNull()
@@ -354,6 +600,18 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        public void Equals_IsTrue_WhenBothAreEmpty()
+        {
+            // Arrange
+            var range = new Range<int>(99, 99);
+            var otherRange = new Range<int>(10, 10);
+
+            // Act - Assert
+            range.Equals(otherRange).Should().BeTrue();
+            range.Equals((object) otherRange).Should().BeTrue();
+        }
+
+        [Fact]
         public void CompareTo_IsOne_WhenOtherIsNull()
         {
             // Arrange
@@ -370,6 +628,18 @@ namespace Reynj.UnitTests
             // Arrange
             var range = new Range<int>(1, 99);
             var otherRange = new Range<int>(1, 99);
+
+            // Act - Assert
+            range.CompareTo(otherRange).Should().Be(0);
+            range.CompareTo((object) otherRange).Should().Be(0);
+        }
+
+        [Fact]
+        public void CompareTo_IsZero_WhenRangesAreBothEmpty()
+        {
+            // Arrange
+            var range = new Range<int>(10, 10);
+            var otherRange = Range<int>.Empty;
 
             // Act - Assert
             range.CompareTo(otherRange).Should().Be(0);
@@ -707,9 +977,11 @@ namespace Reynj.UnitTests
         {
             // Arrange
             var range = new Range<int>(1, 99);
+            var emptyRange = Range<int>.Empty;
 
             // Act - Assert
             range.ToString().Should().Be("Range(1, 99)");
+            emptyRange.ToString().Should().Be("Range.Empty");
         }
     }
 }

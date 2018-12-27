@@ -13,21 +13,25 @@ The aim of this library is to provide a base Range class with all possible metho
 Below is my list of features I want to implement, feel free to open an issue if something is missing on my list.
 
 - [ ] Range
-  - [x] Implements
+  - [ ] Implements
     - [x] IEquatable
 	- [x] IComparable
+	- [ ] ICloneable
   - [x] Operators
      - [x] Equals
 	 - [x] CompareTo
 	 - [x] Convert to/from Tuple
   - [ ] Methods
+    - [x] IsNullOrEmpty
     - [x] Includes & IncludesAll
 	- [x] Overlaps
 	- [x] Touches
     - [x] Gap
-    - [ ] Union
-    - [ ] Intersect
+    - [x] Merge (Union)
+	- [x] Split
+    - [x] Intersection
 	- [ ] Enumerate
+	- [ ] Expand
   - [ ] Specific implemenations 
     - [ ] DateRange
     - [ ] TimeRange
@@ -41,6 +45,9 @@ Below is my list of features I want to implement, feel free to open an issue if 
 - [ ] Serialize/Deserialize
   - [ ] JsonConvertor
   - [ ] Entity Framework/NHibernate support
+- [x] Other
+  - [x] Range<T>.Empty and methods like Merge, Overlaps, Touches, ...
+  - [x] IsEmpty method vs Range<T>.Empty
 
 ### Where can I get it?
 
@@ -76,6 +83,20 @@ var doubleRange = new Range<double>(0.0, 0.5);
 // Date and Time Ranges
 var dateRange = new Range<DateTime>(new DateTime(2018, 12, 18), new DateTime(2018, 12, 25));
 var doubleRange = new Range<TimeSpan>(TimeSpan.FromHours(0), TimeSpan.FromHours(6));
+```
+
+#### What is an Empty Range?
+Every Range where start and end are equal.
+
+```c#
+var range1 = new Range<int>(10, 10);
+var range2 = new Range<int>(0, 0);
+var range3 = Range<int>.Empty;
+
+// Empty
+var equals = range1.Equals(range2); // returns true
+var equals = range2.Equals(range3); // returns true
+var compare = range1.CompareTo(range3); // returns 0
 ```
 
 #### What can be done with a Range?
@@ -191,7 +212,7 @@ var res3 = range1.Touches(range3); // returns false
 ```
 
 ###### Gap(Range<T> range)
-Gap return a new Range that represents the gap between two Ranges
+Gap returns a new Range that represents the gap between two Ranges.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBHYXBcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuXG4gICAgc2VjdGlvbiBHYXBcbiAgICBSYW5nZVs1LDEwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDUsIDVoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
 ![Gap](https://mermaid.now.sh//?q=https%3A%2F%2Fmermaidjs.github.io%2Fmermaid-live-editor%2F%23%2Fedit%2FeyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBHYXBcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuXG4gICAgc2VjdGlvbiBHYXBcbiAgICBSYW5nZVs1LDEwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDUsIDVoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
@@ -203,6 +224,50 @@ var range2 = new Range<int>(15, 20);
 // Gap
 var gap1 = range1.Gap(range2); // returns new Range<int>(5, 10)
 var gap2 = range2.Gap(range1); // returns new Range<int>(5, 10)
+```
+
+###### Merge(Range<T> range)
+Merge returns a new Range that represents the combined/merged Range, a [Logical disjunction](https://en.wikipedia.org/wiki/Logical_disjunction).
+An exception is thrown when the ranges doe not overlap or touch each other.
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBNZXJnZVxuICAgIFxuICAgIHNlY3Rpb24gUmFuZ2VzXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzUsMjBdICAgICAgICAgOiAyMDE4LTAxLTAxLjA1LCAxNWhcblxuICAgIHNlY3Rpb24gTWVyZ2VcbiAgICBSYW5nZVswLDIwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDAsIDIwaCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19)
+![Merge](https://mermaid.now.sh//?width=600&height=400&q=gantt%0A%20%20%20%20dateFormat%20%20YYYY-MM-DD.HH%0A%20%20%20%20axisFormat%20%25-H%0A%20%20%20%20title%20Merge%0A%20%20%20%20%0A%20%20%20%20section%20Ranges%0A%20%20%20%20Range%5B0%2C5%5D%20%20%20%20%20%20%20%20%20%20%20%3A%202018-01-01.00%2C%205h%0A%20%20%20%20Range%5B5%2C20%5D%20%20%20%20%20%20%20%20%20%3A%202018-01-01.05%2C%2015h%0A%0A%20%20%20%20section%20Merge%0A%20%20%20%20Range%5B0%2C20%5D%20%20%20%20%20%20%20%20%20%20%20%3A%20active%2C%202018-01-01.00%2C%2020h)
+
+```c#
+var range1 = new Range<int>(0, 10);
+var range2 = new Range<int>(5, 20);
+
+// Merge
+var merge = range1.Merge(range2); // returns new Range<int>(0, 20)
+```
+
+###### Split(Range<T> range)
+Split returns a Tuple of two Ranges that have been split on the given value.
+An exception is thrown when the value is not included in the Range.
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBTcGxpdFxuICAgIFxuICAgIHNlY3Rpb24gUmFuZ2VcbiAgICBSYW5nZVswLDEwXSAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCAxMGhcbiAgICBcblxuICAgIHNlY3Rpb24gU3BsaXRcbiAgICBSYW5nZVswLDVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVs1LDEwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDUsIDVoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
+![Merge](https://mermaid.now.sh//?width=600&height=400&q=gantt%0A%20%20%20%20dateFormat%20%20YYYY-MM-DD.HH%0A%20%20%20%20axisFormat%20%25-H%0A%20%20%20%20title%20Split%0A%20%20%20%20%0A%20%20%20%20section%20Range%0A%20%20%20%20Range%5B0%2C10%5D%20%20%20%20%20%20%20%20%20%20%20%3A%202018-01-01.00%2C%2010h%0A%20%20%20%20%0A%0A%20%20%20%20section%20Split%0A%20%20%20%20Range%5B0%2C5%5D%20%20%20%20%20%20%20%20%20%20%20%3A%20active%2C%202018-01-01.00%2C%205h%0A%20%20%20%20Range%5B5%2C10%5D%20%20%20%20%20%20%20%20%20%20%20%3A%20active%2C%202018-01-01.05%2C%205h)
+
+```c#
+var range = new Range<int>(0, 10);
+
+// Split
+var split = range.Split(5); // returns (new Range<int>(0, 5), new Range<int>(5, 10))
+```
+
+###### Intersection(Range<T> range)
+Intersection returns a new Range that represents the the intersection be, a [Logical conjunction](https://en.wikipedia.org/wiki/Logical_conjunction).
+An exception is thrown when the ranges doe not overlap each other.
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJbnRlcnNlY3Rpb25cbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsMTBdICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCAxMGhcbiAgICBSYW5nZVs1LDIwXSAgICAgICAgIDogMjAxOC0wMS0wMS4wNSwgMTVoXG5cbiAgICBzZWN0aW9uIEludGVyc2VjdGlvblxuICAgIFJhbmdlWzUsMTBdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wNSwgNWgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
+![Intersection](https://mermaid.now.sh//?width=600&height=400&q=gantt%0A%20%20%20%20dateFormat%20%20YYYY-MM-DD.HH%0A%20%20%20%20axisFormat%20%25-H%0A%20%20%20%20title%20Intersection%0A%20%20%20%20%0A%20%20%20%20section%20Ranges%0A%20%20%20%20Range%5B0%2C10%5D%20%20%20%20%20%20%20%20%20%3A%202018-01-01.00%2C%2010h%0A%20%20%20%20Range%5B5%2C20%5D%20%20%20%20%20%20%20%20%20%3A%202018-01-01.05%2C%2015h%0A%0A%20%20%20%20section%20Intersection%0A%20%20%20%20Range%5B5%2C10%5D%20%20%20%20%20%20%20%20%20%20%20%3A%20active%2C%202018-01-01.05%2C%205h)
+
+```c#
+var range1 = new Range<int>(0, 10);
+var range2 = new Range<int>(5, 20);
+
+// Intersection
+var intersection = range1.Intersection(range2); // returns new Range<int>(5, 10)
 ```
 
 ###### IsEmpty()
