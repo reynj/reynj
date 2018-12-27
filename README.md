@@ -238,7 +238,8 @@ var range1 = new Range<int>(0, 10);
 var range2 = new Range<int>(5, 20);
 
 // Merge
-var merge = range1.Merge(range2); // returns new Range<int>(0, 20)
+var merge1 = range1.Merge(range2); // returns new Range<int>(0, 20)
+var merge2 = range1 | range2; // returns new Range<int>(0, 20)
 ```
 
 ###### Split(Range<T> range)
@@ -267,7 +268,8 @@ var range1 = new Range<int>(0, 10);
 var range2 = new Range<int>(5, 20);
 
 // Intersection
-var intersection = range1.Intersection(range2); // returns new Range<int>(5, 10)
+var intersection1 = range1.Intersection(range2); // returns new Range<int>(5, 10)
+var intersection2 = range1 & range2; // returns new Range<int>(5, 10)
 ```
 
 ###### IsEmpty()

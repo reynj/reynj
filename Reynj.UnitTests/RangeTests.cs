@@ -930,6 +930,43 @@ namespace Reynj.UnitTests
             yield return new object[] {new Range<int>(1, 99), new Range<int>(-99, -1), false};
         }
 
+        [Theory]
+        [MemberData(nameof(OrOperatorData))]
+        public void OrOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, Range<int> expectedOr)
+        {
+            // Act - Assert
+            (range | otherRange).Should().Be(expectedOr);
+        }
+
+        public static IEnumerable<object[]> OrOperatorData()
+        {
+            // Both are the same
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 99), new Range<int>(1, 99)};
+
+            // Both overlap
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(5, 15), new Range<int>(0, 15) };
+
+            // Both touch each other
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(10, 20), new Range<int>(0, 20) };
+        }
+
+        [Theory]
+        [MemberData(nameof(AndOperatorData))]
+        public void AndOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, Range<int> expectedAnd)
+        {
+            // Act - Assert
+            (range & otherRange).Should().Be(expectedAnd);
+        }
+
+        public static IEnumerable<object[]> AndOperatorData()
+        {
+            // Both are the same
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 99), new Range<int>(1, 99)};
+
+            // Both overlap
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(5, 15), new Range<int>(5, 10) };
+        }
+
         [Fact]
         public void ExplicitConversionOperator_FromTupleToRange()
         {

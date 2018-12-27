@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - A static IsNullOrEmpty method, to check if a Range<T> is null or Range<T>.Empty
-- The Merge method, to create a single Range<T> from two overlapping or touching Ranges
+- The Merge method, to create a single Range<T> from two overlapping or touching Ranges, including the | operator
 - The Split method, to split the Range<T> at a given value
-- The Intersection method, that returns the Range<T> that is part of both Ranges
+- The Intersection method, that returns the Range<T> that is part of both Ranges, including the & operator
 
 ### Changed
 - The implementation of Equals and CompareTo so that every Empty Range, ranges with the same start and end, are equal regarding of the value of start and end

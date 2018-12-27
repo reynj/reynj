@@ -341,6 +341,7 @@ namespace Reynj
         /// <returns>true if the value of <paramref name="leftRange" /> is different from the value of <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator !=(Range<T> leftRange, Range<T> rightRange)
         {
+            // TODO: Support null
             return !(leftRange == rightRange);
         }
 
@@ -352,6 +353,7 @@ namespace Reynj
         /// <returns>true if <paramref name="leftRange" /> is greater than <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator >(Range<T> leftRange, Range<T> rightRange)
         {
+            // TODO: Support null
             return leftRange.CompareTo(rightRange) == 1;
         }
 
@@ -363,6 +365,7 @@ namespace Reynj
         /// <returns>true if <paramref name="leftRange" /> is lower than <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator <(Range<T> leftRange, Range<T> rightRange)
         {
+            // TODO: Support null
             return leftRange.CompareTo(rightRange) == -1;
         }
 
@@ -374,6 +377,7 @@ namespace Reynj
         /// <returns>true if <paramref name="leftRange" /> is the same as or lower than <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator >=(Range<T> leftRange, Range<T> rightRange)
         {
+            // TODO: Support null
             return leftRange.CompareTo(rightRange) >= 0;
         }
 
@@ -386,6 +390,30 @@ namespace Reynj
         public static bool operator <=(Range<T> leftRange, Range<T> rightRange)
         {
             return leftRange.CompareTo(rightRange) <= 0;
+        }
+
+        /// <summary>
+        /// Performs a logical disjunction (OR) on two Ranges
+        /// </summary>
+        /// <param name="leftRange">The first <see cref="Range{T}"/> to merge, or null.</param>
+        /// <param name="rightRange">The second <see cref="Range{T}"/> to merge, or null.</param>
+        /// <returns>The merged <see cref="Range{T}"/> of the two Ranges</returns>
+        public static Range<T> operator |(Range<T> leftRange, Range<T> rightRange)
+        {
+            // TODO: Support null
+            return leftRange.Merge(rightRange);
+        }
+
+        /// <summary>
+        /// Performs a logical conjunction (AND) on two Ranges
+        /// </summary>
+        /// <param name="leftRange">The first <see cref="Range{T}"/> to intersect, or null.</param>
+        /// <param name="rightRange">The second <see cref="Range{T}"/> to intersect, or null.</param>
+        /// <returns>The intersection <see cref="Range{T}"/> of the two Ranges</returns>
+        public static Range<T> operator &(Range<T> leftRange, Range<T> rightRange)
+        {
+            // TODO: Support null
+            return leftRange.Intersection(rightRange);
         }
 
         /// <summary>
