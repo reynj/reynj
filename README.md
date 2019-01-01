@@ -284,7 +284,7 @@ An exception is thrown when the ranges are null or Empty.
 var range1 = new Range<int>(0, 10);
 var range2 = new Range<int>(5, 20);
 
-// Intersection
+// Exclusive
 var exclusive = range1.Exlusive(range2); // returns (new Range<int>(0, 5), new Range<int>(10, 20))
 ```
 

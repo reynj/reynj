@@ -216,6 +216,8 @@ namespace Reynj
         /// <exception cref="ArgumentException">If <paramref name="value"/> is not included in the <see cref="Range{T}"/></exception>
         public (Range<T>, Range<T>) Split(T value)
         {
+            // IDEA: Return an IEnumerable<Range<T>> instead of a Tuple, and omit Range<T>.Empty
+
             if (!Includes(value) && !_end.Equals(value))
                 throw new ArgumentException($"Splitting is not possible because the {value} is not included in {this}", nameof(value));
 
@@ -235,6 +237,51 @@ namespace Reynj
                 throw new ArgumentException($"Intersecting {this} with {range} is not possible because they do not overlap each other", nameof(range));
 
             return new Range<T>(_start.CompareTo(range._start) > 0  ? _start : range._start, _end.CompareTo(range._end) < 0 ? _end : range._end);
+        }
+
+        /// <summary>
+        /// Returns what is unique for both ranges
+        /// Also called an Exclusive or (XOR)
+        /// </summary>
+        /// <param name="range"><see cref="Range{T}"/> to intersect with</param>
+        /// <returns>A ValueTuple that represents holds the exclusive ranges</returns>
+        /// <remarks>If both ranges have the same start of end, one of the ranges in the ValueTuple will be Empty.</remarks>
+        /// <exception cref="ArgumentException">If <paramref name="range"/> does not overlap with the current <see cref="Range{T}"/></exception>
+        public (Range<T>, Range<T>) Exclusive(Range<T> range)
+        {
+            // IDEA: Return an IEnumerable<Range<T>> instead of a Tuple, and omit Range<T>.Empty
+
+            if (Equals(range))
+                throw new ArgumentException("There are no Exclusive ranges when both are equal.");
+            //if (left.Start == right.Start || left.End == right.End)
+            //    throw new Exception("Can't XOR two periods that will not somehow create two periods");
+
+            // The specified range is completely part of the current range
+            if (Includes(range))
+            {
+                return (new Range<T>(_start, range._start), new Range<T>(range._end, _end));
+            }
+
+            // The current range is completely part of the specified range
+            if (range.Includes(this))
+            {
+                return (new Range<T>(range._start, _start), new Range<T>(_end, range._end));
+            }
+
+            // There is an overlap between the ranges
+            if (Overlaps(range))
+            {
+                var start1 = _start.CompareTo(range._start) < 0 ? _start : range._start;
+                var end1 = _start.CompareTo(range._start) > 0 ? _start : range._start;
+
+                var start2 = _end.CompareTo(range._end) < 0 ? _end : range._end;
+                var end2 = _end.CompareTo(range._end) > 0 ? _end : range._end;
+
+                return (new Range<T>(start1, end1), new Range<T>(start2, end2));
+            }
+
+            // Both ranges have nothing in common, thus are already exclusive
+            return (this, range);
         }
 
         /// <summary>
@@ -414,6 +461,18 @@ namespace Reynj
         {
             // TODO: Support null
             return leftRange.Intersection(rightRange);
+        }
+
+        /// <summary>
+        /// Performs an Exclusive or (XOR) on two Ranges
+        /// </summary>
+        /// <param name="leftRange">The first <see cref="Range{T}"/>, or null.</param>
+        /// <param name="rightRange">The second <see cref="Range{T}"/>, or null.</param>
+        /// <returns>A ValueTuple of the two exclusive Ranges</returns>
+        public static (Range<T>, Range<T>) operator ^(Range<T> leftRange, Range<T> rightRange)
+        {
+            // TODO: Support null
+            return leftRange.Exclusive(rightRange);
         }
 
         /// <summary>

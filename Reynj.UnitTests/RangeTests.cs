@@ -546,6 +546,56 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        public void Exclusive_IsNotPossibleOnEqualRanges()
+        {
+            // Arrange
+            var range = new Range<int>(0, 10);
+            var otherRange = new Range<int>(0, 10);
+            
+            // Act
+            Action act = () => range.Exclusive(otherRange);
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+                .And.Message.Should().StartWith("There are no Exclusive ranges when both are equal.");
+        }
+
+        [Theory]
+        [MemberData(nameof(ExclusiveRangeData))]
+        public void Exclusive_ReturnsATupleOfRanges_ThatRepresentTheNonOverlappingParts(Range<int> range, Range<int> otherRange, (Range<int>, Range<int>) expectedExclusive)
+        {
+            // Act - Assert
+            range.Exclusive(otherRange).Should().Be(expectedExclusive);
+        }
+
+        public static IEnumerable<object[]> ExclusiveRangeData()
+        {
+            // Includes (subset)
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(0, 5), (Range<int>.Empty, new Range<int>(5, 10)) };
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(5, 10), (new Range<int>(0, 5), Range<int>.Empty) };
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(2, 7), (new Range<int>(0, 2), new Range<int>(7, 10)) };
+
+            // Includes (superset)
+            yield return new object[] { new Range<int>(0, 5), new Range<int>(0, 10), (Range<int>.Empty, new Range<int>(5, 10)) };
+            yield return new object[] { new Range<int>(5, 10), new Range<int>(0, 10), (new Range<int>(0, 5), Range<int>.Empty) };
+            yield return new object[] { new Range<int>(2, 7), new Range<int>(0, 10), (new Range<int>(0, 2), new Range<int>(7, 10)) };
+
+            // Overlaps
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(5, 15), (new Range<int>(0, 5), new Range<int>(10, 15)) };
+            yield return new object[] { new Range<int>(5, 15), new Range<int>(0, 10), (new Range<int>(0, 5), new Range<int>(10, 15)) };
+
+            // Already exclusive
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(10, 20), (new Range<int>(0, 10), new Range<int>(10, 20)) };
+            yield return new object[] { new Range<int>(0, 5), new Range<int>(10, 15), (new Range<int>(0, 5), new Range<int>(10, 15)) };
+
+            //  Empty
+            yield return new object[] { new Range<int>(0, 10), Range<int>.Empty, (new Range<int>(0, 10), Range<int>.Empty) };
+            yield return new object[] { Range<int>.Empty, new Range<int>(0, 10), (Range<int>.Empty, new Range<int>(0, 10)) };
+            yield return new object[] { new Range<int>(0, 10), new Range<int>(10, 10), (new Range<int>(0, 10), Range<int>.Empty) };
+            yield return new object[] { new Range<int>(10, 10), new Range<int>(0, 10), (Range<int>.Empty, new Range<int>(0, 10)) };
+        }
+
+        [Fact]
         public void Equals_IsFalse_WhenOtherIsNull()
         {
             // Arrange
@@ -931,40 +981,30 @@ namespace Reynj.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(OrOperatorData))]
+        [MemberData(nameof(MergeRangeData))]
         public void OrOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, Range<int> expectedOr)
         {
             // Act - Assert
             (range | otherRange).Should().Be(expectedOr);
-        }
-
-        public static IEnumerable<object[]> OrOperatorData()
-        {
-            // Both are the same
-            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 99), new Range<int>(1, 99)};
-
-            // Both overlap
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(5, 15), new Range<int>(0, 15) };
-
-            // Both touch each other
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(10, 20), new Range<int>(0, 20) };
+            (otherRange | range).Should().Be(expectedOr);
         }
 
         [Theory]
-        [MemberData(nameof(AndOperatorData))]
+        [MemberData(nameof(IntersectionRangeData))]
         public void AndOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, Range<int> expectedAnd)
         {
             // Act - Assert
             (range & otherRange).Should().Be(expectedAnd);
+            (otherRange & range).Should().Be(expectedAnd);
         }
 
-        public static IEnumerable<object[]> AndOperatorData()
+        [Theory]
+        [MemberData(nameof(ExclusiveRangeData))]
+        public void XorOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, ValueTuple<Range<int>, Range<int>> expectedXor)
         {
-            // Both are the same
-            yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 99), new Range<int>(1, 99)};
-
-            // Both overlap
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(5, 15), new Range<int>(5, 10) };
+            // Act - Assert
+            (range ^ otherRange).Should().Be(expectedXor);
+            //(otherRange ^ range).Should().Be(expectedXor);
         }
 
         [Fact]
