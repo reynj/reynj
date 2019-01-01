@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - The Exclusive method, that returns a Tuple of two Ranges that represent the parts they do not have in common, including the ^ operator
+- A RangeCollection<T>, that holds a list of Ranges
+- The Lowest and Highest methods on a RangeCollection<T> that return the lowest start and highest end of all the Ranges in the collection
 
 ## [0.1.5] - 2018-12-27
 ### Added

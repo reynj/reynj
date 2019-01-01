@@ -39,6 +39,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
     - [ ] NumericRange
 - [ ] RangeCollection
   - [ ] Methods
+    - [x] Lowest/Highest
     - [ ] Sort
     - [ ] Combine
 	- [ ] Reverse
@@ -298,4 +299,45 @@ var range2 = new Range<int>(10, 10);
 // IsEmpty
 var res1 = range1.IsEmpty(); // returns false
 var res2 = range2.IsEmpty(); // returns true
+```
+
+#### What is a RangeCollection?
+A RangeCollection is a group or list of Ranges of the same type. 
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSYW5nZUNvbGxlY3Rpb25cbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbNywxMF0gICAgICAgICA6IDIwMTgtMDEtMDEuMDcsIDNoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuICAgIFJhbmdlWzE4LDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xOCwgN2giLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
+![Intersection](./images/collection.svg)
+
+To create a RangeCollection in code, you can do the following:
+
+```c#
+// Empty collection
+var rangeCollection1 = new RangeCollection<int>();
+
+// Collection based on an IEnumerable<Range<T>>
+var ranges = new List<Range<int>>() {
+    new Range<int>(0, 10),
+	new Range<int>(10, 20)
+}
+
+var rangeCollection2 = new RangeCollection<int>(ranges);
+```
+
+#### What can be done with a RangeCollection?
+
+##### Methods
+###### Lowest() / Highest()
+They return the lowest/highest end/start of the all the Ranges in the collection.
+
+```c#
+var rangeCollection = new RangeCollection<int>(new List<Range<int>>
+{
+	new Range<int>(0, 10),
+	new Range<int>(10, 20)
+});
+
+// Lowest
+var lowest = rangeCollection.Lowest(); // returns 0
+
+// Highest
+var highest = rangeCollection.Highest(); // returns 20
 ```
