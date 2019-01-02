@@ -22,16 +22,18 @@ steps:
 
 - task: GitVersion@4
   inputs:
-    updateAssemblyInfo: true
+    updateAssemblyInfo: false
 
-- script: |
-    dotnet build --configuration $(buildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)
-    dotnet test --no-build --configuration $(buildConfiguration) --logger trx --collect "Code coverage"
-    dotnet pack --no-build --configuration $(buildConfiguration) --include-symbols -p:PackageVersion=$(GitVersion.NuGetVersion) --output "$(Build.ArtifactStagingDirectory)"
-  displayName: 'DotNet Build'
+- script: dotnet build --configuration $(buildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)
+
+- script: dotnet test --no-build --configuration $(buildConfiguration) --logger trx --collect "Code coverage"
+
+- script: dotnet pack --no-build --configuration $(buildConfiguration) --include-symbols -p:PackageVersion=$(GitVersion.NuGetVersion) --output "$(Build.ArtifactStagingDirectory)"
 
 - task: PublishTestResults@2
+  condition: succeededOrFailed()
   inputs:
+    testRunner: VSTest
     testResultsFiles: '**/*.trx'
 
 - task: PublishBuildArtifacts@1
