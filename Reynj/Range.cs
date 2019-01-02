@@ -196,9 +196,12 @@ namespace Reynj
         /// </summary>
         /// <param name="range"><see cref="Range{T}"/> to merge with</param>
         /// <returns>A <see cref="Range{T}"/> that represents the merged ranges</returns>
+        /// <exception cref="ArgumentNullException">If <paramref name="range"/> is null.</exception>
         /// <exception cref="ArgumentException">If <paramref name="range"/> does not overlap or touches the current <see cref="Range{T}"/></exception>
         public Range<T> Merge(Range<T> range)
         {
+            if (range == null) 
+                throw new ArgumentNullException(nameof(range));
             if (!Overlaps(range) && !Touches(range))
                 throw new ArgumentException($"Merging {this} with {range} is not possible because they do not overlap nor touch each other", nameof(range));
 
@@ -230,9 +233,12 @@ namespace Reynj
         /// </summary>
         /// <param name="range"><see cref="Range{T}"/> to intersect with</param>
         /// <returns>A <see cref="Range{T}"/> that represents the intersection between the ranges</returns>
+        /// <exception cref="ArgumentNullException">If <paramref name="range"/> is null.</exception>
         /// <exception cref="ArgumentException">If <paramref name="range"/> does not overlap with the current <see cref="Range{T}"/></exception>
         public Range<T> Intersection(Range<T> range)
         {
+            if (range == null) 
+                throw new ArgumentNullException(nameof(range));
             if (!Overlaps(range))
                 throw new ArgumentException($"Intersecting {this} with {range} is not possible because they do not overlap each other", nameof(range));
 
@@ -246,15 +252,17 @@ namespace Reynj
         /// <param name="range"><see cref="Range{T}"/> to intersect with</param>
         /// <returns>A ValueTuple that represents holds the exclusive ranges</returns>
         /// <remarks>If both ranges have the same start of end, one of the ranges in the ValueTuple will be Empty.</remarks>
+        /// <exception cref="ArgumentNullException">If <paramref name="range"/> is null.</exception>
         /// <exception cref="ArgumentException">If <paramref name="range"/> does not overlap with the current <see cref="Range{T}"/></exception>
         public (Range<T>, Range<T>) Exclusive(Range<T> range)
         {
             // IDEA: Return an IEnumerable<Range<T>> instead of a Tuple, and omit Range<T>.Empty
 
+            if (range == null) 
+                throw new ArgumentNullException(nameof(range));
+
             if (Equals(range))
                 throw new ArgumentException("There are no Exclusive ranges when both are equal.");
-            //if (left.Start == right.Start || left.End == right.End)
-            //    throw new Exception("Can't XOR two periods that will not somehow create two periods");
 
             // The specified range is completely part of the current range
             if (Includes(range))
@@ -324,13 +332,21 @@ namespace Reynj
         /// <inheritdoc />
         public int CompareTo(Range<T> other)
         {
-            // If other is not a valid object reference, this instance is greater.
+            // If other is not a valid object reference, this instance is greater
             if (other is null)
                 return 1;
 
             // Both are empty, then they are the same
             if (IsEmpty() && other.IsEmpty())
                 return 0;
+
+            // If other is empty, then this instance is greater
+            if (other.IsEmpty())
+                return 1;
+
+            // If current is empty, than this instance is lower
+            if (IsEmpty())
+                return -1;
 
             // First compare the Start, if they are the same compare the End
             var result = _start.CompareTo(other._start);
@@ -363,16 +379,16 @@ namespace Reynj
         /// <returns><c>true</c> if the <paramref name="leftRange"/> and <paramref name="rightRange"/> parameters have the same value; otherwise, <c>false</c>.</returns>
         public static bool operator ==(Range<T> leftRange, Range<T> rightRange)
         {
-            // Check for null.
+            // Check for null
             if (leftRange is null)
             {
                 if (rightRange is null)
                 {
-                    // null == null = true.
+                    // null == null => true
                     return true;
                 }
 
-                // Only the left side is null.
+                // Only the left side is null
                 return false;
             }
 
@@ -388,7 +404,6 @@ namespace Reynj
         /// <returns>true if the value of <paramref name="leftRange" /> is different from the value of <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator !=(Range<T> leftRange, Range<T> rightRange)
         {
-            // TODO: Support null
             return !(leftRange == rightRange);
         }
 
@@ -400,7 +415,9 @@ namespace Reynj
         /// <returns>true if <paramref name="leftRange" /> is greater than <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator >(Range<T> leftRange, Range<T> rightRange)
         {
-            // TODO: Support null
+            if (leftRange == null)
+                return false;
+
             return leftRange.CompareTo(rightRange) == 1;
         }
 
@@ -412,7 +429,9 @@ namespace Reynj
         /// <returns>true if <paramref name="leftRange" /> is lower than <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator <(Range<T> leftRange, Range<T> rightRange)
         {
-            // TODO: Support null
+            if (leftRange == null)
+                return true;
+
             return leftRange.CompareTo(rightRange) == -1;
         }
 
@@ -424,7 +443,9 @@ namespace Reynj
         /// <returns>true if <paramref name="leftRange" /> is the same as or lower than <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator >=(Range<T> leftRange, Range<T> rightRange)
         {
-            // TODO: Support null
+            if (leftRange == null)
+                return false;
+
             return leftRange.CompareTo(rightRange) >= 0;
         }
 
@@ -436,6 +457,9 @@ namespace Reynj
         /// <returns>true if <paramref name="leftRange" /> is the same as or greater than <paramref name="rightRange" />; otherwise, false.</returns>
         public static bool operator <=(Range<T> leftRange, Range<T> rightRange)
         {
+            if (leftRange == null)
+                return true;
+
             return leftRange.CompareTo(rightRange) <= 0;
         }
 
@@ -445,9 +469,15 @@ namespace Reynj
         /// <param name="leftRange">The first <see cref="Range{T}"/> to merge, or null.</param>
         /// <param name="rightRange">The second <see cref="Range{T}"/> to merge, or null.</param>
         /// <returns>The merged <see cref="Range{T}"/> of the two Ranges</returns>
+        /// <exception cref="ArgumentNullException">If <paramref name="leftRange"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">If <paramref name="rightRange"/> is null.</exception>
         public static Range<T> operator |(Range<T> leftRange, Range<T> rightRange)
         {
-            // TODO: Support null
+            if (leftRange == null) 
+                throw new ArgumentNullException(nameof(leftRange));
+            if (rightRange == null)
+                throw new ArgumentNullException(nameof(rightRange));
+
             return leftRange.Merge(rightRange);
         }
 
@@ -457,9 +487,15 @@ namespace Reynj
         /// <param name="leftRange">The first <see cref="Range{T}"/> to intersect, or null.</param>
         /// <param name="rightRange">The second <see cref="Range{T}"/> to intersect, or null.</param>
         /// <returns>The intersection <see cref="Range{T}"/> of the two Ranges</returns>
+        /// <exception cref="ArgumentNullException">If <paramref name="leftRange"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">If <paramref name="rightRange"/> is null.</exception>
         public static Range<T> operator &(Range<T> leftRange, Range<T> rightRange)
         {
-            // TODO: Support null
+            if (leftRange == null) 
+                throw new ArgumentNullException(nameof(leftRange));
+            if (rightRange == null)
+                throw new ArgumentNullException(nameof(rightRange));
+
             return leftRange.Intersection(rightRange);
         }
 
@@ -469,9 +505,15 @@ namespace Reynj
         /// <param name="leftRange">The first <see cref="Range{T}"/>, or null.</param>
         /// <param name="rightRange">The second <see cref="Range{T}"/>, or null.</param>
         /// <returns>A ValueTuple of the two exclusive Ranges</returns>
+        /// <exception cref="ArgumentNullException">If <paramref name="leftRange"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">If <paramref name="rightRange"/> is null.</exception>
         public static (Range<T>, Range<T>) operator ^(Range<T> leftRange, Range<T> rightRange)
         {
-            // TODO: Support null
+            if (leftRange == null) 
+                throw new ArgumentNullException(nameof(leftRange));
+            if (rightRange == null)
+                throw new ArgumentNullException(nameof(rightRange));
+
             return leftRange.Exclusive(rightRange);
         }
 
@@ -481,6 +523,9 @@ namespace Reynj
         /// <param name="range"><see cref="Range{T}"/> to convert</param>
         public static implicit operator ValueTuple<T, T>(Range<T> range)
         {
+            if (range == null) 
+                throw new ArgumentNullException(nameof(range));
+
             return range.AsTuple();
         }
 

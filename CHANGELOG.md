@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A RangeCollection<T>, that holds a list of Ranges
 - The Lowest and Highest methods on a RangeCollection<T> that return the lowest start and highest end of all the Ranges in the collection
 
+### Changed
+- The CompareTo method on how it handles null and Range<T>.Empty. Range<T>.Empty is always lower than any other Range, except when both are empty.
+
+### Fixed
+- All operators now handle null on each side of the operator correctly
+
 ## [0.1.5] - 2018-12-27
 ### Added
 - A static IsNullOrEmpty method, to check if a Range<T> is null or Range<T>.Empty

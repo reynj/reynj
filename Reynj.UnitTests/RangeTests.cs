@@ -423,6 +423,20 @@ namespace Reynj.UnitTests
                 .And.Message.Should().StartWith("Merging Range.Empty with Range(0, 10) is not possible because they do not overlap nor touch each other");
         }
 
+        [Fact]
+        public void Merge_WithNull_IsNotPossible()
+        {
+            // Arrange
+            var range = new Range<int>(0, 10);
+            
+            // Act
+            Action act = () => range.Merge(null);
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("range");
+        }
+
         [Theory]
         [MemberData(nameof(MergeRangeData))]
         public void Merge_ReturnsARange_ThatHasTheLowestStartAndHighestEndOfBothRanges(Range<int> range, Range<int> otherRange, Range<int> expectedMerge)
@@ -527,6 +541,20 @@ namespace Reynj.UnitTests
                 .And.Message.Should().StartWith("Intersecting Range.Empty with Range(0, 10) is not possible because they do not overlap each other");
         }
 
+        [Fact]
+        public void Intersection_WithNull_IsNotPossible()
+        {
+            // Arrange
+            var range = new Range<int>(0, 10);
+            
+            // Act
+            Action act = () => range.Intersection(null);
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("range");
+        }
+
         [Theory]
         [MemberData(nameof(IntersectionRangeData))]
         public void Intersection_ReturnsARange_ThatHasTheLowestStartAndHighestEndOfBothRanges(Range<int> range, Range<int> otherRange, Range<int> expectedIntersection)
@@ -558,6 +586,20 @@ namespace Reynj.UnitTests
             // Assert
             act.Should().Throw<ArgumentException>()
                 .And.Message.Should().StartWith("There are no Exclusive ranges when both are equal.");
+        }
+
+        [Fact]
+        public void Exclusive_WithNull_IsNotPossible()
+        {
+            // Arrange
+            var range = new Range<int>(0, 10);
+            
+            // Act
+            Action act = () => range.Exclusive(null);
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("range");
         }
 
         [Theory]
@@ -744,6 +786,46 @@ namespace Reynj.UnitTests
             range.CompareTo((object) otherRange).Should().Be(1);
         }
 
+        [Theory]
+        [MemberData(nameof(CompareToWhenOtherIsEmptyData))]
+        public void CompareTo_IsOne_WhenOtherIsEmpty(Range<int> range, Range<int> otherRange)
+        {
+            // Act - Assert
+            otherRange.Should().Be(Range<int>.Empty);
+
+            range.CompareTo(otherRange).Should().Be(1);
+            range.CompareTo((object) otherRange).Should().Be(1);
+        }
+
+        public static IEnumerable<object[]> CompareToWhenOtherIsEmptyData()
+        {
+            yield return new object[] {new Range<int>(1, 99), Range<int>.Empty };
+            yield return new object[] {new Range<int>(-99, -1), Range<int>.Empty };
+
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(99, 99) };
+            yield return new object[] {new Range<int>(-99, -1), new Range<int>(-99, -99) };
+        }
+
+        [Theory]
+        [MemberData(nameof(CompareToWhenCurrentIsEmptyData))]
+        public void CompareTo_IsMinusOne_WhenCurrentIsEmpty(Range<int> range, Range<int> otherRange)
+        {
+            // Act - Assert
+            range.Should().Be(Range<int>.Empty);
+
+            range.CompareTo(otherRange).Should().Be(-1);
+            range.CompareTo((object) otherRange).Should().Be(-1);
+        }
+
+        public static IEnumerable<object[]> CompareToWhenCurrentIsEmptyData()
+        {
+            yield return new object[] {Range<int>.Empty, new Range<int>(1, 99)};
+            yield return new object[] {Range<int>.Empty, new Range<int>(-99, -1)};
+
+            yield return new object[] {new Range<int>(99, 99), new Range<int>(1, 99)};
+            yield return new object[] {new Range<int>(-99, -99), new Range<int>(-99, -1)};
+        }
+
         [Fact]
         public void AsTuple_ReturnsThePeriodAsValueTuple()
         {
@@ -906,6 +988,16 @@ namespace Reynj.UnitTests
             yield return new object[] {new Range<int>(1, 99), new Range<int>(2, 99), false};
             yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 100), false};
             yield return new object[] {new Range<int>(-99, -1), new Range<int>(1, 99), false};
+
+            // Null
+            yield return new object[] {new Range<int>(1, 99), null, true};
+            yield return new object[] {null, new Range<int>(1, 99), false};
+
+            // Empty
+            yield return new object[] { new Range<int>(1, 99), Range<int>.Empty, true };
+            yield return new object[] { Range<int>.Empty, new Range<int>(1, 99), false };
+            yield return new object[] { new Range<int>(-99, -1), Range<int>.Empty, true };
+            yield return new object[] { Range<int>.Empty, new Range<int>(-99, -1), false };
         }
 
         [Theory]
@@ -930,6 +1022,16 @@ namespace Reynj.UnitTests
             yield return new object[] {new Range<int>(2, 99), new Range<int>(1, 99), false};
             yield return new object[] {new Range<int>(1, 100), new Range<int>(1, 99), false};
             yield return new object[] {new Range<int>(1, 99), new Range<int>(-99, -1), false};
+
+            // Null
+            yield return new object[] {new Range<int>(1, 99), null, false};
+            yield return new object[] {null, new Range<int>(1, 99), true};
+
+            // Empty
+            yield return new object[] { new Range<int>(1, 99), Range<int>.Empty, false };
+            yield return new object[] { Range<int>.Empty, new Range<int>(1, 99), true };
+            yield return new object[] { new Range<int>(-99, -1), Range<int>.Empty, false };
+            yield return new object[] { Range<int>.Empty, new Range<int>(-99, -1), true };
         }
 
         [Theory]
@@ -954,6 +1056,19 @@ namespace Reynj.UnitTests
             yield return new object[] {new Range<int>(1, 99), new Range<int>(2, 99), false};
             yield return new object[] {new Range<int>(1, 99), new Range<int>(1, 100), false};
             yield return new object[] {new Range<int>(-99, -1), new Range<int>(1, 99), false};
+
+            // Null
+            yield return new object[] {new Range<int>(1, 99), null, true};
+            yield return new object[] {null, new Range<int>(1, 99), false};
+
+            // Empty
+            yield return new object[] { Range<int>.Empty, Range<int>.Empty, true };
+            yield return new object[] { new Range<int>(-99, -99), new Range<int>(99, 99), true };
+
+            yield return new object[] { new Range<int>(1, 99), Range<int>.Empty, true };
+            yield return new object[] { Range<int>.Empty, new Range<int>(1, 99), false };
+            yield return new object[] { new Range<int>(-99, -1), Range<int>.Empty, true };
+            yield return new object[] { Range<int>.Empty, new Range<int>(-99, -1), false };
         }
 
         [Theory]
@@ -978,6 +1093,19 @@ namespace Reynj.UnitTests
             yield return new object[] {new Range<int>(2, 99), new Range<int>(1, 99), false};
             yield return new object[] {new Range<int>(1, 100), new Range<int>(1, 99), false};
             yield return new object[] {new Range<int>(1, 99), new Range<int>(-99, -1), false};
+
+            // Null
+            yield return new object[] {new Range<int>(1, 99), null, false};
+            yield return new object[] {null, new Range<int>(1, 99), true};
+
+            // Empty
+            yield return new object[] { Range<int>.Empty, Range<int>.Empty, true };
+            yield return new object[] { new Range<int>(-99, -99), new Range<int>(99, 99), true };
+
+            yield return new object[] { new Range<int>(1, 99), Range<int>.Empty, false };
+            yield return new object[] { Range<int>.Empty, new Range<int>(1, 99), true };
+            yield return new object[] { new Range<int>(-99, -1), Range<int>.Empty, false };
+            yield return new object[] { Range<int>.Empty, new Range<int>(-99, -1), true };
         }
 
         [Theory]
@@ -989,6 +1117,23 @@ namespace Reynj.UnitTests
             (otherRange | range).Should().Be(expectedOr);
         }
 
+        [Fact]
+        public void OrOperator_WithNull_IsNotPossible()
+        {
+            // Arrange
+            var range = new Range<int>(0, 10);
+            
+            // Act
+            Func<object> act1 = () => range | null;
+            Func<object> act2 = () => null | range;
+
+            // Assert
+            act1.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("rightRange");
+            act2.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("leftRange");
+        }
+
         [Theory]
         [MemberData(nameof(IntersectionRangeData))]
         public void AndOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, Range<int> expectedAnd)
@@ -998,6 +1143,23 @@ namespace Reynj.UnitTests
             (otherRange & range).Should().Be(expectedAnd);
         }
 
+        [Fact]
+        public void AndOperator_WithNull_IsNotPossible()
+        {
+            // Arrange
+            var range = new Range<int>(0, 10);
+            
+            // Act
+            Func<object> act1 = () => range & null;
+            Func<object> act2 = () => null & range;
+
+            // Assert
+            act1.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("rightRange");
+            act2.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("leftRange");
+        }
+
         [Theory]
         [MemberData(nameof(ExclusiveRangeData))]
         public void XorOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, ValueTuple<Range<int>, Range<int>> expectedXor)
@@ -1005,6 +1167,23 @@ namespace Reynj.UnitTests
             // Act - Assert
             (range ^ otherRange).Should().Be(expectedXor);
             //(otherRange ^ range).Should().Be(expectedXor);
+        }
+
+        [Fact]
+        public void XorOperator_WithNull_IsNotPossible()
+        {
+            // Arrange
+            var range = new Range<int>(0, 10);
+            
+            // Act
+            Func<object> act1 = () => range ^ null;
+            Func<object> act2 = () => null ^ range;
+
+            // Assert
+            act1.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("rightRange");
+            act2.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("leftRange");
         }
 
         [Fact]
@@ -1024,12 +1203,7 @@ namespace Reynj.UnitTests
         public void ExplicitConversionOperator_FromTupleToRangeWithItem1GreaterThanItem2_ThrowsAnArgumentException()
         {
             // Arrange - Act
-            // ReSharper disable once ObjectCreationAsStatement
-            Action act = () =>
-            {
-                // ReSharper disable once UnusedVariable
-                var range = (Range<int>) (99, 1);
-            };
+            Func<Range<int>> act = () => (Range<int>) (99, 1);
 
             // Assert
             act.Should().Throw<ArgumentException>()
@@ -1047,6 +1221,17 @@ namespace Reynj.UnitTests
             
             // - Assert
             tuple.Should().Be((1, 10));
+        }
+
+        [Fact]
+        public void ImplicitConversionOperator_WithNull_IsNotPossible()
+        {
+            // Arrange - Act
+            Func<(int, int)> act = () =>  (ValueTuple<int, int>) (Range<int>) null;
+            
+            // - Assert
+            act.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("range");
         }
 
         [Fact]
