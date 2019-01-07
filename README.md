@@ -30,7 +30,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
     - [x] Merge (Union)
 	- [x] Split
     - [x] Intersection
-	- [ ] Exclusive
+	- [x] Exclusive
 	- [ ] Enumerate
 	- [ ] Expand
   - [ ] Specific implemenations 
@@ -40,6 +40,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
 - [ ] RangeCollection
   - [ ] Methods
     - [x] Lowest/Highest
+	- [ ] IsContiguous
     - [ ] Sort
     - [ ] Combine
 	- [ ] Reverse
@@ -83,8 +84,8 @@ var intRange = new Range<int>(0, 10);
 var doubleRange = new Range<double>(0.0, 0.5);
 
 // Date and Time Ranges
-var dateRange = new Range<DateTime>(new DateTime(2018, 12, 18), new DateTime(2018, 12, 25));
-var doubleRange = new Range<TimeSpan>(TimeSpan.FromHours(0), TimeSpan.FromHours(6));
+var dateRange = new Range<DateTime>(new DateTime(2018, 12, 18), new DateTime(2018, 12, 25)); // Period
+var timeSpanRange = new Range<TimeSpan>(TimeSpan.FromHours(0), TimeSpan.FromHours(6)); // Duration
 ```
 
 #### What is an Empty Range?
@@ -129,13 +130,13 @@ var range1 = new Range<int>(0, 10);
 var range2 = new Range<int>(5, 9);
 
 // CompareTo
-var res1 = range1.CompareTo(range2);
+var res1 = range1.CompareTo(range2); // returns -1
 
 // Equality Operators
-var res2 = range1 < range2;
-var res3 = range1 > range2;
-var res4 = range1 <= range2;
-var res5 = range1 >= range2;
+var res2 = range1 < range2;  // returns true
+var res3 = range1 > range2;  // returns false
+var res4 = range1 <= range2; // returns true
+var res5 = range1 >= range2; // returns false
 ```
 
 ##### Tuples
@@ -279,7 +280,7 @@ Exclusive returns a tuple of Ranges that that represent the parts they do not ha
 An exception is thrown when the ranges are null or Empty.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBFeGNsdXNpdmVcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsMTBdICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCAxMGhcbiAgICBSYW5nZVs1LDIwXSAgICAgICAgIDogMjAxOC0wMS0wMS4wNSwgMTVoXG5cbiAgICBzZWN0aW9uIEV4Y2x1c2l2ZVxuICAgIFJhbmdlWzAsIDVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwgMjBdICAgICAgIDogYWN0aXZlLCAyMDE4LTAxLTAxLjEwLCAxMGgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
-![Intersection](./images/exclusive.svg)
+![Exclusive](./images/exclusive.svg)
 
 ```c#
 var range1 = new Range<int>(0, 10);
@@ -305,7 +306,7 @@ var res2 = range2.IsEmpty(); // returns true
 A RangeCollection is a group or list of Ranges of the same type. 
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSYW5nZUNvbGxlY3Rpb25cbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbNywxMF0gICAgICAgICA6IDIwMTgtMDEtMDEuMDcsIDNoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuICAgIFJhbmdlWzE4LDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xOCwgN2giLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
-![Intersection](./images/collection.svg)
+![RangeCollection](./images/collection.svg)
 
 To create a RangeCollection in code, you can do the following:
 
@@ -340,4 +341,21 @@ var lowest = rangeCollection.Lowest(); // returns 0
 
 // Highest
 var highest = rangeCollection.Highest(); // returns 20
+```
+
+###### Reduce()
+Returns a new RangeCollection<T> where all overlapping and touching Ranges have been merged and empty Ranges have been removed.
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSZWR1Y2VcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbMywxMF0gICAgICAgICA6IDIwMTgtMDEtMDEuMDMsIDdoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuICAgIFJhbmdlWzE4LDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xOCwgN2hcblxuICAgIHNlY3Rpb24gUmVkdWNlZFxuICAgIFJhbmdlWzAsMTVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgMTVoXG4gICAgUmFuZ2VbMTgsMjVdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTgsIDdoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
+![Reduce](./images/reduce.svg)
+
+```c#
+var rangeCollection = new RangeCollection<int>(new[]
+{
+	new Range<int>(0, 10),
+	new Range<int>(10, 20)
+});
+
+// Reduce
+var reduced = rangeCollection.Reduce(); // returns new RangeCollection<int>(new[] {	new Range<int>(0, 20) }
 ```

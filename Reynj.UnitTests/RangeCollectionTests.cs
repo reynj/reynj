@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Xunit;
 
@@ -111,6 +112,166 @@ namespace Reynj.UnitTests
             // Assert
             act.Should().Throw<NotSupportedException>()
                 .And.Message.Should().StartWith("Highest is not supported on an empty RangeCollection.");
+        }
+
+        [Theory]
+        [MemberData(nameof(ReduceRangeCollectionData))]
+        public void Reduce_ReturnsTheExpectedResult(RangeCollection<int> ranges, RangeCollection<int> expectedReduced)
+        {
+            // Act
+            var reduced = ranges.Reduce();
+
+            // Assert
+            reduced.Should().BeEquivalentTo(expectedReduced);
+        }
+
+        [Theory]
+        [MemberData(nameof(ReduceRangeCollectionData))]
+        public void Reduce_ReturnsTheExpectedResult_AlsoForReversedLists(RangeCollection<int> ranges, RangeCollection<int> expectedReduced)
+        {
+            // Act
+            var reduced = new RangeCollection<int>(ranges.Reverse()).Reduce();
+
+            // Assert
+            reduced.Should().BeEquivalentTo(expectedReduced);
+        }
+
+        public static IEnumerable<object[]> ReduceRangeCollectionData()
+        {
+            // A single Range
+            yield return new object[]
+            {
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(0, 10)
+                }),
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(0, 10)
+                })
+            };
+
+            // An empty Range
+            yield return new object[]
+            {
+                new RangeCollection<int>(new[]
+                {
+                    Range<int>.Empty
+                }),
+                new RangeCollection<int>()
+            };
+
+            // An empty Range combined with a single Range
+            yield return new object[]
+            {
+                new RangeCollection<int>(new[]
+                {
+                    Range<int>.Empty,
+                    new Range<int>(0, 10)
+                }),
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(0, 10)
+                })
+            };
+
+            // Two touching Ranges
+            yield return new object[]
+            {
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(0, 10),
+                    new Range<int>(10, 20)
+                }),
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(0, 20)
+                })
+            };
+
+            // Two overlapping Ranges
+            yield return new object[]
+            {
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(0, 10),
+                    new Range<int>(5, 15)
+                }),
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(0, 15)
+                })
+            };
+
+            // Included in the other Range
+            yield return new object[]
+            {
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(0, 20),
+                    new Range<int>(5, 15)
+                }),
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(0, 20)
+                })
+            };
+
+            // Non-overlapping Ranges
+            yield return new object[]
+            {
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(0, 10),
+                    new Range<int>(20, 30)
+                }),
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(0, 10),
+                    new Range<int>(20, 30)
+                })
+            };
+
+            // Mixed case
+            yield return new object[]
+            {
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(2, 10),
+                    new Range<int>(-5, 1),
+                    new Range<int>(30, 30),
+                    new Range<int>(5, 20)
+                }),
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(-5, 1),
+                    new Range<int>(2, 20)
+                })
+            };
+
+            // Complex
+            yield return new object[]
+            {
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(50, 55),
+                    new Range<int>(17, 25),
+                    new Range<int>(3, 7),
+                    new Range<int>(0, 1),
+                    new Range<int>(2, 6),
+                    new Range<int>(4, 9),
+                    new Range<int>(27, 32),
+                    new Range<int>(1, 7),
+                    Range<int>.Empty,
+                    new Range<int>(25, 41)
+                }),
+                new RangeCollection<int>(new[]
+                {
+                    new Range<int>(0, 9),
+                    new Range<int>(17, 41),
+                    new Range<int>(50, 55)
+                })
+            };
         }
     }
 }

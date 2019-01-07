@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -48,6 +49,44 @@ namespace Reynj
                 throw new NotSupportedException("Highest is not supported on an empty RangeCollection.");
 
             return Items.OrderBy(r => r).Last().End;
+        }
+
+        /// <summary>
+        /// Aggregates all <see cref="Range{T}"/> in the <see cref="RangeCollection{T}" />
+        /// Removing the empty Ranges and merging all overlapping and touching Ranges
+        /// </summary>
+        /// <returns>A reduced <see cref="RangeCollection{T}" /></returns>
+        /// <remarks>Does not change the original <see cref="RangeCollection{T}" /></remarks>
+        public RangeCollection<T> Reduce() // Reduce (In functional programming, fold (also termed reduce, accumulate, aggregate, compress, or inject))
+        {
+            return Items
+                .Where(r => !r.IsEmpty()) // Remove all empty Ranges
+                .OrderBy(r => r) // It is easier to aggregate if the Ranges are ordered
+                .Aggregate(
+                    new RangeCollection<T>(),
+                    (rc, r1) =>
+                    {
+                        if (rc.Any())
+                        {
+                            var r2 = rc.Last();
+
+                            if (r1.Overlaps(r2) || r1.Touches(r2))
+                            {
+                                rc.Remove(r2);
+                                rc.Add(r1.Merge(r2));
+                            }
+                            else
+                            {
+                                rc.Add(r1);
+                            }
+                        }
+                        else
+                        {
+                            rc.Add(r1);
+                        }
+
+                        return rc;
+                    });
         }
     }
 }
