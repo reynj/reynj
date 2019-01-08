@@ -138,6 +138,13 @@ namespace Reynj.UnitTests
 
         public static IEnumerable<object[]> ReduceRangeCollectionData()
         {
+            // Empty RangeCollection
+            yield return new object[]
+            {
+                new RangeCollection<int>(),
+                new RangeCollection<int>()
+            };
+
             // A single Range
             yield return new object[]
             {

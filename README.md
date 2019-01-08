@@ -352,10 +352,12 @@ Returns a new RangeCollection<T> where all overlapping and touching Ranges have 
 ```c#
 var rangeCollection = new RangeCollection<int>(new[]
 {
-	new Range<int>(0, 10),
-	new Range<int>(10, 20)
+	new Range<int>(0, 5),
+	new Range<int>(3, 10),
+	new Range<int>(10, 15),
+	new Range<int>(18, 25)
 });
 
 // Reduce
-var reduced = rangeCollection.Reduce(); // returns new RangeCollection<int>(new[] {	new Range<int>(0, 20) }
+var reduced = rangeCollection.Reduce(); // returns new RangeCollection<int>(new[] { new Range<int>(0, 15), new Range<int>(18, 25) }
 ```
