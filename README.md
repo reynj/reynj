@@ -42,7 +42,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
     - [x] Lowest/Highest
 	- [ ] IsContiguous
 	- [x] Reduce
-    - [ ] Sort
+    - [x] Sort
     - [ ] Combine
 	- [ ] Reverse
 - [ ] Serialize/Deserialize
