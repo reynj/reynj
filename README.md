@@ -9,7 +9,7 @@
 
 This implementation is based on the [Range](https://martinfowler.com/eaaDev/Range.html "Martin Fowler Range") class as described by Martin Fowler.
 
-The aim of this library is to provide a base Range class with all possible methods that can be performed on a Range, but also a RangeCollection that can be used to handle and compare list of Ranges.
+The aim of this library is to provide a base Range class with all possible methods that can be performed on a Range, but also extension methods that can be used to handle and compare list of Ranges.
 Below is my list of features I want to implement, feel free to open an issue if something is missing on my list.
 
 - [ ] Range
@@ -37,14 +37,14 @@ Below is my list of features I want to implement, feel free to open an issue if 
     - [ ] DateRange
     - [ ] TimeRange
     - [ ] NumericRange
-- [ ] RangeCollection
+- [ ] Collection of Ranges
   - [ ] Methods
     - [x] Lowest/Highest
 	- [ ] IsContiguous
+	- [x] Reduce
     - [ ] Sort
     - [ ] Combine
 	- [ ] Reverse
-	- [ ] Combine
 - [ ] Serialize/Deserialize
   - [ ] JsonConvertor
   - [ ] Entity Framework/NHibernate support
@@ -302,55 +302,50 @@ var res1 = range1.IsEmpty(); // returns false
 var res2 = range2.IsEmpty(); // returns true
 ```
 
-#### What is a RangeCollection?
-A RangeCollection is a group or list of Ranges of the same type. 
+#### What is a Collection of Ranges?
+A Collection of Ranges is a group or list of Ranges of the same type. 
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSYW5nZUNvbGxlY3Rpb25cbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbNywxMF0gICAgICAgICA6IDIwMTgtMDEtMDEuMDcsIDNoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuICAgIFJhbmdlWzE4LDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xOCwgN2giLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
-![RangeCollection](./images/collection.svg)
+![CollectionOfRanges](./images/collection.svg)
 
-To create a RangeCollection in code, you can do the following:
+To create an IEnumerable<Range<T>> in code, you can do the following:
 
 ```c#
-// Empty collection
-var rangeCollection1 = new RangeCollection<int>();
-
 // Collection based on an IEnumerable<Range<T>>
 var ranges = new List<Range<int>>() {
     new Range<int>(0, 10),
 	new Range<int>(10, 20)
 }
-
-var rangeCollection2 = new RangeCollection<int>(ranges);
 ```
 
-#### What can be done with a RangeCollection?
+#### What can be done with a Collection of Ranges?
 
-##### Methods
+##### Extension Methods
 ###### Lowest() / Highest()
 They return the lowest/highest end/start of the all the Ranges in the collection.
 
 ```c#
-var rangeCollection = new RangeCollection<int>(new List<Range<int>>
+var ranges = new List<Range<int>>
 {
 	new Range<int>(0, 10),
 	new Range<int>(10, 20)
-});
+};
 
 // Lowest
-var lowest = rangeCollection.Lowest(); // returns 0
+var lowest = ranges.Lowest(); // returns 0
 
 // Highest
-var highest = rangeCollection.Highest(); // returns 20
+var highest = ranges.Highest(); // returns 20
 ```
 
 ###### Reduce()
-Returns a new RangeCollection<T> where all overlapping and touching Ranges have been merged and empty Ranges have been removed.
+Returns a new Collection of Ranges where all overlapping and touching Ranges have been merged and empty Ranges have been removed.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSZWR1Y2VcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbMywxMF0gICAgICAgICA6IDIwMTgtMDEtMDEuMDMsIDdoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuICAgIFJhbmdlWzE4LDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xOCwgN2hcblxuICAgIHNlY3Rpb24gUmVkdWNlZFxuICAgIFJhbmdlWzAsMTVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgMTVoXG4gICAgUmFuZ2VbMTgsMjVdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTgsIDdoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
 ![Reduce](./images/reduce.svg)
 
 ```c#
-var rangeCollection = new RangeCollection<int>(new[]
+var ranges = new[]
 {
 	new Range<int>(0, 5),
 	new Range<int>(3, 10),
@@ -359,5 +354,5 @@ var rangeCollection = new RangeCollection<int>(new[]
 });
 
 // Reduce
-var reduced = rangeCollection.Reduce(); // returns new RangeCollection<int>(new[] { new Range<int>(0, 15), new Range<int>(18, 25) }
+var reduced = ranges.Reduce(); // returns new[] { new Range<int>(0, 15), new Range<int>(18, 25) }
 ```

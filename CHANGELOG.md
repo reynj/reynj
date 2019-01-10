@@ -6,7 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Add the Reduce function on a RangeCollection<T>, returns a new RangeCollection<T> where all overlapping and touching Ranges have been merged and empty Ranges have been removed
+- The Reduce method on a IEnumerable<Range<T>>, returns a new IEnumerable<Range<T>> where all overlapping and touching Ranges have been merged and empty Ranges have been removed
+
+### Removed 
+- RangeCollection<T> has been removed in favor of Linq extension methods on IEnumerable<Range<T>>
+
+### Changed
+- The Highest and Lowest methods have been moved to an extension method on IEnumerable<Range<T>>
 
 ## [0.2.0] - 2019-01-02
 ### Added
