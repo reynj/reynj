@@ -43,6 +43,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
 	- [ ] IsContiguous
 	- [x] Reduce
     - [x] Sort
+	- [x] Union
     - [ ] Combine
 	- [ ] Reverse
 - [ ] Serialize/Deserialize
@@ -355,4 +356,29 @@ var ranges = new[]
 
 // Reduce
 var reduced = ranges.Reduce(); // returns new[] { new Range<int>(0, 15), new Range<int>(18, 25) }
+```
+
+###### Union()
+Returns the [union](https://en.wikipedia.org/wiki/Union_(set_theory)) of two Collections of Ranges while reducing them.
+An exception is thrown when one or both of the ranges are null.
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBVbmlvblxuICAgIFxuICAgIHNlY3Rpb24gUmFuZ2VzIDFcbiAgICBSYW5nZVswLDVdICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzMsMTBdICAgICAgICAgOiAyMDE4LTAxLTAxLjAzLCA3aFxuICAgIFJhbmdlWzEwLDE1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xMCwgNWhcblxuXG4gICAgc2VjdGlvbiBSYW5nZXMgMlxuICAgIFJhbmdlWzE1LDE3XSAgICAgICAgIDogMjAxOC0wMS0wMS4xNSwgMmhcbiAgICBSYW5nZVsxOCwyNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTgsIDdoXG5cbiAgICBzZWN0aW9uIFVuaW9uZWRcbiAgICBSYW5nZVswLDE3XSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDAsIDE3aFxuICAgIFJhbmdlWzE4LDI1XSAgICAgICAgIDogYWN0aXZlLCAyMDE4LTAxLTAxLjE4LCA3aCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19)
+![Reduce](./images/union.svg)
+
+```c#
+var ranges1 = new[]
+{
+	new Range<int>(0, 5),
+	new Range<int>(3, 10),
+	new Range<int>(10, 15)
+});
+
+var ranges2 = new[]
+{
+	new Range<int>(15, 17),
+	new Range<int>(18, 25)
+});
+
+// Union
+var unioned = ranges1.Union(ranges2); // returns new[] { new Range<int>(0, 17), new Range<int>(18, 25) }
 ```
