@@ -25,7 +25,7 @@ namespace Reynj.Linq
             return source
                 .Where(r => !r.IsEmpty()) // Remove all empty Ranges
                 .OrderBy(r => r) // It is easier to aggregate if the Ranges are ordered
-                .Aggregate(
+                .Aggregate<Range<T>, ICollection<Range<T>>>(
                     new List<Range<T>>(),
                     (rc, r1) =>
                     {

@@ -7,10 +7,26 @@ using Xunit;
 
 namespace Reynj.UnitTests.Linq
 {
-    public class ReduceTests
+    public class IntersectTests
     {
         [Fact]
-        public void Reduce_WithNull_IsNotPossible()
+        public void Intersect_WithNull_IsNotPossible()
+        {
+            // Arrange
+            IEnumerable<Range<int>> ranges = new Range<int>[] { };
+
+            // Act
+            // ReSharper disable once ExpressionIsAlwaysNull
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Action act = () => ranges.Intersect(null).ToList();
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("second");
+        }
+
+        [Fact]
+        public void Intersect_AsNull_IsNotPossible()
         {
             // Arrange
             IEnumerable<Range<int>> ranges = null;
@@ -18,47 +34,54 @@ namespace Reynj.UnitTests.Linq
             // Act
             // ReSharper disable once ExpressionIsAlwaysNull
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Action act = () => ranges.Reduce().ToList();
+            Action act = () => ranges.Intersect(new Range<int>[] { }).ToList();
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
-                .And.ParamName.Should().Be("source");
+                .And.ParamName.Should().Be("first");
         }
 
         [Theory]
-        [MemberData(nameof(ReduceData))]
-        public void Reduce_ReturnsTheExpectedResult(IEnumerable<Range<int>> ranges, IEnumerable<Range<int>> expectedReduced)
+        [MemberData(nameof(IntersectData))]
+        public void Intersect_ReturnsTheExpectedResult(IEnumerable<Range<int>> first, IEnumerable<Range<int>> second,
+            IEnumerable<Range<int>> expectedUnion)
         {
             // Act
-            var reduced = ranges.Reduce();
+            var intersected = first.Intersect(second);
 
             // Assert
-            reduced.Should().BeEquivalentTo(expectedReduced);
+            intersected.Should().BeEquivalentTo(expectedUnion);
         }
 
         [Theory]
-        [MemberData(nameof(ReduceData))]
-        public void Reduce_ReturnsTheExpectedResult_AlsoForReversedLists(IEnumerable<Range<int>> ranges, IEnumerable<Range<int>> expectedReduced)
+        [MemberData(nameof(IntersectData))]
+        public void Intersect_ReturnsTheExpectedResult_OtherWayAround(IEnumerable<Range<int>> first,
+            IEnumerable<Range<int>> second, IEnumerable<Range<int>> expectedUnion)
         {
             // Act
-            var reduced = ranges.Reverse().Reduce();
+            var intersected = second.Intersect(first);
 
             // Assert
-            reduced.Should().BeEquivalentTo(expectedReduced);
+            intersected.Should().BeEquivalentTo(expectedUnion);
         }
 
-        public static IEnumerable<object[]> ReduceData()
+        public static IEnumerable<object[]> IntersectData()
         {
-            // Empty List
+            // Empty Lists
             yield return new object[]
             {
+                new List<Range<int>>(),
                 new List<Range<int>>(),
                 new List<Range<int>>()
             };
 
-            // A single Range
+            // A single Range that is the same
             yield return new object[]
             {
+                new List<Range<int>>(new[]
+                {
+                    new Range<int>(0, 10)
+                }),
                 new List<Range<int>>(new[]
                 {
                     new Range<int>(0, 10)
@@ -76,6 +99,7 @@ namespace Reynj.UnitTests.Linq
                 {
                     Range<int>.Empty
                 }),
+                new List<Range<int>>(),
                 new List<Range<int>>()
             };
 
@@ -85,6 +109,10 @@ namespace Reynj.UnitTests.Linq
                 new List<Range<int>>(new[]
                 {
                     Range<int>.Empty,
+                    new Range<int>(0, 10)
+                }),
+                new List<Range<int>>(new[]
+                {
                     new Range<int>(0, 10)
                 }),
                 new List<Range<int>>(new[]
@@ -104,20 +132,10 @@ namespace Reynj.UnitTests.Linq
                 new List<Range<int>>(new[]
                 {
                     new Range<int>(0, 20)
-                })
-            };
-
-            // Two overlapping Ranges
-            yield return new object[]
-            {
-                new List<Range<int>>(new[]
-                {
-                    new Range<int>(0, 10),
-                    new Range<int>(5, 15)
                 }),
                 new List<Range<int>>(new[]
                 {
-                    new Range<int>(0, 15)
+                    new Range<int>(0, 20)
                 })
             };
 
@@ -132,6 +150,10 @@ namespace Reynj.UnitTests.Linq
                 new List<Range<int>>(new[]
                 {
                     new Range<int>(0, 20)
+                }),
+                new List<Range<int>>(new[]
+                {
+                    new Range<int>(0, 20)
                 })
             };
 
@@ -140,31 +162,13 @@ namespace Reynj.UnitTests.Linq
             {
                 new List<Range<int>>(new[]
                 {
-                    new Range<int>(0, 10),
-                    new Range<int>(20, 30)
+                    new Range<int>(0, 10)
                 }),
                 new List<Range<int>>(new[]
                 {
-                    new Range<int>(0, 10),
                     new Range<int>(20, 30)
-                })
-            };
-
-            // Mixed case
-            yield return new object[]
-            {
-                new List<Range<int>>(new[]
-                {
-                    new Range<int>(2, 10),
-                    new Range<int>(-5, 1),
-                    new Range<int>(30, 30),
-                    new Range<int>(5, 20)
                 }),
-                new List<Range<int>>(new[]
-                {
-                    new Range<int>(-5, 1),
-                    new Range<int>(2, 20)
-                })
+                new List<Range<int>>()
             };
 
             // Complex
@@ -172,22 +176,21 @@ namespace Reynj.UnitTests.Linq
             {
                 new List<Range<int>>(new[]
                 {
-                    new Range<int>(50, 55),
-                    new Range<int>(17, 25),
-                    new Range<int>(3, 7),
-                    new Range<int>(0, 1),
-                    new Range<int>(2, 6),
-                    new Range<int>(4, 9),
-                    new Range<int>(27, 32),
-                    new Range<int>(1, 7),
-                    Range<int>.Empty,
-                    new Range<int>(25, 41)
+                    new Range<int>(0, 5),
+                    new Range<int>(3, 10),
+                    new Range<int>(10, 15),
+                    new Range<int>(18, 20)
                 }),
                 new List<Range<int>>(new[]
                 {
-                    new Range<int>(0, 9),
-                    new Range<int>(17, 41),
-                    new Range<int>(50, 55)
+                    new Range<int>(1, 8),
+                    new Range<int>(12, 25)
+                }),
+                new List<Range<int>>(new[]
+                {
+                    new Range<int>(1, 8),
+                    new Range<int>(12, 15),
+                    new Range<int>(18, 20)
                 })
             };
         }

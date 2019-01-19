@@ -26,7 +26,7 @@ namespace Reynj.Linq
                 throw new ArgumentNullException(nameof(second));
 
             return first
-                .Concat(second) // Merge the two range collections
+                .Concat(second) // Merge the two range collections (Concat is used instead of Union, because the Reduce removes the doubles)
                 .Reduce(); // Merge overlapping and touching ranges
         }
     }

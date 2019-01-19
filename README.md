@@ -44,6 +44,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
 	- [x] Reduce
     - [x] Sort
 	- [x] Union
+	- [x] Intersect
     - [ ] Combine
 	- [ ] Reverse
 - [ ] Serialize/Deserialize
@@ -381,4 +382,30 @@ var ranges2 = new[]
 
 // Union
 var unioned = ranges1.Union(ranges2); // returns new[] { new Range<int>(0, 17), new Range<int>(18, 25) }
+```
+
+###### Intersect()
+Returns the [intersection](https://en.wikipedia.org/wiki/Intersection_(set_theory)) of two Collections of Ranges while reducing them.
+An exception is thrown when one or both of the ranges are null.
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJbnRlcnNlY3RcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlcyAxXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbMywxMF0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMywgN2hcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTAsIDVoXG4gICAgUmFuZ2VbMTgsMjBdICAgICAgICAgOiAyMDE4LTAxLTAxLjE4LCAyaFxuXG4gICAgc2VjdGlvbiBSYW5nZXMgMlxuICAgIFJhbmdlWzEsOF0gICAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAxLCA3aFxuICAgIFJhbmdlWzEyLDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xMiwgMTNoXG5cbiAgICBzZWN0aW9uIEludGVyc2VjdGlvblxuICAgIFJhbmdlWzEsOF0gICAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDEsIDdoXG4gICAgUmFuZ2VbMTIsMTVdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTIsIDNoXG4gICAgUmFuZ2VbMTgsMjBdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTgsIDJoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
+![Reduce](./images/intersect.svg)
+
+```c#
+var ranges1 = new[]
+{
+	new Range<int>(0, 5),
+	new Range<int>(3, 10),
+	new Range<int>(10, 15),
+	new Range<int>(18, 20)
+});
+
+var ranges2 = new[]
+{
+	new Range<int>(1, 8),
+	new Range<int>(12, 25)
+});
+
+// Intersect
+var intersection = ranges1.Intersect(ranges2); // returns new[] { new Range<int>(1, 8), new Range<int>(12, 15), new Range<int>(18, 20) }
 ```

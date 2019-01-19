@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Reynj.Linq;
 using Xunit;
@@ -16,7 +17,8 @@ namespace Reynj.UnitTests.Linq
 
             // Act
             // ReSharper disable once ExpressionIsAlwaysNull
-            Action act = () => ranges.Union(null);
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Action act = () => ranges.Union(null).ToList();
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
@@ -31,7 +33,8 @@ namespace Reynj.UnitTests.Linq
 
             // Act
             // ReSharper disable once ExpressionIsAlwaysNull
-            Action act = () => ranges.Union(new Range<int>[] { });
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Action act = () => ranges.Union(new Range<int>[] { }).ToList();
 
             // Assert
             act.Should().Throw<ArgumentNullException>()
