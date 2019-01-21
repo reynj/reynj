@@ -116,7 +116,7 @@ namespace Reynj.UnitTests
 
         //    // Act
         //    start.Value = 3;
-            
+
         //    // - Assert
         //    range.Start.Should().Be(new MyComparable { Value = 1 });
         //    range.End.Should().Be(new MyComparable { Value = 2 });
@@ -142,7 +142,7 @@ namespace Reynj.UnitTests
         {
             // Arrange
             var tuple = ((string) null, "2");
-            
+
             // Act
             // ReSharper disable once ObjectCreationAsStatement
             Action act = () => new Range<string>(tuple);
@@ -218,7 +218,8 @@ namespace Reynj.UnitTests
 
         [Theory]
         [MemberData(nameof(IncludesRangeData))]
-        public void Includes_ForRange_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
+        public void Includes_ForRange_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange,
+            bool expectedResult)
         {
             // Act - Assert
             range.Includes(otherRange).Should().Be(expectedResult);
@@ -255,7 +256,7 @@ namespace Reynj.UnitTests
 
             // Act - Assert
             range.IncludesAll(0, 1, 2, 3, 4, 5, 6, 7, 8, 9).Should().BeTrue();
-            range.IncludesAll(new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }).Should().BeTrue();
+            range.IncludesAll(new List<int> {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}).Should().BeTrue();
         }
 
         [Fact]
@@ -266,7 +267,7 @@ namespace Reynj.UnitTests
 
             // Act - Assert
             range.IncludesAll(0, 1, 2, 3, 4, 99, 6, 7, 8, 9).Should().BeFalse();
-            range.IncludesAll(new List<int> {0, 1, 2, 3, 4, 99, 6, 7, 8, 9 }).Should().BeFalse();
+            range.IncludesAll(new List<int> {0, 1, 2, 3, 4, 99, 6, 7, 8, 9}).Should().BeFalse();
         }
 
         [Fact]
@@ -301,7 +302,8 @@ namespace Reynj.UnitTests
 
         [Theory]
         [MemberData(nameof(OverlapsRangeData))]
-        public void Overlaps_ForRange_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
+        public void Overlaps_ForRange_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange,
+            bool expectedResult)
         {
             // Act - Assert
             range.Overlaps(otherRange).Should().Be(expectedResult);
@@ -330,7 +332,8 @@ namespace Reynj.UnitTests
 
         [Theory]
         [MemberData(nameof(TouchesRangeData))]
-        public void Touches_ForRange_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
+        public void Touches_ForRange_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange,
+            bool expectedResult)
         {
             // Act - Assert
             range.Touches(otherRange).Should().Be(expectedResult);
@@ -362,7 +365,8 @@ namespace Reynj.UnitTests
 
         [Theory]
         [MemberData(nameof(GapRangeData))]
-        public void Gap_ReturnsARange_ThatRepresentsTheGapBetweenTwoRanges(Range<int> range, Range<int> otherRange, Range<int> expectedGap)
+        public void Gap_ReturnsARange_ThatRepresentsTheGapBetweenTwoRanges(Range<int> range, Range<int> otherRange,
+            Range<int> expectedGap)
         {
             // Act - Assert
             range.Gap(otherRange).Should().Be(expectedGap);
@@ -373,13 +377,13 @@ namespace Reynj.UnitTests
         public static IEnumerable<object[]> GapRangeData()
         {
             // Both are the same and thus no gap
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(0, 10), Range<int>.Empty };
+            yield return new object[] {new Range<int>(0, 10), new Range<int>(0, 10), Range<int>.Empty};
 
             // Both overlap and thus no gap
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(5, 15), Range<int>.Empty };
+            yield return new object[] {new Range<int>(0, 10), new Range<int>(5, 15), Range<int>.Empty};
 
             // Both touch each other, no gap
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(10, 20), Range<int>.Empty };
+            yield return new object[] {new Range<int>(0, 10), new Range<int>(10, 20), Range<int>.Empty};
 
             // Null or Empty
             yield return new object[] {new Range<int>(0, 10), Range<int>.Empty, Range<int>.Empty};
@@ -396,13 +400,15 @@ namespace Reynj.UnitTests
             // Arrange
             var range = new Range<int>(0, 10);
             var otherRange = new Range<int>(15, 20);
-            
+
             // Act
             Action act = () => range.Merge(otherRange);
 
             // Assert
             act.Should().Throw<ArgumentException>()
-                .And.Message.Should().StartWith("Merging Range(0, 10) with Range(15, 20) is not possible because they do not overlap nor touch each other");
+                .And.Message.Should()
+                .StartWith(
+                    "Merging Range(0, 10) with Range(15, 20) is not possible because they do not overlap nor touch each other");
         }
 
         [Fact]
@@ -411,16 +417,20 @@ namespace Reynj.UnitTests
             // Arrange
             var range = new Range<int>(0, 10);
             var otherRange = Range<int>.Empty;
-            
+
             // Act
             Action act1 = () => range.Merge(otherRange);
             Action act2 = () => otherRange.Merge(range);
 
             // Assert
             act1.Should().Throw<ArgumentException>()
-                .And.Message.Should().StartWith("Merging Range(0, 10) with Range.Empty is not possible because they do not overlap nor touch each other");
+                .And.Message.Should()
+                .StartWith(
+                    "Merging Range(0, 10) with Range.Empty is not possible because they do not overlap nor touch each other");
             act2.Should().Throw<ArgumentException>()
-                .And.Message.Should().StartWith("Merging Range.Empty with Range(0, 10) is not possible because they do not overlap nor touch each other");
+                .And.Message.Should()
+                .StartWith(
+                    "Merging Range.Empty with Range(0, 10) is not possible because they do not overlap nor touch each other");
         }
 
         [Fact]
@@ -428,7 +438,7 @@ namespace Reynj.UnitTests
         {
             // Arrange
             var range = new Range<int>(0, 10);
-            
+
             // Act
             Action act = () => range.Merge(null);
 
@@ -439,7 +449,8 @@ namespace Reynj.UnitTests
 
         [Theory]
         [MemberData(nameof(MergeRangeData))]
-        public void Merge_ReturnsARange_ThatHasTheLowestStartAndHighestEndOfBothRanges(Range<int> range, Range<int> otherRange, Range<int> expectedMerge)
+        public void Merge_ReturnsARange_ThatHasTheLowestStartAndHighestEndOfBothRanges(Range<int> range,
+            Range<int> otherRange, Range<int> expectedMerge)
         {
             // Act - Assert
             range.Merge(otherRange).Should().Be(expectedMerge);
@@ -449,13 +460,13 @@ namespace Reynj.UnitTests
         public static IEnumerable<object[]> MergeRangeData()
         {
             // Both are the same, the merged is the same
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(0, 10), new Range<int>(0, 10) };
+            yield return new object[] {new Range<int>(0, 10), new Range<int>(0, 10), new Range<int>(0, 10)};
 
             // Both overlap
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(5, 15), new Range<int>(0, 15) };
+            yield return new object[] {new Range<int>(0, 10), new Range<int>(5, 15), new Range<int>(0, 15)};
 
             // Both touch each other
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(10, 20), new Range<int>(0, 20) };
+            yield return new object[] {new Range<int>(0, 10), new Range<int>(10, 20), new Range<int>(0, 20)};
         }
 
         [Fact]
@@ -463,13 +474,14 @@ namespace Reynj.UnitTests
         {
             // Arrange
             var range = Range<int>.Empty;
-            
+
             // Act
             Action act = () => range.Split(20);
 
             // Assert
             act.Should().Throw<ArgumentException>()
-                .And.Message.Should().StartWith("Splitting is not possible because the 20 is not included in Range.Empty");
+                .And.Message.Should()
+                .StartWith("Splitting is not possible because the 20 is not included in Range.Empty");
         }
 
         [Fact]
@@ -477,18 +489,20 @@ namespace Reynj.UnitTests
         {
             // Arrange
             var range = new Range<int>(0, 10);
-            
+
             // Act
             Action act = () => range.Split(20);
 
             // Assert
             act.Should().Throw<ArgumentException>()
-                .And.Message.Should().StartWith("Splitting is not possible because the 20 is not included in Range(0, 10)");
+                .And.Message.Should()
+                .StartWith("Splitting is not possible because the 20 is not included in Range(0, 10)");
         }
 
         [Theory]
         [MemberData(nameof(SplitRangeData))]
-        public void Split_ReturnsATupleOfRanges_ThatAreSplitOnTheValue(Range<int> range, int value, (Range<int>, Range<int>) expectedSplit)
+        public void Split_ReturnsATupleOfRanges_ThatAreSplitOnTheValue(Range<int> range, int value,
+            (Range<int>, Range<int>) expectedSplit)
         {
             // Act - Assert
             range.Split(value).Should().Be(expectedSplit);
@@ -497,15 +511,15 @@ namespace Reynj.UnitTests
         public static IEnumerable<object[]> SplitRangeData()
         {
             // Split in the middle
-            yield return new object[] { new Range<int>(0, 10), 5, (new Range<int>(0, 5), new Range<int>(5, 10)) };
-            yield return new object[] { new Range<int>(0, 10), 2, (new Range<int>(0, 2), new Range<int>(2, 10)) };
-            yield return new object[] { new Range<int>(0, 10), 7, (new Range<int>(0, 7), new Range<int>(7, 10)) };
+            yield return new object[] {new Range<int>(0, 10), 5, (new Range<int>(0, 5), new Range<int>(5, 10))};
+            yield return new object[] {new Range<int>(0, 10), 2, (new Range<int>(0, 2), new Range<int>(2, 10))};
+            yield return new object[] {new Range<int>(0, 10), 7, (new Range<int>(0, 7), new Range<int>(7, 10))};
 
             // Split at the start
-            yield return new object[] { new Range<int>(0, 10), 0, (Range<int>.Empty, new Range<int>(0, 10)) };
+            yield return new object[] {new Range<int>(0, 10), 0, (Range<int>.Empty, new Range<int>(0, 10))};
 
             // Split at the end
-            yield return new object[] { new Range<int>(0, 10), 10, (new Range<int>(0, 10), Range<int>.Empty) };
+            yield return new object[] {new Range<int>(0, 10), 10, (new Range<int>(0, 10), Range<int>.Empty)};
         }
 
         [Fact]
@@ -514,13 +528,15 @@ namespace Reynj.UnitTests
             // Arrange
             var range = new Range<int>(0, 10);
             var otherRange = new Range<int>(10, 20);
-            
+
             // Act
             Action act = () => range.Intersection(otherRange);
 
             // Assert
             act.Should().Throw<ArgumentException>()
-                .And.Message.Should().StartWith("Intersecting Range(0, 10) with Range(10, 20) is not possible because they do not overlap each other");
+                .And.Message.Should()
+                .StartWith(
+                    "Intersecting Range(0, 10) with Range(10, 20) is not possible because they do not overlap each other");
         }
 
         [Fact]
@@ -529,16 +545,20 @@ namespace Reynj.UnitTests
             // Arrange
             var range = new Range<int>(0, 10);
             var otherRange = Range<int>.Empty;
-            
+
             // Act
             Action act1 = () => range.Intersection(otherRange);
             Action act2 = () => otherRange.Intersection(range);
 
             // Assert
             act1.Should().Throw<ArgumentException>()
-                .And.Message.Should().StartWith("Intersecting Range(0, 10) with Range.Empty is not possible because they do not overlap each other");
+                .And.Message.Should()
+                .StartWith(
+                    "Intersecting Range(0, 10) with Range.Empty is not possible because they do not overlap each other");
             act2.Should().Throw<ArgumentException>()
-                .And.Message.Should().StartWith("Intersecting Range.Empty with Range(0, 10) is not possible because they do not overlap each other");
+                .And.Message.Should()
+                .StartWith(
+                    "Intersecting Range.Empty with Range(0, 10) is not possible because they do not overlap each other");
         }
 
         [Fact]
@@ -546,7 +566,7 @@ namespace Reynj.UnitTests
         {
             // Arrange
             var range = new Range<int>(0, 10);
-            
+
             // Act
             Action act = () => range.Intersection(null);
 
@@ -557,7 +577,8 @@ namespace Reynj.UnitTests
 
         [Theory]
         [MemberData(nameof(IntersectionRangeData))]
-        public void Intersection_ReturnsARange_ThatHasTheLowestStartAndHighestEndOfBothRanges(Range<int> range, Range<int> otherRange, Range<int> expectedIntersection)
+        public void Intersection_ReturnsARange_ThatHasTheLowestStartAndHighestEndOfBothRanges(Range<int> range,
+            Range<int> otherRange, Range<int> expectedIntersection)
         {
             // Act - Assert
             range.Intersection(otherRange).Should().Be(expectedIntersection);
@@ -567,10 +588,10 @@ namespace Reynj.UnitTests
         public static IEnumerable<object[]> IntersectionRangeData()
         {
             // Both are the same, the intersection is the same
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(0, 10), new Range<int>(0, 10) };
+            yield return new object[] {new Range<int>(0, 10), new Range<int>(0, 10), new Range<int>(0, 10)};
 
             // Both overlap
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(5, 15), new Range<int>(5, 10) };
+            yield return new object[] {new Range<int>(0, 10), new Range<int>(5, 15), new Range<int>(5, 10)};
         }
 
         [Fact]
@@ -579,7 +600,7 @@ namespace Reynj.UnitTests
             // Arrange
             var range = new Range<int>(0, 10);
             var otherRange = new Range<int>(0, 10);
-            
+
             // Act
             Action act = () => range.Exclusive(otherRange);
 
@@ -593,7 +614,7 @@ namespace Reynj.UnitTests
         {
             // Arrange
             var range = new Range<int>(0, 10);
-            
+
             // Act
             Action act = () => range.Exclusive(null);
 
@@ -604,7 +625,8 @@ namespace Reynj.UnitTests
 
         [Theory]
         [MemberData(nameof(ExclusiveRangeData))]
-        public void Exclusive_ReturnsATupleOfRanges_ThatRepresentTheNonOverlappingParts(Range<int> range, Range<int> otherRange, (Range<int>, Range<int>) expectedExclusive)
+        public void Exclusive_ReturnsATupleOfRanges_ThatRepresentTheNonOverlappingParts(Range<int> range,
+            Range<int> otherRange, (Range<int>, Range<int>) expectedExclusive)
         {
             // Act - Assert
             range.Exclusive(otherRange).Should().Be(expectedExclusive);
@@ -613,28 +635,42 @@ namespace Reynj.UnitTests
         public static IEnumerable<object[]> ExclusiveRangeData()
         {
             // Includes (subset)
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(0, 5), (Range<int>.Empty, new Range<int>(5, 10)) };
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(5, 10), (new Range<int>(0, 5), Range<int>.Empty) };
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(2, 7), (new Range<int>(0, 2), new Range<int>(7, 10)) };
+            yield return new object[]
+                {new Range<int>(0, 10), new Range<int>(0, 5), (Range<int>.Empty, new Range<int>(5, 10))};
+            yield return new object[]
+                {new Range<int>(0, 10), new Range<int>(5, 10), (new Range<int>(0, 5), Range<int>.Empty)};
+            yield return new object[]
+                {new Range<int>(0, 10), new Range<int>(2, 7), (new Range<int>(0, 2), new Range<int>(7, 10))};
 
             // Includes (superset)
-            yield return new object[] { new Range<int>(0, 5), new Range<int>(0, 10), (Range<int>.Empty, new Range<int>(5, 10)) };
-            yield return new object[] { new Range<int>(5, 10), new Range<int>(0, 10), (new Range<int>(0, 5), Range<int>.Empty) };
-            yield return new object[] { new Range<int>(2, 7), new Range<int>(0, 10), (new Range<int>(0, 2), new Range<int>(7, 10)) };
+            yield return new object[]
+                {new Range<int>(0, 5), new Range<int>(0, 10), (Range<int>.Empty, new Range<int>(5, 10))};
+            yield return new object[]
+                {new Range<int>(5, 10), new Range<int>(0, 10), (new Range<int>(0, 5), Range<int>.Empty)};
+            yield return new object[]
+                {new Range<int>(2, 7), new Range<int>(0, 10), (new Range<int>(0, 2), new Range<int>(7, 10))};
 
             // Overlaps
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(5, 15), (new Range<int>(0, 5), new Range<int>(10, 15)) };
-            yield return new object[] { new Range<int>(5, 15), new Range<int>(0, 10), (new Range<int>(0, 5), new Range<int>(10, 15)) };
+            yield return new object[]
+                {new Range<int>(0, 10), new Range<int>(5, 15), (new Range<int>(0, 5), new Range<int>(10, 15))};
+            yield return new object[]
+                {new Range<int>(5, 15), new Range<int>(0, 10), (new Range<int>(0, 5), new Range<int>(10, 15))};
 
             // Already exclusive
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(10, 20), (new Range<int>(0, 10), new Range<int>(10, 20)) };
-            yield return new object[] { new Range<int>(0, 5), new Range<int>(10, 15), (new Range<int>(0, 5), new Range<int>(10, 15)) };
+            yield return new object[]
+                {new Range<int>(0, 10), new Range<int>(10, 20), (new Range<int>(0, 10), new Range<int>(10, 20))};
+            yield return new object[]
+                {new Range<int>(0, 5), new Range<int>(10, 15), (new Range<int>(0, 5), new Range<int>(10, 15))};
 
             //  Empty
-            yield return new object[] { new Range<int>(0, 10), Range<int>.Empty, (new Range<int>(0, 10), Range<int>.Empty) };
-            yield return new object[] { Range<int>.Empty, new Range<int>(0, 10), (Range<int>.Empty, new Range<int>(0, 10)) };
-            yield return new object[] { new Range<int>(0, 10), new Range<int>(10, 10), (new Range<int>(0, 10), Range<int>.Empty) };
-            yield return new object[] { new Range<int>(10, 10), new Range<int>(0, 10), (Range<int>.Empty, new Range<int>(0, 10)) };
+            yield return new object[]
+                {new Range<int>(0, 10), Range<int>.Empty, (new Range<int>(0, 10), Range<int>.Empty)};
+            yield return new object[]
+                {Range<int>.Empty, new Range<int>(0, 10), (Range<int>.Empty, new Range<int>(0, 10))};
+            yield return new object[]
+                {new Range<int>(0, 10), new Range<int>(10, 10), (new Range<int>(0, 10), Range<int>.Empty)};
+            yield return new object[]
+                {new Range<int>(10, 10), new Range<int>(0, 10), (Range<int>.Empty, new Range<int>(0, 10))};
         }
 
         [Fact]
@@ -799,11 +835,11 @@ namespace Reynj.UnitTests
 
         public static IEnumerable<object[]> CompareToWhenOtherIsEmptyData()
         {
-            yield return new object[] {new Range<int>(1, 99), Range<int>.Empty };
-            yield return new object[] {new Range<int>(-99, -1), Range<int>.Empty };
+            yield return new object[] {new Range<int>(1, 99), Range<int>.Empty};
+            yield return new object[] {new Range<int>(-99, -1), Range<int>.Empty};
 
-            yield return new object[] {new Range<int>(1, 99), new Range<int>(99, 99) };
-            yield return new object[] {new Range<int>(-99, -1), new Range<int>(-99, -99) };
+            yield return new object[] {new Range<int>(1, 99), new Range<int>(99, 99)};
+            yield return new object[] {new Range<int>(-99, -1), new Range<int>(-99, -99)};
         }
 
         [Theory]
@@ -824,6 +860,70 @@ namespace Reynj.UnitTests
 
             yield return new object[] {new Range<int>(99, 99), new Range<int>(1, 99)};
             yield return new object[] {new Range<int>(-99, -99), new Range<int>(-99, -1)};
+        }
+
+        [Theory]
+        [MemberData(nameof(IsCompletelyBeforeData))]
+        public void IsCompletelyBefore_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange,
+            bool expectedResult)
+        {
+            // Act - Assert
+            range.IsCompletelyBefore(otherRange).Should().Be(expectedResult);
+        }
+
+        public static IEnumerable<object[]> IsCompletelyBeforeData()
+        {
+            // Completely Before
+            yield return new object[] {new Range<int>(1, 5), new Range<int>(10, 20), true};
+
+            // Touching
+            yield return new object[] {new Range<int>(1, 10), new Range<int>(10, 20), false};
+            yield return new object[] {new Range<int>(20, 30), new Range<int>(10, 20), false};
+
+            // Overlapping
+            yield return new object[] {new Range<int>(1, 15), new Range<int>(10, 20), false};
+            yield return new object[] {new Range<int>(15, 25), new Range<int>(10, 20), false};
+
+            // Completely Behind
+            yield return new object[] {new Range<int>(25, 30), new Range<int>(10, 20), false};
+
+            // Empty / null
+            yield return new object[] {new Range<int>(0, 10), null, false};
+            yield return new object[] {new Range<int>(0, 10), Range<int>.Empty, false};
+            yield return new object[] {Range<int>.Empty, Range<int>.Empty, false};
+            yield return new object[] {Range<int>.Empty, new Range<int>(0, 10), true};
+        }
+
+        [Theory]
+        [MemberData(nameof(IsCompletelyBehindData))]
+        public void IsCompletelyBehind_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange,
+            bool expectedResult)
+        {
+            // Act - Assert
+            range.IsCompletelyBehind(otherRange).Should().Be(expectedResult);
+        }
+
+        public static IEnumerable<object[]> IsCompletelyBehindData()
+        {
+            // Completely Behind
+            yield return new object[] {new Range<int>(25, 30), new Range<int>(10, 20), true};
+
+            // Touching
+            yield return new object[] {new Range<int>(20, 30), new Range<int>(10, 20), false};
+            yield return new object[] {new Range<int>(1, 10), new Range<int>(10, 20), false};
+
+            // Overlapping
+            yield return new object[] {new Range<int>(15, 25), new Range<int>(10, 20), false};
+            yield return new object[] {new Range<int>(1, 15), new Range<int>(10, 20), false};
+
+            // Completely Before
+            yield return new object[] {new Range<int>(1, 5), new Range<int>(10, 20), false};
+
+            // Empty
+            yield return new object[] {new Range<int>(0, 10), null, true};
+            yield return new object[] {new Range<int>(0, 10), Range<int>.Empty, true};
+            yield return new object[] {Range<int>.Empty, Range<int>.Empty, false};
+            yield return new object[] {Range<int>.Empty, new Range<int>(0, 10), false};
         }
 
         [Fact]
@@ -968,7 +1068,8 @@ namespace Reynj.UnitTests
 
         [Theory]
         [MemberData(nameof(GreaterThanOperatorData))]
-        public void GreaterThanOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
+        public void GreaterThanOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange,
+            bool expectedResult)
         {
             // Act - Assert
             (range > otherRange).Should().Be(expectedResult);
@@ -994,15 +1095,16 @@ namespace Reynj.UnitTests
             yield return new object[] {null, new Range<int>(1, 99), false};
 
             // Empty
-            yield return new object[] { new Range<int>(1, 99), Range<int>.Empty, true };
-            yield return new object[] { Range<int>.Empty, new Range<int>(1, 99), false };
-            yield return new object[] { new Range<int>(-99, -1), Range<int>.Empty, true };
-            yield return new object[] { Range<int>.Empty, new Range<int>(-99, -1), false };
+            yield return new object[] {new Range<int>(1, 99), Range<int>.Empty, true};
+            yield return new object[] {Range<int>.Empty, new Range<int>(1, 99), false};
+            yield return new object[] {new Range<int>(-99, -1), Range<int>.Empty, true};
+            yield return new object[] {Range<int>.Empty, new Range<int>(-99, -1), false};
         }
 
         [Theory]
         [MemberData(nameof(LessThanOperatorData))]
-        public void LessThanOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
+        public void LessThanOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange,
+            bool expectedResult)
         {
             // Act - Assert
             (range < otherRange).Should().Be(expectedResult);
@@ -1028,15 +1130,16 @@ namespace Reynj.UnitTests
             yield return new object[] {null, new Range<int>(1, 99), true};
 
             // Empty
-            yield return new object[] { new Range<int>(1, 99), Range<int>.Empty, false };
-            yield return new object[] { Range<int>.Empty, new Range<int>(1, 99), true };
-            yield return new object[] { new Range<int>(-99, -1), Range<int>.Empty, false };
-            yield return new object[] { Range<int>.Empty, new Range<int>(-99, -1), true };
+            yield return new object[] {new Range<int>(1, 99), Range<int>.Empty, false};
+            yield return new object[] {Range<int>.Empty, new Range<int>(1, 99), true};
+            yield return new object[] {new Range<int>(-99, -1), Range<int>.Empty, false};
+            yield return new object[] {Range<int>.Empty, new Range<int>(-99, -1), true};
         }
 
         [Theory]
         [MemberData(nameof(GreaterThanOrEqualOperatorData))]
-        public void GreaterThanOrEqualOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
+        public void GreaterThanOrEqualOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange,
+            bool expectedResult)
         {
             // Act - Assert
             (range >= otherRange).Should().Be(expectedResult);
@@ -1062,18 +1165,19 @@ namespace Reynj.UnitTests
             yield return new object[] {null, new Range<int>(1, 99), false};
 
             // Empty
-            yield return new object[] { Range<int>.Empty, Range<int>.Empty, true };
-            yield return new object[] { new Range<int>(-99, -99), new Range<int>(99, 99), true };
+            yield return new object[] {Range<int>.Empty, Range<int>.Empty, true};
+            yield return new object[] {new Range<int>(-99, -99), new Range<int>(99, 99), true};
 
-            yield return new object[] { new Range<int>(1, 99), Range<int>.Empty, true };
-            yield return new object[] { Range<int>.Empty, new Range<int>(1, 99), false };
-            yield return new object[] { new Range<int>(-99, -1), Range<int>.Empty, true };
-            yield return new object[] { Range<int>.Empty, new Range<int>(-99, -1), false };
+            yield return new object[] {new Range<int>(1, 99), Range<int>.Empty, true};
+            yield return new object[] {Range<int>.Empty, new Range<int>(1, 99), false};
+            yield return new object[] {new Range<int>(-99, -1), Range<int>.Empty, true};
+            yield return new object[] {Range<int>.Empty, new Range<int>(-99, -1), false};
         }
 
         [Theory]
         [MemberData(nameof(LessThanOrEqualOperatorData))]
-        public void LessThanOrEqualOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
+        public void LessThanOrEqualOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange,
+            bool expectedResult)
         {
             // Act - Assert
             (range <= otherRange).Should().Be(expectedResult);
@@ -1099,13 +1203,13 @@ namespace Reynj.UnitTests
             yield return new object[] {null, new Range<int>(1, 99), true};
 
             // Empty
-            yield return new object[] { Range<int>.Empty, Range<int>.Empty, true };
-            yield return new object[] { new Range<int>(-99, -99), new Range<int>(99, 99), true };
+            yield return new object[] {Range<int>.Empty, Range<int>.Empty, true};
+            yield return new object[] {new Range<int>(-99, -99), new Range<int>(99, 99), true};
 
-            yield return new object[] { new Range<int>(1, 99), Range<int>.Empty, false };
-            yield return new object[] { Range<int>.Empty, new Range<int>(1, 99), true };
-            yield return new object[] { new Range<int>(-99, -1), Range<int>.Empty, false };
-            yield return new object[] { Range<int>.Empty, new Range<int>(-99, -1), true };
+            yield return new object[] {new Range<int>(1, 99), Range<int>.Empty, false};
+            yield return new object[] {Range<int>.Empty, new Range<int>(1, 99), true};
+            yield return new object[] {new Range<int>(-99, -1), Range<int>.Empty, false};
+            yield return new object[] {Range<int>.Empty, new Range<int>(-99, -1), true};
         }
 
         [Theory]
@@ -1122,7 +1226,7 @@ namespace Reynj.UnitTests
         {
             // Arrange
             var range = new Range<int>(0, 10);
-            
+
             // Act
             Func<object> act1 = () => range | null;
             Func<object> act2 = () => null | range;
@@ -1136,7 +1240,8 @@ namespace Reynj.UnitTests
 
         [Theory]
         [MemberData(nameof(IntersectionRangeData))]
-        public void AndOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, Range<int> expectedAnd)
+        public void AndOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange,
+            Range<int> expectedAnd)
         {
             // Act - Assert
             (range & otherRange).Should().Be(expectedAnd);
@@ -1148,7 +1253,7 @@ namespace Reynj.UnitTests
         {
             // Arrange
             var range = new Range<int>(0, 10);
-            
+
             // Act
             Func<object> act1 = () => range & null;
             Func<object> act2 = () => null & range;
@@ -1162,7 +1267,8 @@ namespace Reynj.UnitTests
 
         [Theory]
         [MemberData(nameof(ExclusiveRangeData))]
-        public void XorOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, ValueTuple<Range<int>, Range<int>> expectedXor)
+        public void XorOperator_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange,
+            ValueTuple<Range<int>, Range<int>> expectedXor)
         {
             // Act - Assert
             (range ^ otherRange).Should().Be(expectedXor);
@@ -1174,7 +1280,7 @@ namespace Reynj.UnitTests
         {
             // Arrange
             var range = new Range<int>(0, 10);
-            
+
             // Act
             Func<object> act1 = () => range ^ null;
             Func<object> act2 = () => null ^ range;
@@ -1194,7 +1300,7 @@ namespace Reynj.UnitTests
 
             // Act
             var range = (Range<int>) tuple;
-            
+
             // - Assert
             range.Should().Be(new Range<int>(1, 10));
         }
@@ -1218,7 +1324,7 @@ namespace Reynj.UnitTests
 
             // Act
             ValueTuple<int, int> tuple = range;
-            
+
             // - Assert
             tuple.Should().Be((1, 10));
         }
@@ -1227,8 +1333,8 @@ namespace Reynj.UnitTests
         public void ImplicitConversionOperator_WithNull_IsNotPossible()
         {
             // Arrange - Act
-            Func<(int, int)> act = () =>  (ValueTuple<int, int>) (Range<int>) null;
-            
+            Func<(int, int)> act = () => (ValueTuple<int, int>) (Range<int>) null;
+
             // - Assert
             act.Should().Throw<ArgumentNullException>()
                 .And.ParamName.Should().Be("range");

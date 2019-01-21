@@ -44,9 +44,8 @@ namespace Reynj.Linq
             // Loop over the first list and find the overlapping ranges with the second list, then return the intersection
             return firstReduced
                 .SelectMany(firstRange => secondReduced
-                    // TODO: Skip all ranges that are completely lower than the first range and stop when they are completely higher then the first range
-                    //.SkipWhile(secondRange => secondRange.Start.CompareTo(firstRange.End) >= 0)
-                    //.TakeWhile(secondRange => secondRange.End.CompareTo(firstRange.Start) >= 0)
+                    .SkipWhile(secondRange =>  firstRange.IsCompletelyBefore(secondRange) || secondRange.IsCompletelyBefore(firstRange))
+                    .TakeWhile(secondRange => !(firstRange.IsCompletelyBehind(secondRange) || secondRange.IsCompletelyBehind(firstRange)))
                     .Where(firstRange.Overlaps)
                     .Select(firstRange.Intersection));
         }

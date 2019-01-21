@@ -363,6 +363,58 @@ namespace Reynj
         }
 
         /// <summary>
+        /// Determines whether the specified <see cref="Range{T}"/> is greater than the current <see cref="Range{T}"/>, but without touching or overlapping each other.
+        /// </summary>
+        /// <param name="other">The <see cref="Range{T}"/> to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="Range{T}"/> is lower than the current <see cref="Range{T}"/> and does not touch nor overlaps it; otherwise, false.</returns>
+        public bool IsCompletelyBefore(Range<T> other)
+        {
+            // If other is not a valid object reference, this instance is greater
+            if (other is null)
+                return false;
+
+            // Both are empty, then they are the same
+            if (IsEmpty() && other.IsEmpty())
+                return false;
+
+            // If other is empty, then this instance is greater
+            if (other.IsEmpty())
+                return false;
+
+            // If current is empty, than this instance is lower
+            if (IsEmpty())
+                return true;
+
+            return _end.CompareTo(other._start) < 0;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="Range{T}"/> is lower than the current <see cref="Range{T}"/>, but without touching or overlapping each other.
+        /// </summary>
+        /// <param name="other">The <see cref="Range{T}"/> to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="Range{T}"/> is greater than the current <see cref="Range{T}"/> and does not touch nor overlaps it; otherwise, false.</returns>
+        public bool IsCompletelyBehind(Range<T> other)
+        {
+            // If other is not a valid object reference, this instance is greater
+            if (other is null)
+                return true;
+
+            // Both are empty, then they are the same
+            if (IsEmpty() && other.IsEmpty())
+                return false;
+
+            // If other is empty, then this instance is greater
+            if (other.IsEmpty())
+                return true;
+
+            // If current is empty, than this instance is lower
+            if (IsEmpty())
+                return false;
+
+            return _start.CompareTo(other._end) > 0;
+        }
+
+        /// <summary>
         /// Returns the <see cref="Range{T}"/> as <see cref="ValueTuple{T, T}"/>
         /// </summary>
         /// <returns><see cref="ValueTuple{T, T}"/></returns>

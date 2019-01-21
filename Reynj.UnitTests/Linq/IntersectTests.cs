@@ -55,8 +55,7 @@ namespace Reynj.UnitTests.Linq
 
         [Theory]
         [MemberData(nameof(IntersectData))]
-        public void Intersect_ReturnsTheExpectedResult_OtherWayAround(IEnumerable<Range<int>> first,
-            IEnumerable<Range<int>> second, IEnumerable<Range<int>> expectedUnion)
+        public void Intersect_ReturnsTheExpectedResult_OtherWayAround(IEnumerable<Range<int>> first, IEnumerable<Range<int>> second, IEnumerable<Range<int>> expectedUnion)
         {
             // Act
             var intersected = second.Intersect(first);
@@ -171,9 +170,9 @@ namespace Reynj.UnitTests.Linq
                 new List<Range<int>>()
             };
 
-            // Complex
-            yield return new object[]
-            {
+           // Complex
+           yield return new object[]
+           {
                 new List<Range<int>>(new[]
                 {
                     new Range<int>(0, 5),
@@ -191,6 +190,31 @@ namespace Reynj.UnitTests.Linq
                     new Range<int>(1, 8),
                     new Range<int>(12, 15),
                     new Range<int>(18, 20)
+                })
+           };
+
+            // More Complex
+            yield return new object[]
+            {
+                new List<Range<int>>(new[]
+                {
+                    new Range<int>(0, 5),
+                    new Range<int>(10, 15),
+                    new Range<int>(20, 25)
+                }),
+                new List<Range<int>>(new[]
+                {
+                    new Range<int>(-5, -2),
+                    new Range<int>(2, 7),
+                    new Range<int>(12, 17),
+                    new Range<int>(22, 27),
+                    new Range<int>(32, 37)
+                }),
+                new List<Range<int>>(new[]
+                {
+                    new Range<int>(2, 5),
+                    new Range<int>(12, 15),
+                    new Range<int>(22, 25)
                 })
             };
         }
