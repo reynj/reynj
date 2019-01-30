@@ -45,8 +45,8 @@ Below is my list of features I want to implement, feel free to open an issue if 
     - [x] Sort
 	- [x] Union
 	- [x] Intersect
-    - [ ] Combine
-	- [ ] Reverse
+    - [x] Inverse
+	- [ ] Exclusive
 - [ ] Serialize/Deserialize
   - [ ] JsonConvertor
   - [ ] Entity Framework/NHibernate support
@@ -408,4 +408,24 @@ var ranges2 = new[]
 
 // Intersect
 var intersection = ranges1.Intersect(ranges2); // returns new[] { new Range<int>(1, 8), new Range<int>(12, 15), new Range<int>(18, 20) }
+```
+
+###### Inverse()
+Returns a new Collection of Ranges that is the inversion of the the Ranges. Meaning all gaps between the ranges are returned including the gap between the minvalue and the first start and the last end and the maxvalue.
+Also known as [complement](https://en.wikipedia.org/wiki/Complement_(set_theory)).
+An exception is thrown when the type of Range has no MinValue and MaxValue or when they are not passed.
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJbnZlcnNlXG4gICAgXG4gICAgc2VjdGlvbiBSYW5nZXNcbiAgICBSYW5nZVswLDVdICAgICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTAsIDVoXG4gICAgUmFuZ2VbMTgsMjBdICAgICAgICAgOiAyMDE4LTAxLTAxLjE4LCAyaFxuXG4gICAgc2VjdGlvbiBJbnZlcnNpb25cbiAgICBSYW5nZVst4oieLCAwXSAgICAgICAgIDogYWN0aXZlLCAyMDE3LTEyLTMxLjIxLCAzaFxuICAgIFJhbmdlWzUsMTBdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wNSwgNWhcbiAgICBSYW5nZVsxNSwyOF0gICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4xNSwgM2hcbiAgICBSYW5nZVsyMCwr4oieXSAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMjAsIDNoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
+![Reduce](./images/inverse.svg)
+
+```c#
+var ranges = new[]
+{
+	new Range<int>(0, 5),
+	new Range<int>(10, 15),
+	new Range<int>(18, 20)
+});
+
+// Inverse
+var inversion = ranges.Inverse(); // returns new[] { new Range<int>(int.MinValie, 0), new Range<int>(5, 10), new Range<int>(15, 18), new Range<int>(20, int.MaxValue) }
 ```
