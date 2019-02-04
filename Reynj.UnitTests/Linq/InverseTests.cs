@@ -25,9 +25,25 @@ namespace Reynj.UnitTests.Linq
                 .And.ParamName.Should().Be("source");
         }
 
+        [Fact]
+        public void Inverse_MinValueMustBeLessThanOrEqualToMaxValue()
+        {
+            // Arrange
+            IEnumerable<Range<int>> ranges = new List<Range<int>>();
+
+            // Act
+            // ReSharper disable once ExpressionIsAlwaysNull
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Action act = () => ranges.Inverse(10, -10).ToList();
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+                .And.Message.Should().StartWith("maxValue must be greater than or equal to minValue");
+        }
+
         [Theory]
-        [MemberData(nameof(InverseData))]
-        public void Inverse_ReturnsTheExpectedResult(IEnumerable<Range<int>> ranges, IEnumerable<Range<int>> expectedInversed)
+        [MemberData(nameof(InverseValueTypeData))]
+        public void Inverse_ValueType_ReturnsTheExpectedResult(IEnumerable<Range<int>> ranges, IEnumerable<Range<int>> expectedInversed)
         {
             // Act
             var reduced = ranges.Inverse();
@@ -37,17 +53,17 @@ namespace Reynj.UnitTests.Linq
         }
 
         [Theory]
-        [MemberData(nameof(InverseData))]
-        public void Inverse_ReturnsTheExpectedResult_AlsoForReversedLists(IEnumerable<Range<int>> ranges, IEnumerable<Range<int>> expectedInversed)
+        [MemberData(nameof(InverseValueTypeData))]
+        public void Inverse_ValueType_ReturnsTheExpectedResult_AlsoForReversedLists(IEnumerable<Range<int>> ranges, IEnumerable<Range<int>> expectedInversed)
         {
             // Act
-            var reduced = ranges.Inverse().Reduce();
+            var reduced = ranges.Inverse();
 
             // Assert
             reduced.Should().BeEquivalentTo(expectedInversed);
         }
 
-        public static IEnumerable<object[]> InverseData()
+        public static IEnumerable<object[]> InverseValueTypeData()
         {
             // Empty List
             yield return new object[]
@@ -264,6 +280,259 @@ namespace Reynj.UnitTests.Linq
                     new Range<int>(9, 17),
                     new Range<int>(41, 50),
                     new Range<int>(55, 100)
+                })
+            };
+        }
+
+        [Theory]
+        [MemberData(nameof(InverseReferenceTypeData))]
+        public void Inverse_ReferenceType_ReturnsTheExpectedResult(IEnumerable<Range<Version>> ranges, IEnumerable<Range<Version>> expectedInversed)
+        {
+            // Arrange
+            var minValue = new Version(0, 0, 0, 0);
+            var maxValue = new Version(9999, 9999, 9999, 99999);
+
+            // Act
+            var reduced = ranges.Inverse(minValue, maxValue);
+
+            // Assert
+            reduced.Should().BeEquivalentTo(expectedInversed);
+        }
+
+        [Theory]
+        [MemberData(nameof(InverseReferenceTypeData))]
+        public void Inverse_ReferenceType_ReturnsTheExpectedResult_AlsoForReversedLists(IEnumerable<Range<Version>> ranges, IEnumerable<Range<Version>> expectedInversed)
+        {
+            // Arrange
+            var minValue = new Version(0, 0, 0, 0);
+            var maxValue = new Version(9999, 9999, 9999, 99999);
+
+            // Act
+            var reduced = ranges.Inverse(minValue, maxValue);
+
+            // Assert
+            reduced.Should().BeEquivalentTo(expectedInversed);
+        }
+
+        public static IEnumerable<object[]> InverseReferenceTypeData()
+        {
+            var minValue = new Version(0, 0, 0, 0);
+            var maxValue = new Version(9999, 9999, 9999, 99999);
+
+            // Empty List
+            yield return new object[]
+            {
+                new List<Range<Version>>(),
+                new List<Range<Version>>
+                {
+                    new Range<Version>(minValue, maxValue)
+                }
+            };
+
+            // A single Range
+            yield return new object[]
+            {
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(new Version("0.0.10.0"), new Version("10.0.0.0"))
+                }),
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(minValue, new Version("0.0.10.0")),
+                    new Range<Version>(new Version("10.0.0.0"), maxValue)
+                })
+            };
+
+            // Range that goes from MinValue to MaxValue
+            yield return new object[]
+            {
+                new List<Range<Version>>
+                {
+                    new Range<Version>(minValue, maxValue)
+                },
+                new List<Range<Version>>()
+            };
+
+            // An empty Range
+            yield return new object[]
+            {
+                new List<Range<Version>>(new[]
+                {
+                    Range<Version>.Empty
+                }),
+                new List<Range<Version>>
+                {
+                    new Range<Version>(minValue, maxValue)
+                }
+            };
+
+            // An empty Range combined with a single Range
+            yield return new object[]
+            {
+                new List<Range<Version>>(new[]
+                {
+                    Range<Version>.Empty,
+                    new Range<Version>(new Version("0.0.10.0"), new Version("10.0.0.0"))
+                }),
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(minValue, new Version("0.0.10.0")),
+                    new Range<Version>(new Version("10.0.0.0"), maxValue)
+                })
+            };
+
+            // Two touching Ranges
+            yield return new object[]
+            {
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(new Version("0.0.10.0"), new Version("10.0.0.0")),
+                    new Range<Version>(new Version("10.0.0.0"), new Version("10.2.0.0"))
+                }),
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(minValue, new Version("0.0.10.0")),
+                    new Range<Version>(new Version("10.2.0.0"), maxValue)
+                })
+            };
+
+            // Two overlapping Ranges
+            yield return new object[]
+            {
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(new Version("0.0.10.0"), new Version("10.0.0.0")),
+                    new Range<Version>(new Version("0.5.0.0"), new Version("10.5.0.0"))
+                }),
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(minValue, new Version("0.0.10.0")),
+                    new Range<Version>(new Version("10.5.0.0"), maxValue)
+                })
+            };
+
+            // Included in the other Range
+            yield return new object[]
+            {
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(new Version("0.0.10.0"), new Version("10.20.0.0")),
+                    new Range<Version>(new Version("0.5.0.0"), new Version("10.5.0.0"))
+                }),
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(minValue, new Version("0.0.10.0")),
+                    new Range<Version>(new Version("10.20.0.0"), maxValue)
+                })
+            };
+
+            // Non-overlapping Ranges
+            yield return new object[]
+            {
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(new Version("0.0.10.0"), new Version("10.0.0.0")),
+                    new Range<Version>(new Version("10.20.0.0"), new Version("30.3.3.3"))
+                }),
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(minValue, new Version("0.0.10.0")),
+                    new Range<Version>(new Version("10.0.0.0"), new Version("10.20.0.0")),
+                    new Range<Version>(new Version("30.3.3.3"), maxValue)
+                })
+            };
+
+            // Mixed case
+            yield return new object[]
+            {
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(new Version("0.2.0.0"), new Version("0.10.0.0")),
+                    new Range<Version>(new Version("0.0.00.05"), new Version("0.0.1.01")),
+                    new Range<Version>(new Version("0.0.30.0"), new Version("0.0.30.0")),
+                    new Range<Version>(new Version("0.5.0.0"), new Version("0.20.0.0"))
+                }),
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(minValue, new Version("0.0.00.05")),
+                    new Range<Version>(new Version("0.0.1.01"), new Version("0.2.0.0")),
+                    new Range<Version>(new Version("0.20.0.0"), maxValue)
+                })
+            };
+
+            // Complex
+            yield return new object[]
+            {
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(new Version("50.0"), new Version("55.0")),
+                    new Range<Version>(new Version("17.0"), new Version("25.0")),
+                    new Range<Version>(new Version("3.0"), new Version("7.0")),
+                    new Range<Version>(new Version("0.0.0.00001"), new Version("1.0")),
+                    new Range<Version>(new Version("2.0"), new Version("6.0")),
+                    new Range<Version>(new Version("4.0"), new Version("9.0")),
+                    new Range<Version>(new Version("27.0"), new Version("32.0")),
+                    new Range<Version>(new Version("1.0"), new Version("7.0")),
+                    Range<Version>.Empty,
+                    new Range<Version>(new Version("25.0"), new Version("41.0"))
+                }),
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(minValue, new Version("0.0.0.00001")),
+                    new Range<Version>(new Version("9.0"), new Version("17.0")),
+                    new Range<Version>(new Version("41.0"), new Version("50.0")),
+                    new Range<Version>(new Version("55.0"), maxValue)
+                })
+            };
+
+            // Complex with a MinValue
+            yield return new object[]
+            {
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(new Version("50.0"), new Version("55.0")),
+                    new Range<Version>(new Version("17.0"), new Version("25.0")),
+                    new Range<Version>(new Version("3.0"), new Version("7.0")),
+                    new Range<Version>(new Version("0.0.0.00001"), new Version("1.0")),
+                    new Range<Version>(new Version("2.0"), new Version("6.0")),
+                    new Range<Version>(new Version("4.0"), new Version("9.0")),
+                    new Range<Version>(new Version("27.0"), new Version("32.0")),
+                    new Range<Version>(new Version("1.0"), new Version("7.0")),
+                    Range<Version>.Empty,
+                    new Range<Version>(new Version("25.0"), new Version("41.0")),
+                    new Range<Version>(minValue, new Version("2.0"))
+                }),
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(new Version("9.0"), new Version("17.0")),
+                    new Range<Version>(new Version("41.0"), new Version("50.0")),
+                    new Range<Version>(new Version("55.0"), maxValue)
+                })
+            };
+
+            // Complex with a MaxValue
+            yield return new object[]
+            {
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(new Version("50.0"), new Version("55.0")),
+                    new Range<Version>(new Version("17.0"), new Version("25.0")),
+                    new Range<Version>(new Version("3.0"), new Version("7.0")),
+                    new Range<Version>(new Version("0.0.0.00001"), new Version("1.0")),
+                    new Range<Version>(new Version("2.0"), new Version("6.0")),
+                    new Range<Version>(new Version("4.0"), new Version("9.0")),
+                    new Range<Version>(new Version("27.0"), new Version("32.0")),
+                    new Range<Version>(new Version("1.0"), new Version("7.0")),
+                    Range<Version>.Empty,
+                    new Range<Version>(new Version("25.0"), new Version("41.0")),
+                    new Range<Version>(new Version("100.0"), maxValue)
+                }),
+                new List<Range<Version>>(new[]
+                {
+                    new Range<Version>(minValue, new Version("0.0.0.00001")),
+                    new Range<Version>(new Version("9.0"), new Version("17.0")),
+                    new Range<Version>(new Version("41.0"), new Version("50.0")),
+                    new Range<Version>(new Version("55.0"), new Version("100.0"))
                 })
             };
         }

@@ -136,6 +136,19 @@ namespace Reynj
         /// <returns>true if the specified <see cref="Start"/> is equal to the <see cref="End"/>; otherwise, false.</returns>
         public bool IsEmpty()
         {
+            // Check for null
+            if (_start == null)
+            {
+                if (_end == null)
+                {
+                    // null == null => true
+                    return true;
+                }
+
+                // Only the start is null
+                return false;
+            }
+
             return _start.Equals(_end);
         }
 

@@ -291,10 +291,20 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
-        public void IsEmpty_ReturnsTrue_WhenRangeEmpty()
+        public void IsEmpty_ReturnsTrue_WhenRangeEmpty_ValueType()
         {
             // Arrange 
             var range = Range<int>.Empty;
+
+            // Act - Assert
+            range.IsEmpty().Should().BeTrue();
+        }
+
+        [Fact]
+        public void IsEmpty_ReturnsTrue_WhenRangeEmpty_ReferenceType()
+        {
+            // Arrange 
+            var range = Range<Version>.Empty;
 
             // Act - Assert
             range.IsEmpty().Should().BeTrue();
