@@ -46,6 +46,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
 	- [x] Union
 	- [x] Intersect
     - [x] Inverse
+	- [ ] Difference (Relative complement)
 	- [ ] Exclusive
 - [ ] Serialize/Deserialize
   - [ ] JsonConvertor
@@ -64,7 +65,7 @@ PM> Install-Package Reynj
 
 ### How to use it?
 #### What is a Range?
-A Range is best visualized as a bar. It has a start and en end and contains everything between those two. Below is a visualization of Range of integers that start at 0 and end at 10. All whole numbers between 0 and 10 are included in the Range, except 10.
+A Range is best visualized as a bar. It has a start and an end and contains everything between those two. Below is a visualization of Range of integers that start at 0 and end at 10. All whole numbers between 0 and 10 are included in the Range, except 10.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSYW5nZTxpbnQ-XG4gICAgXG4gICAgUmFuZ2VbMCwxMF0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgMTBoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
 ![Range<int>](./images/range.svg)
@@ -262,7 +263,7 @@ var split = range.Split(5); // returns (new Range<int>(0, 5), new Range<int>(5, 
 ```
 
 ###### Intersection(Range<T> range)
-Intersection returns a new Range that represents the the intersection be, a [Logical conjunction](https://en.wikipedia.org/wiki/Logical_conjunction).
+Intersection returns a new Range that represents the intersection between the current Range and a given Range, a [Logical conjunction](https://en.wikipedia.org/wiki/Logical_conjunction).
 An exception is thrown when the ranges do not overlap each other.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJbnRlcnNlY3Rpb25cbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsMTBdICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCAxMGhcbiAgICBSYW5nZVs1LDIwXSAgICAgICAgIDogMjAxOC0wMS0wMS4wNSwgMTVoXG5cbiAgICBzZWN0aW9uIEludGVyc2VjdGlvblxuICAgIFJhbmdlWzUsMTBdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wNSwgNWgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
@@ -278,7 +279,7 @@ var intersection2 = range1 & range2; // returns new Range<int>(5, 10)
 ```
 
 ###### Exclusive(Range<T> range)
-Exclusive returns a tuple of Ranges that that represent the parts they do not have in common, a [Exclusive or](https://en.wikipedia.org/wiki/Exclusive_or).
+Exclusive returns a tuple of Ranges that that represent the parts they do not have in common, an [Exclusive or](https://en.wikipedia.org/wiki/Exclusive_or).
 An exception is thrown when the ranges are null or Empty.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBFeGNsdXNpdmVcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsMTBdICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCAxMGhcbiAgICBSYW5nZVs1LDIwXSAgICAgICAgIDogMjAxOC0wMS0wMS4wNSwgMTVoXG5cbiAgICBzZWN0aW9uIEV4Y2x1c2l2ZVxuICAgIFJhbmdlWzAsIDVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwgMjBdICAgICAgIDogYWN0aXZlLCAyMDE4LTAxLTAxLjEwLCAxMGgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
@@ -316,7 +317,7 @@ To create an IEnumerable<Range<T>> in code, you can do the following:
 // Collection based on an IEnumerable<Range<T>>
 var ranges = new List<Range<int>>() {
     new Range<int>(0, 10),
-	new Range<int>(10, 20)
+    new Range<int>(10, 20)
 }
 ```
 
@@ -324,13 +325,13 @@ var ranges = new List<Range<int>>() {
 
 ##### Extension Methods
 ###### Lowest() / Highest()
-They return the lowest/highest end/start of the all the Ranges in the collection.
+They return the lowest start or highest end of the all the Ranges in the collection.
 
 ```c#
 var ranges = new List<Range<int>>
 {
-	new Range<int>(0, 10),
-	new Range<int>(10, 20)
+    new Range<int>(0, 10),
+    new Range<int>(10, 20)
 };
 
 // Lowest
@@ -349,10 +350,10 @@ Returns a new Collection of Ranges where all overlapping and touching Ranges hav
 ```c#
 var ranges = new[]
 {
-	new Range<int>(0, 5),
-	new Range<int>(3, 10),
-	new Range<int>(10, 15),
-	new Range<int>(18, 25)
+    new Range<int>(0, 5),
+    new Range<int>(3, 10),
+    new Range<int>(10, 15),
+    new Range<int>(18, 25)
 });
 
 // Reduce
@@ -369,15 +370,15 @@ An exception is thrown when one or both of the ranges are null.
 ```c#
 var ranges1 = new[]
 {
-	new Range<int>(0, 5),
-	new Range<int>(3, 10),
-	new Range<int>(10, 15)
+    new Range<int>(0, 5),
+    new Range<int>(3, 10),
+    new Range<int>(10, 15)
 });
 
 var ranges2 = new[]
 {
-	new Range<int>(15, 17),
-	new Range<int>(18, 25)
+    new Range<int>(15, 17),
+    new Range<int>(18, 25)
 });
 
 // Union
@@ -394,25 +395,79 @@ An exception is thrown when one or both of the ranges are null.
 ```c#
 var ranges1 = new[]
 {
-	new Range<int>(0, 5),
-	new Range<int>(3, 10),
-	new Range<int>(10, 15),
-	new Range<int>(18, 20)
+    new Range<int>(0, 5),
+    new Range<int>(3, 10),
+    new Range<int>(10, 15),
+    new Range<int>(18, 20)
 });
 
 var ranges2 = new[]
 {
-	new Range<int>(1, 8),
-	new Range<int>(12, 25)
+    new Range<int>(1, 8),
+    new Range<int>(12, 25)
 });
 
 // Intersect
 var intersection = ranges1.Intersect(ranges2); // returns new[] { new Range<int>(1, 8), new Range<int>(12, 15), new Range<int>(18, 20) }
 ```
 
+<!--
+###### Difference
+Returns the set difference or [relative complement](https://en.wikipedia.org/wiki/Complement_(set_theory)#Relative_complement) of two Collections of Ranges while reducing them.
+An exception is thrown when one or both of the ranges are null.
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBEaWZmZXJlbmNlXG4gICAgXG4gICAgc2VjdGlvbiBSYW5nZXMgMVxuICAgIFJhbmdlWzAsNV0gICAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzMsMTBdICAgICAgICAgICA6IDIwMTgtMDEtMDEuMDMsIDdoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuICAgIFJhbmdlWzE4LDIwXSAgICAgICAgIDogMjAxOC0wMS0wMS4xOCwgMmhcblxuICAgIHNlY3Rpb24gUmFuZ2VzIDJcbiAgICBSYW5nZVsxLDhdICAgICAgICAgICAgIDogMjAxOC0wMS0wMS4wMSwgN2hcbiAgICBSYW5nZVsxMiwyNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTIsIDEzaFxuXG4gICAgc2VjdGlvbiBEaWZmZXJlbmNlT2ZcbiAgICBSYW5nZVsxNSwxOF0gICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4xNSwgM2hcbiAgICBSYW5nZVsyMCwyNV0gICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4yMCwgNWgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
+![Reduce](./images/difference.svg)
+
+```c#
+var ranges1 = new[]
+{
+    new Range<int>(0, 5),
+    new Range<int>(3, 10),
+    new Range<int>(10, 15),
+    new Range<int>(18, 20)
+});
+
+var ranges2 = new[]
+{
+    new Range<int>(1, 8),
+    new Range<int>(12, 25)
+});
+
+// Set Difference
+var differenceOf = ranges1.Difference(ranges2); // returns new[] { new Range<int>(15, 18), new Range<int>(20, 25) }
+```
+
+###### Exclusive()
+Returns the [exclusive or](https://en.wikipedia.org/wiki/Symmetric_difference) of two Collections of Ranges while reducing them.
+An exception is thrown when one or both of the ranges are null.
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBFeGNsdXNpdmVcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlcyAxXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbMywxMF0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMywgN2hcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTAsIDVoXG4gICAgUmFuZ2VbMTgsMjBdICAgICAgICAgOiAyMDE4LTAxLTAxLjE4LCAyaFxuXG4gICAgc2VjdGlvbiBSYW5nZXMgMlxuICAgIFJhbmdlWzEsOF0gICAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAxLCA3aFxuICAgIFJhbmdlWzEyLDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xMiwgMTNoXG5cbiAgICBzZWN0aW9uIEV4Y2x1c2l2ZU9mXG4gICAgUmFuZ2VbMCwxXSAgICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgMWhcbiAgICBSYW5nZVs4LDEyXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDgsIDRoXG4gICAgUmFuZ2VbMTUsMThdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTUsIDNoXG4gICAgUmFuZ2VbMjAsMjVdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMjAsIDVoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
+![Reduce](./images/collection-exclusive.svg)
+
+```c#
+var ranges1 = new[]
+{
+    new Range<int>(0, 5),
+    new Range<int>(3, 10),
+    new Range<int>(10, 15),
+    new Range<int>(18, 20)
+});
+
+var ranges2 = new[]
+{
+    new Range<int>(1, 8),
+    new Range<int>(12, 25)
+});
+
+// Intersect
+var exclusiveOr = ranges1.Exclusive(ranges2); // returns new[] { new Range<int>(0, 1), new Range<int>(8, 12), new Range<int>(15, 18), new Range<int>(20, 25) }
+```
+-->
+
 ###### Inverse()
-Returns a new Collection of Ranges that is the inversion of the the Ranges. Meaning all gaps between the ranges are returned including the gap between the minvalue and the first start and the last end and the maxvalue.
-Also known as [complement](https://en.wikipedia.org/wiki/Complement_(set_theory)).
+Returns a new Collection of Ranges that is the inversion of the Ranges. Meaning all gaps between the ranges are returned including the gap between the minvalue and the first start and the last end and the maxvalue.
+Also known as the [absolute complement](https://en.wikipedia.org/wiki/Complement_(set_theory)#Absolute_complement).
 An exception is thrown when the type of Range has no MinValue and MaxValue or when they are not passed.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJbnZlcnNlXG4gICAgXG4gICAgc2VjdGlvbiBSYW5nZXNcbiAgICBSYW5nZVswLDVdICAgICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTAsIDVoXG4gICAgUmFuZ2VbMTgsMjBdICAgICAgICAgOiAyMDE4LTAxLTAxLjE4LCAyaFxuXG4gICAgc2VjdGlvbiBJbnZlcnNpb25cbiAgICBSYW5nZVst4oieLCAwXSAgICAgICAgIDogYWN0aXZlLCAyMDE3LTEyLTMxLjIxLCAzaFxuICAgIFJhbmdlWzUsMTBdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wNSwgNWhcbiAgICBSYW5nZVsxNSwyOF0gICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4xNSwgM2hcbiAgICBSYW5nZVsyMCwr4oieXSAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMjAsIDNoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
@@ -421,9 +476,9 @@ An exception is thrown when the type of Range has no MinValue and MaxValue or wh
 ```c#
 var ranges = new[]
 {
-	new Range<int>(0, 5),
-	new Range<int>(10, 15),
-	new Range<int>(18, 20)
+    new Range<int>(0, 5),
+    new Range<int>(10, 15),
+    new Range<int>(18, 20)
 });
 
 // Inverse

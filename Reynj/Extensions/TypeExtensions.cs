@@ -1,8 +1,5 @@
 ﻿using System;
 
-using System.Runtime.CompilerServices;
-[assembly:InternalsVisibleTo("Reynj.UnitTests")]
-
 namespace Reynj.Extensions
 {
     /// <summary>

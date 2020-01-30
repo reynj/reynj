@@ -24,4 +24,14 @@
     <WarningsAsErrors />
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Linq\Difference.cs" />
+    <Compile Remove="Linq\Exclusive.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Linq\Difference.cs" />
+    <None Include="Linq\Exclusive.cs" />
+  </ItemGroup>
+
 </Project>

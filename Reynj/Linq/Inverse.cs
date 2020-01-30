@@ -11,8 +11,9 @@ namespace Reynj.Linq
     public static partial class Enumerable
     {
         /// <summary>
-        /// Returns the inversed ranges from a sequence 
+        /// Returns the inversed ranges from a sequence (NOT)
         /// </summary>
+        /// <see href="https://en.wikipedia.org/wiki/Complement_(set_theory)#Absolute_complement"/>
         /// <param name="source">An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> to inverse.</param>
         /// <param name="minValue">MinValue of the given type</param>
         /// <param name="maxValue">MaxValue of the given type</param>

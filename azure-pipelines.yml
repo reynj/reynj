@@ -16,9 +16,9 @@ trigger:
 
 steps:
 - task: DotNetCoreInstaller@0
-  displayName: 'Use .NET Core SDK 2.2.102'
+  displayName: 'Use .NET Core SDK 3.1.101'
   inputs:
-    version: 2.2.102
+    version: 3.1.101
 
 - task: GitVersion@4
   inputs:

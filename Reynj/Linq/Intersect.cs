@@ -12,6 +12,7 @@ namespace Reynj.Linq
         /// <summary>
         /// Keeps the intersection of two sequences
         /// </summary>
+        /// <see href="https://en.wikipedia.org/wiki/Intersection_(set_theory)"/>
         /// <param name="first">The first sequence to intersect.</param>
         /// <param name="second">The sequence to union to the first intersect.</param>
         /// <typeparam name="T">The type of the elements of the input sequences.</typeparam>
