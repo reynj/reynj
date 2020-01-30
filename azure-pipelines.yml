@@ -1,12 +1,3 @@
-# Build ASP.NET Core project using Azure Pipelines
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=vsts
-
-pool:
-  vmImage: 'windows-latest'
-  
-variables:
-  BuildConfiguration: 'Release'
-
 trigger:
   batch: false
   branches:
@@ -14,42 +5,77 @@ trigger:
     - master
     - refs/tags/*
 
-steps:
-- task: UseDotNet@2
-  displayName: 'Use .NET Core SDK'
-  inputs:
-    packageType: sdk
-    version: 3.1.x
-    installationPath: $(Agent.ToolsDirectory)/dotnet
+stages:
+- stage: 'Build'
+  variables:
+    buildConfiguration: 'Release'
 
-- task: UseGitVersion@5
-  inputs:
-    versionSpec: '5.1.3'
-    updateAssemblyInfo: false
+  jobs:
+  - job:
+    pool:
+      vmImage: 'windows-latest'
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet build'
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
-    arguments: '--configuration $(BuildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)'
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core SDK'
+      inputs:
+        packageType: sdk
+        version: 3.1.x
+        installationPath: $(Agent.ToolsDirectory)/dotnet
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet test'
-  inputs:
-    command: test
-    projects: '**/*Tests.csproj'
-    arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+    - task: UseGitVersion@5
+      inputs:
+        versionSpec: '5.1.3'
+        updateAssemblyInfo: false
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet pack'
-  inputs:
-    command: 'pack'
-    packagesToPack: '**/*.csproj;!**/*Tests.csproj'
-    configuration: '$(BuildConfiguration)'
-    nobuild: true
-    includesymbols: true
-    versioningScheme: 'byEnvVar'
-    versionEnvVar: 'GitVersion.NuGetVersion'
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet build'
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--configuration $(buildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)'
 
-- task: PublishBuildArtifacts@1
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet test'
+      inputs:
+        command: test
+        projects: '**/*Tests.csproj'
+        arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet pack'
+      inputs:
+        command: 'pack'
+        packagesToPack: '**/*.csproj;!**/*Tests.csproj'
+        outputDir: '$(Build.ArtifactStagingDirectory)/packages'
+        configuration: '$(buildConfiguration)'
+        nobuild: true
+        includesymbols: true
+        versioningScheme: 'byEnvVar'
+        versionEnvVar: 'GitVersion.NuGetVersion'
+
+    - publish: '$(Build.ArtifactStagingDirectory)/packages'
+      artifact: 'packages'
+
+- stage: 'Publish'
+  dependsOn: 'Build'
+  condition: succeeded()
+
+  jobs:
+  - deployment:
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    environment: 'NuGet'
+
+    strategy:
+     runOnce:
+       deploy:
+         steps:
+         - task: NuGetCommand@2
+           displayName: 'Push NuGet Package'
+           inputs:
+             command: 'push'
+             packagesToPush: '$(Pipeline.Workspace)/packages/*.nupkg'
+             nuGetFeedType: 'external'
+             publishFeedCredentials: 'Reynj NuGet'

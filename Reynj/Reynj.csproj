@@ -9,10 +9,12 @@
     <PackageProjectUrl>https://github.com/reynj/reynj</PackageProjectUrl>
     <RepositoryUrl>https://github.com/reynj/reynj</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>Range,Period,Span</PackageTags>
+    <PackageTags>Range,Period,Span,Interval</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageIcon>reynj-logo.png</PackageIcon>
+    <PackageIconUrl />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -33,6 +35,10 @@
   <ItemGroup>
     <None Include="Linq\Difference.cs" />
     <None Include="Linq\Exclusive.cs" />
+    <None Include="reynj-logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
