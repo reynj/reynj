@@ -2,7 +2,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=vsts
 
 pool:
-  vmImage: 'vs2017-win2016' # Ubuntu 16.04 cannot be used until GitVersion has support for Ubuntu (https://github.com/GitTools/GitVersion/issues/1542)
+  vmImage: 'ubuntu-latest'
   
 variables:
   buildConfiguration: 'Release'
@@ -15,12 +15,14 @@ trigger:
     - refs/tags/*
 
 steps:
-- task: DotNetCoreInstaller@0
-  displayName: 'Use .NET Core SDK 3.1.101'
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk'
   inputs:
-    version: 3.1.101
+    packageType: sdk
+    version: 3.1.x
+    installationPath: $(Agent.ToolsDirectory)/dotnet
 
-- task: GitVersion@4
+- task: UseGitVersion@5
   inputs:
     updateAssemblyInfo: false
 
