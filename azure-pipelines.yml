@@ -33,7 +33,6 @@ steps:
     projects: '**/*.csproj'
     arguments: '--configuration $(BuildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)'
 
-
 - task: DotNetCoreCLI@2
   inputs:
     command: test
@@ -44,6 +43,7 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj;!**/*.Tests.csproj'
+    configurationToPack: '$(BuildConfiguration)'
     nobuild: true
     includesymbols: true
     versioningScheme: 'byEnvVar'
