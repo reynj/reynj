@@ -50,6 +50,6 @@ steps:
     nobuild: true
     includesymbols: true
     versioningScheme: 'byEnvVar'
-    versionEnvVar: '$(GitVersion.NuGetVersion)'
+    versionEnvVar: 'GitVersion.NuGetVersion'
 
 - task: PublishBuildArtifacts@1

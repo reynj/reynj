@@ -482,5 +482,5 @@ var ranges = new[]
 });
 
 // Inverse
-var inversion = ranges.Inverse(); // returns new[] { new Range<int>(int.MinValie, 0), new Range<int>(5, 10), new Range<int>(15, 18), new Range<int>(20, int.MaxValue) }
+var inversion = ranges.Inverse(); // returns new[] { new Range<int>(int.MinValue, 0), new Range<int>(5, 10), new Range<int>(15, 18), new Range<int>(20, int.MaxValue) }
 ```
