@@ -16,7 +16,7 @@ trigger:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Use .NET Core sdk'
+  displayName: 'Use .NET Core SDK'
   inputs:
     packageType: sdk
     version: 3.1.x
@@ -28,22 +28,25 @@ steps:
     updateAssemblyInfo: false
 
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
   inputs:
     command: 'build'
     projects: '**/*.csproj'
     arguments: '--configuration $(BuildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)'
 
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
   inputs:
     command: test
     projects: '**/*Tests.csproj'
     arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
 
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet pack'
   inputs:
     command: 'pack'
-    packagesToPack: '**/*.csproj;!**/*.Tests.csproj'
-    configurationToPack: '$(BuildConfiguration)'
+    packagesToPack: '**/*.csproj;!**/*Tests.csproj'
+    configuration: '$(BuildConfiguration)'
     nobuild: true
     includesymbols: true
     versioningScheme: 'byEnvVar'

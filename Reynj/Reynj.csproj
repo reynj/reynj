@@ -9,9 +9,10 @@
     <PackageProjectUrl>https://github.com/reynj/reynj</PackageProjectUrl>
     <RepositoryUrl>https://github.com/reynj/reynj</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>Range,Period, Span</PackageTags>
+    <PackageTags>Range,Period,Span</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageLicenseUrl>https://github.com/reynj/reynj/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
