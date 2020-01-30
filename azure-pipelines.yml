@@ -2,10 +2,10 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core?view=vsts
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
   
 variables:
-  buildConfiguration: 'Release'
+  BuildConfiguration: 'Release'
 
 trigger:
   batch: false
@@ -27,16 +27,26 @@ steps:
     versionSpec: '5.1.3'
     updateAssemblyInfo: false
 
-- script: dotnet build --configuration $(buildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)
-
-- script: dotnet test --no-build --configuration $(buildConfiguration) --logger trx --collect "Code coverage"
-
-- script: dotnet pack --no-build --configuration $(buildConfiguration) --include-symbols -p:PackageVersion=$(GitVersion.NuGetVersion) --output "$(Build.ArtifactStagingDirectory)"
-
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
+- task: DotNetCoreCLI@2
   inputs:
-    testRunner: VSTest
-    testResultsFiles: '**/*.trx'
+    command: 'build'
+    projects: '**/*.csproj'
+    arguments: '--configuration $(BuildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)'
+
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Tests.csproj'
+    arguments: '--configuration $(BuildConfiguration) --collect "Code coverage"'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.csproj;!**/*.Tests.csproj'
+    nobuild: true
+    includesymbols: true
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: '$(GitVersion.NuGetVersion)'
 
 - task: PublishBuildArtifacts@1
