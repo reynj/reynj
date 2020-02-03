@@ -60,20 +60,7 @@ namespace Reynj.Linq
             //        .Select(firstRange.Intersection));
 
 
-            // Temporary ANDing up these two normalized collections
-            PeriodCollection andTmp = AND(tmpLeft, tmpRight);
 
-            // Temporary NOTing this AND
-            PeriodCollection notOfAnd = andTmp.NOT();
-
-            // Temporary creating OR of originals
-            PeriodCollection orOfOriginals = OR(tmpLeft, tmpRight);
-
-            // ANDing the temporary NOT and OR together to create result
-            PeriodCollection andOfNotAndOr = AND(notOfAnd, orOfOriginals);
-
-            // Returning result
-            return andOfNotAndOr;
         }
     }
 }
