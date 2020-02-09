@@ -34,13 +34,15 @@ Below is my list of features I want to implement, feel free to open an issue if 
 	- [ ] Enumerate
 	- [ ] Expand
   - [ ] Specific implemenations 
-    - [ ] DateRange
+    - [ ] DateRange or Period
     - [ ] TimeRange
     - [ ] NumericRange
 - [ ] Collection of Ranges
   - [ ] Methods
     - [x] Lowest/Highest
 	- [ ] IsContiguous
+    - [ ] ToRange (only possible for a Contiguous collection)
+    - [ ] IsSingle
 	- [x] Reduce
     - [x] Sort
 	- [x] Union
@@ -483,4 +485,37 @@ var ranges = new[]
 
 // Inverse
 var inversion = ranges.Inverse(); // returns new[] { new Range<int>(int.MinValue, 0), new Range<int>(5, 10), new Range<int>(15, 18), new Range<int>(20, int.MaxValue) }
+```
+
+###### IsContiguous()
+Check if a collection of Ranges only contains touching Ranges and form a contiguous sequence.
+
+[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSZWR1Y2VcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbMywxMF0gICAgICAgICA6IDIwMTgtMDEtMDEuMDMsIDdoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuICAgIFJhbmdlWzE4LDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xOCwgN2hcblxuICAgIHNlY3Rpb24gUmVkdWNlZFxuICAgIFJhbmdlWzAsMTVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgMTVoXG4gICAgUmFuZ2VbMTgsMjVdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTgsIDdoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJc0NvbnRpZ3VvdXNcbiAgICBcbiAgICBzZWN0aW9uIElzIENvbnRpZ3VvdXNcbiAgICBSYW5nZVszLDEwXSAgICAgICAgIDogMjAxOC0wMS0wMS4wMywgN2hcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgIDogMjAxOC0wMS0wMS4xMCwgNWhcblxuICAgIHNlY3Rpb24gTm90IENvbnRpZ3VvdXMgKG92ZXJsYXApXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgIDogY3JpdCwgZG9uZSwgMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVszLDEwXSAgICAgICAgOiBjcml0LCBkb25lLCAyMDE4LTAxLTAxLjAzLCA3aFxuICAgIFJhbmdlWzEwLDE1XSAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4xMCwgNWhcblxuICAgIHNlY3Rpb24gTm90IENvbnRpZ3VvdXMgKGdhcClcbiAgICBSYW5nZVszLDEwXSAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDMsIDdoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgIDogY3JpdCwgZG9uZSwgMjAxOC0wMS0wMS4xMCwgNWhcbiAgICBSYW5nZVsxOCwyNV0gICAgICAgOiBjcml0LCBkb25lLCAyMDE4LTAxLTAxLjE4LCA3aCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)
+![Reduce](./images/iscontiguous.svg)
+
+```c#
+var contiguousRanges = new[]
+{
+    new Range<int>(10, 15),
+    new Range<int>(18, 25)
+});
+
+var withOverlapRanges = new[]
+{
+    new Range<int>(0, 5),
+    new Range<int>(3, 10),
+    new Range<int>(10, 15)
+});
+
+var notTouchingRanges = new[]
+{
+    new Range<int>(3, 10),
+    new Range<int>(10, 15),
+    new Range<int>(18, 25)
+});
+
+// IsContiguous
+var isContiguous1 = contiguousRanges.IsContiguous(); // returns true
+var isContiguous2 = withOverlapRanges.IsContiguous(); // returns false
+var isContiguous3 = notTouchingRanges.IsContiguous(); // returns false
 ```
