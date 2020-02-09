@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Exclusive method on a IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
 -->
 
+## [1.1.0] - 2020-02-07
+### Added
+- The IsContiguous method on a IEnumerable<Range<T>> to check if the sequence only contains touching Ranges and form a contiguous sequence.
+
 ### Fixed
 - IsEmpty() now works with reference types
 
@@ -18,9 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - The Reduce method on a IEnumerable<Range<T>>, returns a new IEnumerable<Range<T>> where all overlapping and touching Ranges have been merged and empty Ranges have been removed
 - The Union method on a IEnumerable<Range<T>> to union two sequences and also reduce the result
-- The Intersect method on a IEnumerable<Range<T>>, returns a new IEnumerable<Range<T>> where only ranges that occur in both sequences are returned
+- The Intersect method on a IEnumerable<Range<T>>, returns a new IEnumerable<Range<T>> where only Ranges that occur in both sequences are returned
 - IsCompletelyBefore and IsCompletelyBehind methods on Range<T>, the return if a given Range<T> is lower than or greater than the specified range and that they do not touch nor overlap each other
-- The Inverse method on IEnumerable<Range<T>>, returns a new IEnumerable<Range<T>> with all gaps between the given ranges and also a range from the minvalue to the start of the first range and the end of the last range to the maxvalue
+- The Inverse method on IEnumerable<Range<T>>, returns a new IEnumerable<Range<T>> with all gaps between the given Ranges and also a range from the minvalue to the start of the first range and the end of the last range to the maxvalue
 
 ### Removed 
 - RangeCollection<T> has been removed in favor of Linq extension methods on IEnumerable<Range<T>>
@@ -80,7 +84,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - This CHANGELOG file to hopefully serve as an evolving example of a
   standardized open source project CHANGELOG.
 
-[Unreleased]: https://github.com/reynj/reynj/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/reynj/reynj/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/reynj/reynj/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/reynj/reynj/compare/v0.2.0...v1.0.0
 [0.2.0]: https://github.com/reynj/reynj/compare/v0.1.5...v0.2.0
 [0.1.5]: https://github.com/reynj/reynj/compare/v0.1.4...v0.1.5

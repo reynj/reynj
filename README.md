@@ -12,50 +12,55 @@ This implementation is based on the [Range](https://martinfowler.com/eaaDev/Rang
 The aim of this library is to provide a base Range class with all possible methods that can be performed on a Range, but also extension methods that can be used to handle and compare list of Ranges.
 Below is my list of features I want to implement, feel free to open an issue if something is missing on my list.
 
-- [ ] Range
-  - [ ] Implements
-    - [x] IEquatable
-	- [x] IComparable
-	- [ ] ICloneable
-  - [x] Operators
-     - [x] Equals
-	 - [x] CompareTo
-	 - [x] Convert to/from Tuple
-  - [ ] Methods
-    - [x] IsNullOrEmpty
-    - [x] Includes & IncludesAll
-	- [x] Overlaps
-	- [x] Touches
-    - [x] Gap
-    - [x] Merge (Union)
-	- [x] Split
-    - [x] Intersection
-	- [x] Exclusive
-	- [ ] Enumerate
-	- [ ] Expand
-  - [ ] Specific implemenations 
-    - [ ] DateRange or Period
-    - [ ] TimeRange
-    - [ ] NumericRange
-- [ ] Collection of Ranges
-  - [ ] Methods
-    - [x] Lowest/Highest
-	- [ ] IsContiguous
-    - [ ] ToRange (only possible for a Contiguous collection)
-    - [ ] IsSingle
-	- [x] Reduce
-    - [x] Sort
-	- [x] Union
-	- [x] Intersect
-    - [x] Inverse
-	- [ ] Difference (Relative complement)
-	- [ ] Exclusive
-- [ ] Serialize/Deserialize
-  - [ ] JsonConvertor
-  - [ ] Entity Framework/NHibernate support
-- [x] Other
-  - [x] Range<T>.Empty and methods like Merge, Overlaps, Touches, ...
-  - [x] IsEmpty method vs Range<T>.Empty
+<details>
+  <summary>Click to expand the list</summary>
+
+    - [ ] Range
+      - [ ] Implements
+        - [x] IEquatable
+	    - [x] IComparable
+	    - [ ] ICloneable
+      - [x] Operators
+         - [x] Equals
+	     - [x] CompareTo
+	     - [x] Convert to/from Tuple
+      - [ ] Methods
+        - [x] IsNullOrEmpty
+        - [x] Includes & IncludesAll
+	    - [x] Overlaps
+	    - [x] Touches
+        - [x] Gap
+        - [x] Merge (Union)
+	    - [x] Split
+        - [x] Intersection
+	    - [x] Exclusive
+	    - [ ] Enumerate
+	    - [ ] Expand
+      - [ ] Specific implemenations 
+        - [ ] DateRange or Period
+        - [ ] TimeRange
+        - [ ] NumericRange
+    - [ ] Collection of Ranges
+      - [ ] Methods
+        - [x] Lowest/Highest
+	    - [x] IsContiguous
+        - [ ] ToRange (only possible for a Contiguous collection)
+        - [ ] IsSingle
+	    - [x] Reduce
+        - [x] Sort
+	    - [x] Union
+	    - [x] Intersect
+        - [x] Inverse
+	    - [ ] Difference (Relative complement)
+	    - [ ] Exclusive
+    - [ ] Serialize/Deserialize
+      - [ ] JsonConvertor
+      - [ ] Entity Framework/NHibernate support
+    - [x] Other
+      - [x] Range<T>.Empty and methods like Merge, Overlaps, Touches, ...
+      - [x] IsEmpty method vs Range<T>.Empty
+</details>
+
 
 ### Where can I get it?
 
