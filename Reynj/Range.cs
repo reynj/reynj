@@ -9,7 +9,7 @@ namespace Reynj
     /// Where a Range is a range of values determined by a start and an end.
     /// </summary>
     /// <typeparam name="T">Every type that implements <see cref="IComparable"/></typeparam>
-    public class Range<T> : IEquatable<Range<T>>, IComparable<Range<T>>, IComparable
+    public class Range<T> : IEquatable<Range<T>>, IComparable<Range<T>>, IComparable, ICloneable
         where T : IComparable
     {
         private readonly T _start;
@@ -340,6 +340,22 @@ namespace Reynj
         public override int GetHashCode()
         {
             return (_start.GetHashCode() << 2) ^ _end.GetHashCode();
+        }
+
+        /// <inheritdoc />
+        /// <remarks>When <typeparamref name="T"/> implements <see cref="ICloneable"/>, they are also cloned.</remarks>
+        public object Clone()
+        {
+            var start = this._start;
+            var end = this._end;
+
+            if (start is ICloneable cloneableStart && end is ICloneable cloneableEnd)
+            {
+                start = (T)cloneableStart.Clone();
+                end = (T)cloneableEnd.Clone();
+            }
+
+            return new Range<T>(start, end);
         }
 
         /// <inheritdoc />

@@ -937,7 +937,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
-        public void AsTuple_ReturnsThePeriodAsValueTuple()
+        public void AsTuple_ReturnsTheRangeAsValueTuple()
         {
             // Arrange
             var range = new Range<int>(1, 99);
@@ -958,6 +958,43 @@ namespace Reynj.UnitTests
 
             // Act - Assert
             range.GetHashCode().Should().Be(otherRange.GetHashCode());
+        }
+
+        [Fact]
+        public void Clone_CreatesANewRange_ThatIsEquallyTheSame()
+        {
+            // Arrange
+            var range = new Range<int>(1, 99);
+
+            // Act
+            var clone = range.Clone();
+
+            // Assert
+            clone.Should().BeOfType<Range<int>>();
+            clone.Should().NotBeSameAs(range);
+            clone.Should().BeEquivalentTo(range);
+        }
+
+        [Fact]
+        public void Clone_CreatesANewRange_ThatIsEquallyTheSame_ButAlsoClonesStartAndEndIfTheyImplementIClonable()
+        {
+            // Arrange
+            var versionStart = new Version(1, 0);
+            var versionEnd = new Version(2, 5);
+            var range = new Range<Version>(versionStart, versionEnd);
+
+            // Act
+            var clone = range.Clone() as Range<Version>;
+
+            // Assert
+            clone.Should().NotBeNull();
+            clone.Should().NotBeSameAs(range);
+            clone.Should().BeEquivalentTo(range);
+
+            clone.Start.Should().NotBeSameAs(range.Start);
+            clone.Start.Should().BeEquivalentTo(range.Start);
+            clone.End.Should().NotBeSameAs(range.End);
+            clone.End.Should().BeEquivalentTo(range.End);
         }
 
         [Fact]

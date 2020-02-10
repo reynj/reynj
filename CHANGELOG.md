@@ -5,24 +5,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-<!--
 ### Added
-- The Difference method on a IEnumerable<Range<T>> to get the relative complement of two sequences and also reduce the result
-- The Exclusive method on a IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
+-  `Range<T>` implements `IClonable`
+<!--
+- The Difference method on IEnumerable<Range<T>> to get the relative complement of two sequences and also reduce the result
+- The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
 -->
 
 ## [1.1.0] - 2020-02-07
 ### Added
-- The IsContiguous method on a IEnumerable<Range<T>> to check if the sequence only contains touching Ranges and form a contiguous sequence.
+- The IsContiguous method on IEnumerable<Range<T>> to check if the sequence only contains touching Ranges and form a contiguous sequence.
 
 ### Fixed
 - IsEmpty() now works with reference types
 
 ## [1.0.0] - 2019-01-30
 ### Added
-- The Reduce method on a IEnumerable<Range<T>>, returns a new IEnumerable<Range<T>> where all overlapping and touching Ranges have been merged and empty Ranges have been removed
-- The Union method on a IEnumerable<Range<T>> to union two sequences and also reduce the result
-- The Intersect method on a IEnumerable<Range<T>>, returns a new IEnumerable<Range<T>> where only Ranges that occur in both sequences are returned
+- The Reduce method on IEnumerable<Range<T>>, returns a new IEnumerable<Range<T>> where all overlapping and touching Ranges have been merged and empty Ranges have been removed
+- The Union method on IEnumerable<Range<T>> to union two sequences and also reduce the result
+- The Intersect method on IEnumerable<Range<T>>, returns a new IEnumerable<Range<T>> where only Ranges that occur in both sequences are returned
 - IsCompletelyBefore and IsCompletelyBehind methods on Range<T>, the return if a given Range<T> is lower than or greater than the specified range and that they do not touch nor overlap each other
 - The Inverse method on IEnumerable<Range<T>>, returns a new IEnumerable<Range<T>> with all gaps between the given Ranges and also a range from the minvalue to the start of the first range and the end of the last range to the maxvalue
 

@@ -16,10 +16,10 @@ Below is my list of features I want to implement, feel free to open an issue if 
   <summary>Click to expand the list</summary>
 
     - [ ] Range
-      - [ ] Implements
+      - [x] Implements
         - [x] IEquatable
 	    - [x] IComparable
-	    - [ ] ICloneable
+	    - [x] ICloneable
       - [x] Operators
          - [x] Equals
 	     - [x] CompareTo
