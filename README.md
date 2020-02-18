@@ -16,6 +16,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
   <summary>Click to expand the list</summary>
 
     - [ ] Range
+      - [ ] Boundaries
       - [x] Implements
         - [x] IEquatable
 	    - [x] IComparable
@@ -56,9 +57,10 @@ Below is my list of features I want to implement, feel free to open an issue if 
     - [ ] Serialize/Deserialize
       - [ ] JsonConvertor
       - [ ] Entity Framework/NHibernate support
-    - [x] Other
+    - [ ] Other
       - [x] Range<T>.Empty and methods like Merge, Overlaps, Touches, ...
       - [x] IsEmpty method vs Range<T>.Empty
+      - [x] Support for conversion between System.Range (C# 8.0) and Range<int>
 </details>
 
 
@@ -164,7 +166,6 @@ var otherTuple = range.AsTuple();
 // Conversion Operators
 var otherTuple2 = range; // implicit from Range to Tuple
 var otherRange = (Range<int>) tuple; // explicit from Tuple to Range
-
 ```
 
 ##### Methods
@@ -311,6 +312,23 @@ var range2 = new Range<int>(10, 10);
 var res1 = range1.IsEmpty(); // returns false
 var res2 = range2.IsEmpty(); // returns true
 ```
+
+###### ToRange()
+With the ToRange extension methods on both Range<int> and System.Range a conversion can be done between them.
+A System.Range and a Reynj.Range have not so much in common, a [System.Range](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#indices-and-ranges) is meant for accessing single elements or ranges in a sequence,
+but by converting from them to a Range<int> it is possible to use all methods on Range<int> and Enumerable<Range<int>>.
+
+
+```c#
+var range = new Range<int>(0, 10);
+
+// ToRange()
+var sysRange = range.ToRange(); // returns new System.Range(0, 10)
+
+// ToRange()
+var reynjRange = sysRange.ToRange(); // returns new Range<int>(0, 10)
+```
+
 
 #### What is a Collection of Ranges?
 A Collection of Ranges is a group or list of Ranges of the same type. 

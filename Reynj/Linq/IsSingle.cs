@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace Reynj.Linq
 {
@@ -8,12 +9,12 @@ namespace Reynj.Linq
     public static partial class Enumerable
     {
         // TODO: Make public after adding unit tests
-        internal static bool IsSingle<T>(this IEnumerable<T> enumerable)
+        internal static bool IsSingle(this IEnumerable enumerable)
         {
             // Alternative
             // return enumerable.Take(2).Count() == 1;
 
-            using var enumerator = enumerable.GetEnumerator();
+            var enumerator = enumerable.GetEnumerator();
 
             if (!enumerator.MoveNext())
             {

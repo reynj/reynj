@@ -50,7 +50,7 @@ namespace Reynj
         /// <exception cref="ArgumentException">If <paramref name="start"/> is greater than <paramref name="end"/>.</exception>
         public Range(T start, T end)
         {
-            if (start == null) 
+            if (start == null)
                 throw new ArgumentNullException(nameof(start));
 
             if (start.CompareTo(end) > 0)
@@ -62,9 +62,9 @@ namespace Reynj
         }
 
         /// <summary>
-        /// Creates a new <see cref="Range{T}"/> based on a Tuple
+        /// Creates a new <see cref="Range{T}"/> based on a <see cref="System.ValueTuple"/>
         /// </summary>
-        /// <param name="tuple">Tuple representing a Range</param>
+        /// <param name="tuple"><see cref="System.ValueTuple"/> representing a Range</param>
         /// <exception cref="ArgumentException">If <paramref name="tuple"/> Item1 is greater than <paramref name="tuple"/> Item2.</exception>
         public Range(ValueTuple<T, T> tuple) : this(tuple.Item1, tuple.Item2)
         {
@@ -158,11 +158,12 @@ namespace Reynj
         /// <param name="range"><see cref="Range{T}"/> to check overlapping against</param>
         /// <returns>true if the specified <see cref="Range{T}"/> is overlapping with the specified <see cref="Range{T}"/>; otherwise, false.</returns>
         /// <remarks>When specified <see cref="Range{T}"/> is null or Empty, false is returned.</remarks>
-        public bool Overlaps(Range<T> range) {
+        public bool Overlaps(Range<T> range)
+        {
             if (IsNullOrEmpty(this) || IsNullOrEmpty(range))
                 return false;
 
-            return range._start.CompareTo(_end) < 0  && range._end.CompareTo(_start) > 0;
+            return range._start.CompareTo(_end) < 0 && range._end.CompareTo(_start) > 0;
         }
 
         /// <summary>
@@ -171,11 +172,12 @@ namespace Reynj
         /// <param name="range"><see cref="Range{T}"/> to check touching against</param>
         /// <returns>true if the specified <see cref="Range{T}"/> touches with the specified <see cref="Range{T}"/>; otherwise, false.</returns>
         /// <remarks>When specified <see cref="Range{T}"/> is null or Empty, false is returned.</remarks>
-        public bool Touches(Range<T> range) {
+        public bool Touches(Range<T> range)
+        {
             if (IsNullOrEmpty(this) || IsNullOrEmpty(range))
                 return false;
 
-            return range._start.CompareTo(_end) == 0  || range._end.CompareTo(_start) == 0;
+            return range._start.CompareTo(_end) == 0 || range._end.CompareTo(_start) == 0;
         }
 
         /// <summary>
@@ -213,10 +215,12 @@ namespace Reynj
         /// <exception cref="ArgumentException">If <paramref name="range"/> does not overlap or touches the current <see cref="Range{T}"/></exception>
         public Range<T> Merge(Range<T> range)
         {
-            if (range == null) 
+            if (range == null)
                 throw new ArgumentNullException(nameof(range));
             if (!Overlaps(range) && !Touches(range))
-                throw new ArgumentException($"Merging {this} with {range} is not possible because they do not overlap nor touch each other", nameof(range));
+                throw new ArgumentException(
+                    $"Merging {this} with {range} is not possible because they do not overlap nor touch each other",
+                    nameof(range));
 
             var start = range._start.CompareTo(_start) < 0 ? range._start : _start;
             var end = range._end.CompareTo(_end) > 0 ? range._end : _end;
@@ -235,7 +239,8 @@ namespace Reynj
             // IDEA: Return an IEnumerable<Range<T>> instead of a Tuple, and omit Range<T>.Empty
 
             if (!Includes(value) && !_end.Equals(value))
-                throw new ArgumentException($"Splitting is not possible because the {value} is not included in {this}", nameof(value));
+                throw new ArgumentException($"Splitting is not possible because the {value} is not included in {this}",
+                    nameof(value));
 
             return (new Range<T>(_start, value), new Range<T>(value, _end));
         }
@@ -250,12 +255,15 @@ namespace Reynj
         /// <exception cref="ArgumentException">If <paramref name="range"/> does not overlap with the current <see cref="Range{T}"/></exception>
         public Range<T> Intersection(Range<T> range)
         {
-            if (range == null) 
+            if (range == null)
                 throw new ArgumentNullException(nameof(range));
             if (!Overlaps(range))
-                throw new ArgumentException($"Intersecting {this} with {range} is not possible because they do not overlap each other", nameof(range));
+                throw new ArgumentException(
+                    $"Intersecting {this} with {range} is not possible because they do not overlap each other",
+                    nameof(range));
 
-            return new Range<T>(_start.CompareTo(range._start) > 0  ? _start : range._start, _end.CompareTo(range._end) < 0 ? _end : range._end);
+            return new Range<T>(_start.CompareTo(range._start) > 0 ? _start : range._start,
+                _end.CompareTo(range._end) < 0 ? _end : range._end);
         }
 
         /// <summary>
@@ -271,7 +279,7 @@ namespace Reynj
         {
             // IDEA: Return an IEnumerable<Range<T>> instead of a Tuple, and omit Range<T>.Empty
 
-            if (range == null) 
+            if (range == null)
                 throw new ArgumentNullException(nameof(range));
 
             if (Equals(range))
@@ -339,7 +347,11 @@ namespace Reynj
         /// <inheritdoc />
         public override int GetHashCode()
         {
+#if NETSTANDARD2_1
+            return HashCode.Combine(_start.GetHashCode(), _end.GetHashCode());
+#else
             return (_start.GetHashCode() << 2) ^ _end.GetHashCode();
+#endif
         }
 
         /// <inheritdoc />
@@ -351,8 +363,8 @@ namespace Reynj
 
             if (start is ICloneable cloneableStart && end is ICloneable cloneableEnd)
             {
-                start = (T)cloneableStart.Clone();
-                end = (T)cloneableEnd.Clone();
+                start = (T) cloneableStart.Clone();
+                end = (T) cloneableEnd.Clone();
             }
 
             return new Range<T>(start, end);
@@ -554,7 +566,7 @@ namespace Reynj
         /// <exception cref="ArgumentNullException">If <paramref name="rightRange"/> is null.</exception>
         public static Range<T> operator |(Range<T> leftRange, Range<T> rightRange)
         {
-            if (leftRange == null) 
+            if (leftRange == null)
                 throw new ArgumentNullException(nameof(leftRange));
             if (rightRange == null)
                 throw new ArgumentNullException(nameof(rightRange));
@@ -572,7 +584,7 @@ namespace Reynj
         /// <exception cref="ArgumentNullException">If <paramref name="rightRange"/> is null.</exception>
         public static Range<T> operator &(Range<T> leftRange, Range<T> rightRange)
         {
-            if (leftRange == null) 
+            if (leftRange == null)
                 throw new ArgumentNullException(nameof(leftRange));
             if (rightRange == null)
                 throw new ArgumentNullException(nameof(rightRange));
@@ -590,7 +602,7 @@ namespace Reynj
         /// <exception cref="ArgumentNullException">If <paramref name="rightRange"/> is null.</exception>
         public static (Range<T>, Range<T>) operator ^(Range<T> leftRange, Range<T> rightRange)
         {
-            if (leftRange == null) 
+            if (leftRange == null)
                 throw new ArgumentNullException(nameof(leftRange));
             if (rightRange == null)
                 throw new ArgumentNullException(nameof(rightRange));
@@ -604,7 +616,7 @@ namespace Reynj
         /// <param name="range"><see cref="Range{T}"/> to convert</param>
         public static implicit operator ValueTuple<T, T>(Range<T> range)
         {
-            if (range == null) 
+            if (range == null)
                 throw new ArgumentNullException(nameof(range));
 
             return range.AsTuple();
