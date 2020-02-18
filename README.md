@@ -9,7 +9,7 @@
 
 This implementation is based on the [Range](https://martinfowler.com/eaaDev/Range.html "Martin Fowler Range") class as described by Martin Fowler.
 
-The aim of this library is to provide a base Range class with all possible methods that can be performed on a Range, but also extension methods that can be used to handle and compare list of Ranges.
+The aim of this library is to provide a base Range class with all possible methods that can be performed on a Range, but also extension methods that can be used to handle and compare lists of Ranges.
 Below is my list of features I want to implement, feel free to open an issue if something is missing on my list.
 
 <details>
@@ -17,6 +17,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
 
     - [ ] Range
       - [ ] Boundaries
+      - [ ] Implicit Index & Range support, see [Adding Index and Range support to existing library types](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/ranges#adding-index-and-range-support-to-existing-library-types)
       - [x] Implements
         - [x] IEquatable
 	    - [x] IComparable
@@ -57,7 +58,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
     - [ ] Serialize/Deserialize
       - [ ] JsonConvertor
       - [ ] Entity Framework/NHibernate support
-    - [ ] Other
+    - [x] Other
       - [x] Range<T>.Empty and methods like Merge, Overlaps, Touches, ...
       - [x] IsEmpty method vs Range<T>.Empty
       - [x] Support for conversion between System.Range (C# 8.0) and Range<int>
@@ -313,6 +314,7 @@ var res1 = range1.IsEmpty(); // returns false
 var res2 = range2.IsEmpty(); // returns true
 ```
 
+##### Extension Methods
 ###### ToRange()
 With the ToRange extension methods on both Range<int> and System.Range a conversion can be done between them.
 A System.Range and a Reynj.Range have not so much in common, a [System.Range](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#indices-and-ranges) is meant for accessing single elements or ranges in a sequence,
