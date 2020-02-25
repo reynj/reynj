@@ -1,5 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.Json;
+using System.Xml.Serialization;
 using FluentAssertions;
 using Xunit;
 
@@ -104,38 +109,37 @@ namespace Reynj.UnitTests
             range.End.Should().Be(99);
         }
 
-        // TODO: Find a way to fix this
-        //[Fact]
-        //public void Ctor_StartEnd_WhenTheStartOrEndReferenceChangesTheyAreNotChangedInsideTheRange()
-        //{
-        //    // Arrange
-        //    var start = new MyComparable { Value = 1 };
-        //    var end = new MyComparable { Value = 2 };
+        [Fact(Skip = "A solution for this problem has not been found yet")]
+        public void Ctor_StartEnd_WhenTheStartOrEndReferenceChangesTheyAreNotChangedInsideTheRange()
+        {
+            // Arrange
+            var start = new MyComparable {Value = 1};
+            var end = new MyComparable {Value = 2};
 
-        //    var range = new Range<MyComparable>(start, end);
+            var range = new Range<MyComparable>(start, end);
 
-        //    // Act
-        //    start.Value = 3;
+            // Act
+            start.Value = 3;
 
-        //    // - Assert
-        //    range.Start.Should().Be(new MyComparable { Value = 1 });
-        //    range.End.Should().Be(new MyComparable { Value = 2 });
-        //}
+            // - Assert
+            range.Start.Should().Be(new MyComparable {Value = 1});
+            range.End.Should().Be(new MyComparable {Value = 2});
+        }
 
-        //private class MyComparable : IComparable, IComparable<MyComparable>
-        //{
-        //    public int Value { get; set; }
+        private class MyComparable : IComparable, IComparable<MyComparable>
+        {
+            public int Value { get; set; }
 
-        //    public int CompareTo(MyComparable other)
-        //    {
-        //        return Value.CompareTo(other.Value);
-        //    }
+            public int CompareTo(MyComparable other)
+            {
+                return Value.CompareTo(other.Value);
+            }
 
-        //    public int CompareTo(object obj)
-        //    {
-        //        return CompareTo(obj as MyComparable);
-        //    }
-        //}
+            public int CompareTo(object obj)
+            {
+                return CompareTo(obj as MyComparable);
+            }
+        }
 
         [Fact]
         public void Ctor_Tuple_Item1CannotBeNull()
@@ -1397,6 +1401,65 @@ namespace Reynj.UnitTests
             // Act - Assert
             range.ToString().Should().Be("Range(1, 99)");
             emptyRange.ToString().Should().Be("Range.Empty");
+        }
+
+        [Theory]
+        [MemberData(nameof(SerializeDeserializeRangeData))]
+        public void Serialize_Deserialize_Binary_DoesNotChangeTheRange(object range, Type typeOfRange)
+        {
+            // Arrange
+            var stream = new MemoryStream();
+            IFormatter formatter = new BinaryFormatter();
+
+            // Act
+            formatter.Serialize(stream, range);
+            stream.Seek(0, SeekOrigin.Begin);
+            var result = formatter.Deserialize(stream);
+
+            // Assert
+            range.Should().Be(result);
+        }
+
+        [Theory(Skip = "Until there is a solution for the private setters on Start & End")]
+        [MemberData(nameof(SerializeDeserializeRangeData))]
+        public void Serialize_Deserialize_Xml_DoesNotChangeTheRange(object range, Type typeOfRange)
+        {
+            // Arrange
+            var rangeSerializer = new XmlSerializer(range.GetType());
+            var stream = new MemoryStream();
+
+            // Act
+
+            //using var textWriter = new StringWriter();
+            //rangeSerializer.Serialize(textWriter, range);
+            //var result = textWriter.ToString();
+
+            rangeSerializer.Serialize(stream, range);
+            stream.Seek(0, SeekOrigin.Begin);
+            var result = rangeSerializer.Deserialize(stream);
+
+            // Assert
+            range.Should().Be(result);
+        }
+
+        [Theory(Skip = "Until a custom JsonConverterFactory has been added")]
+        [MemberData(nameof(SerializeDeserializeRangeData))]
+        public void Serialize_Deserialize_Json_DoesNotChangeTheRange(object range, Type typeOfRange)
+        {
+            // Arrange - Act
+            var jsonRange = JsonSerializer.Serialize(range);
+            var result = JsonSerializer.Deserialize(jsonRange, typeOfRange);
+
+            // Assert
+            range.Should().Be(result);
+        }
+
+        public static IEnumerable<object[]> SerializeDeserializeRangeData()
+        {
+            yield return new object[] {new Range<int>(0, 99), typeof(Range<int>)};
+            yield return new object[] {new Range<double>(-0.5, -0.1), typeof(Range<double>) };
+            yield return new object[] {new Range<TimeSpan>(TimeSpan.FromDays(10), TimeSpan.FromDays(15)), typeof(Range<TimeSpan>) };
+            yield return new object[] {new Range<Version>(new Version(1, 0), new Version(1, 1)), typeof(Range<Version>) };
         }
     }
 }

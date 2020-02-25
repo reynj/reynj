@@ -9,6 +9,7 @@ namespace Reynj
     /// Where a Range is a range of values determined by a start and an end.
     /// </summary>
     /// <typeparam name="T">Every type that implements <see cref="IComparable"/></typeparam>
+    [Serializable]
     public class Range<T> : IEquatable<Range<T>>, IComparable<Range<T>>, IComparable, ICloneable
         where T : IComparable
     {

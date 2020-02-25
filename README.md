@@ -56,6 +56,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
 	    - [ ] Difference (Relative complement)
 	    - [ ] Exclusive
     - [ ] Serialize/Deserialize
+      - [x] SerializableAttribute 
       - [ ] JsonConvertor
       - [ ] Entity Framework/NHibernate support
     - [x] Other

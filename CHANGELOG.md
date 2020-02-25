@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `Range<T>` implements `IClonable`
 - Extension methods to convert between `Range<int>` and `System.Range` (only .NET Standard 2.1 and higher)
+- The `Serializable` on `Range<T>` (at the moment only binary serialization is supported)
 <!--
 - The Difference method on IEnumerable<Range<T>> to get the relative complement of two sequences and also reduce the result
 - The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
