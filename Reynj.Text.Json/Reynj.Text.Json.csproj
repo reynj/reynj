@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Authors>Jochen Jonckheere</Authors>
+    <Company>JxK</Company>
+    <Copyright>Jochen Jonckheere</Copyright>
+    <PackageProjectUrl>https://github.com/reynj/reynj</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/reynj/reynj</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>Range,Period,Span,Interval,Json</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageIcon>reynj-logo.png</PackageIcon>
+    <PackageIconUrl />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Reynj\reynj-logo.png" Link="reynj-logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="[4.6,5)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reynj\Reynj.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,20 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Linq\DifferenceTests.cs" />
-    <Compile Remove="Linq\ExclusiveTests.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Linq\DifferenceTests.cs" />
-    <None Include="Linq\ExclusiveTests.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.10.2" />
@@ -25,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Reynj\Reynj.csproj" />
+    <ProjectReference Include="..\Reynj.Text.Json\Reynj.Text.Json.csproj" />
   </ItemGroup>
 
 </Project>

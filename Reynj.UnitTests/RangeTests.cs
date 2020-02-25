@@ -1417,7 +1417,7 @@ namespace Reynj.UnitTests
             var result = formatter.Deserialize(stream);
 
             // Assert
-            range.Should().Be(result);
+            result.Should().Be(range);
         }
 
         [Theory(Skip = "Until there is a solution for the private setters on Start & End")]
@@ -1439,7 +1439,7 @@ namespace Reynj.UnitTests
             var result = rangeSerializer.Deserialize(stream);
 
             // Assert
-            range.Should().Be(result);
+            result.Should().Be(range);
         }
 
         [Theory(Skip = "Until a custom JsonConverterFactory has been added")]
@@ -1451,7 +1451,7 @@ namespace Reynj.UnitTests
             var result = JsonSerializer.Deserialize(jsonRange, typeOfRange);
 
             // Assert
-            range.Should().Be(result);
+            result.Should().Be(range);
         }
 
         public static IEnumerable<object[]> SerializeDeserializeRangeData()
