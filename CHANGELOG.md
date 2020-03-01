@@ -6,15 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+<!--
+- The Difference method on IEnumerable<Range<T>> to get the relative complement of two sequences and also reduce the result
+- The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
+-->
+
+## [1.2.0] - 2020-03-01
+### Added
 - `Range<T>` implements `IClonable`
 - Extension methods to convert between `Range<int>` and `System.Range` (only .NET Standard 2.1 and higher)
 - `Serializable` attribute on `Range<T>` to support serialization and deserialization (at the moment only binary serialization is supported)
 - Support for JSON serialization and deserialization with the `System.Text.Json` library (see [Reynj.Text.Json](https://www.nuget.org/packages/Reynj.Text.Json))
 - Support for JSON serialization and deserialization with the `Newtonsoft.Json` library (see [Reynj.Newtonsoft.Json](https://www.nuget.org/packages/Reynj.Newtonsoft.Json))
-<!--
-- The Difference method on IEnumerable<Range<T>> to get the relative complement of two sequences and also reduce the result
-- The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
--->
 
 ## [1.1.0] - 2020-02-07
 ### Added
@@ -89,7 +92,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - This CHANGELOG file to hopefully serve as an evolving example of a
   standardized open source project CHANGELOG.
 
-[Unreleased]: https://github.com/reynj/reynj/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/reynj/reynj/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/reynj/reynj/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/reynj/reynj/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/reynj/reynj/compare/v0.2.0...v1.0.0
 [0.2.0]: https://github.com/reynj/reynj/compare/v0.1.5...v0.2.0
