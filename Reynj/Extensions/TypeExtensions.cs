@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
+[assembly:InternalsVisibleTo("Reynj.Newtonsoft.Json")]
 
 namespace Reynj.Extensions
 {
@@ -37,6 +41,20 @@ namespace Reynj.Extensions
                 return (T) field.GetRawConstantValue();
 
             return (T) field.GetValue(null);
+        }
+
+        /// <summary>
+        /// Returns a collection of types that are base types of the given type, including the type itself
+        /// </summary>
+        /// <param name="type">Type to get all base types of</param>
+        /// <returns>A collection of types</returns>
+        public static IEnumerable<Type> BaseTypesAndSelf(this Type type)
+        {
+            while (type != null)
+            {
+                yield return type;
+                type = type.BaseType;
+            }
         }
     }
 }

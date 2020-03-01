@@ -8,8 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `Range<T>` implements `IClonable`
 - Extension methods to convert between `Range<int>` and `System.Range` (only .NET Standard 2.1 and higher)
-- The `Serializable` on `Range<T>` (at the moment only binary serialization is supported)
-- Support for JSON serialization and deserialization via the `System.Text.Json` library
+- `Serializable` attribute on `Range<T>` to support serialization and deserialization (at the moment only binary serialization is supported)
+- Support for JSON serialization and deserialization with the `System.Text.Json` library (see [Reynj.Text.Json](https://www.nuget.org/packages/Reynj.Text.Json))
+- Support for JSON serialization and deserialization with the `Newtonsoft.Json` library (see [Reynj.Newtonsoft.Json](https://www.nuget.org/packages/Reynj.Newtonsoft.Json))
 <!--
 - The Difference method on IEnumerable<Range<T>> to get the relative complement of two sequences and also reduce the result
 - The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result

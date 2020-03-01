@@ -58,7 +58,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
     - [ ] Serialize/Deserialize
       - [x] SerializableAttribute 
       - [x] JsonConvertor (System.Text.Json)
-      - [ ] JsonConvertor (Newtonsoft Json.NET)
+      - [x] JsonConvertor (Newtonsoft Json.NET)
       - [ ] Entity Framework/NHibernate support
     - [x] Other
       - [x] Range<T>.Empty and methods like Merge, Overlaps, Touches, ...
@@ -336,7 +336,7 @@ var reynjRange = sysRange.ToRange(); // returns new Range<int>(0, 10)
 ##### Additional Libraries
 ###### Reynj.Text.Json
 Provides a converter, named `RangeConverter` for the System.Text.Json library.
-Be aware that the type of Start and End should also have converter, either included in the System.Text.Json library or from another source.
+Be aware that the type of Start and End also require a converter, either included in the System.Text.Json library or from another source.
 
 ```c#
 var options = new JsonSerializerOptions { Converters = { new RangeConverter() } }; // Required
@@ -356,7 +356,32 @@ services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new RangeConverter());
+        // ...
+    });
+```
 
+###### Reynj.Newtonsoft.Json
+Provides a converter, named `RangeConverter` for the Newtonsoft.Json library.
+Be aware that the type of Start and End also require a converter, either included in the Newtonsoft.Json library or from another source.
+
+```c#
+var settings = new JsonSerializerSettings { Converters = { new RangeConverter() } }; // Required
+
+// Json Serialize
+var range = new Range<int>(0, 10);
+var jsonText = JsonConvert.SerializeObject(range, settings); // returns '{"Start":0,"End":10}'
+
+// Json Deserialize
+var jsonRange = JsonConvert.DeserializeObject(json, typeOfRange, settings); // returns new Range<int>(0, 10)
+```
+
+In your ASP.NET project you can add the following code to the Startup.cs to register the converter.
+
+```c#
+services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.Converters.Add(new RangeConverter());
         // ...
     });
 ```

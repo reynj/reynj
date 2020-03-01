@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using FluentAssertions;
 using FluentAssertions.Execution;
+using Newtonsoft.Json;
 using Xunit;
 
-namespace Reynj.Text.Json.UnitTests
+namespace Reynj.Newtonsoft.Json.UnitTests
 {
     public class RangeTests
     {
@@ -14,7 +14,7 @@ namespace Reynj.Text.Json.UnitTests
         public void Serialize_Deserialize_Json_DoesNotChangeTheRange(object range, Type typeOfRange, string expectedJson)
         {
             // Arrange
-            var options = new JsonSerializerOptions
+            var settings = new JsonSerializerSettings
             {
                 Converters =
                 {
@@ -23,8 +23,8 @@ namespace Reynj.Text.Json.UnitTests
             };
             
             // Act
-            var json = JsonSerializer.Serialize(range, options);
-            var result = JsonSerializer.Deserialize(json, typeOfRange, options);
+            var json = JsonConvert.SerializeObject(range, settings);
+            var result = JsonConvert.DeserializeObject(json, typeOfRange, settings);
 
             // Assert
             using (new AssertionScope())
@@ -42,8 +42,8 @@ namespace Reynj.Text.Json.UnitTests
             yield return new object[] { null, typeof(Range<int>), "null" };
             yield return new object[] { new Range<int>(0, 99), typeof(Range<int>), @"{""Start"":0,""End"":99}" };
             yield return new object[] { new Range<double>(-0.5, -0.1), typeof(Range<double>), @"{""Start"":-0.5,""End"":-0.1}" };
-            //yield return new object[] { new Range<TimeSpan>(TimeSpan.FromDays(10), TimeSpan.FromDays(15)), typeof(Range<TimeSpan>), @"{""Start"":""10.00:00:00"",""End"":""15.00:00:00""}" };
-            //yield return new object[] { new Range<Version>(new Version(1, 0), new Version(1, 1)), typeof(Range<Version>), @"{""Start"":""1.0"",""End"":""1.1""}" };
+            yield return new object[] { new Range<TimeSpan>(TimeSpan.FromDays(10), TimeSpan.FromDays(15)), typeof(Range<TimeSpan>), @"{""Start"":""10.00:00:00"",""End"":""15.00:00:00""}" };
+            yield return new object[] { new Range<Version>(new Version(1, 0), new Version(1, 1)), typeof(Range<Version>), @"{""Start"":""1.0"",""End"":""1.1""}" };
         }
     }
 }
