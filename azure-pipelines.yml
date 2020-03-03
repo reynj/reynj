@@ -13,7 +13,7 @@ stages:
   jobs:
   - job:
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: 'windows-latest'
 
     steps:
     - task: UseDotNet@2
