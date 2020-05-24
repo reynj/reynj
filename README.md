@@ -5,7 +5,7 @@
 
 ### What is Reynj?
 
-.Net Library that aids in comparison and handling value ranges or time bounded periods.
+.Net Library that aids in comparison and handling value ranges or time bounded periods. Other names for a Range are Interval, Sequence, Period, Span, ... 
 
 This implementation is based on the [Range](https://martinfowler.com/eaaDev/Range.html "Martin Fowler Range") class as described by Martin Fowler.
 
@@ -18,6 +18,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
     - [ ] Range
       - [ ] Boundaries
       - [ ] Implicit Index & Range support, see [Adding Index and Range support to existing library types](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/ranges#adding-index-and-range-support-to-existing-library-types)
+      - [ ] Type of Range should IComparable or IComparable<T> 
       - [x] Implements
         - [x] IEquatable
 	    - [x] IComparable
@@ -37,7 +38,9 @@ Below is my list of features I want to implement, feel free to open an issue if 
         - [x] Intersection
 	    - [x] Exclusive
 	    - [ ] Enumerate
-	    - [ ] Expand
+	    - [ ] Expand 
+        - [ ] Move 
+        - [ ] CenterValue (get the value in the middel between start and end)
       - [ ] Specific implemenations 
         - [ ] DateRange or Period
         - [ ] TimeRange

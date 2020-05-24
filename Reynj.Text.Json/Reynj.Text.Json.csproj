@@ -9,10 +9,7 @@
     <RepositoryUrl>https://github.com/reynj/reynj</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageDescription>
-      .Net Library that aids in comparison and handling value ranges or time bounded periods.
-      The aim of this library is to provide a base Range class with all possible methods that can be performed on a Range, but also extension methods that can be used to handle and compare lists of Ranges.
-    </PackageDescription>
+    <PackageDescription>.Net Library that aids in comparison and handling value ranges or time bounded periods. The aim of this library is to provide a base Range class with all possible methods that can be performed on a Range, but also extension methods that can be used to handle and compare lists of Ranges.</PackageDescription>
     <PackageProjectUrl>https://github.com/reynj/reynj</PackageProjectUrl>
     <PackageTags>Range,Period,Span,Interval,Json</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

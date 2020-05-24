@@ -10,7 +10,7 @@ namespace Reynj.UnitTests.Extensions
     {
         [Theory]
         [MemberData(nameof(RangeData))]
-        public void ToRange_OnASystemRange_ReturnsAReynjRangeOfTypeInt(System.Range systemRange, Range<int> reynjRange)
+        public void ToRange_OnASystemRange_ReturnsAReynjRangeOfTypeInt(Range systemRange, Range<int> reynjRange)
         {
             // Arrange
             // Act
@@ -22,7 +22,7 @@ namespace Reynj.UnitTests.Extensions
 
         [Theory]
         [MemberData(nameof(RangeData))]
-        public void ToRange_OnAReynjRangeOfTypeInt_ReturnsASystemRange(System.Range systemRange, Range<int> reynjRange)
+        public void ToRange_OnAReynjRangeOfTypeInt_ReturnsASystemRange(Range systemRange, Range<int> reynjRange)
         {
             // Arrange
             // Act

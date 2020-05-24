@@ -23,10 +23,8 @@ namespace Reynj.Linq
         public static IEnumerable<Range<T>> Inverse<T>(this IEnumerable<Range<T>> source, T minValue = null, T maxValue = null)
             where T : class, IComparable
         {
-            if (minValue == null)
-                minValue = typeof(T).MinValue<T>();
-            if (maxValue == null)
-                maxValue = typeof(T).MaxValue<T>();
+            minValue ??= typeof(T).MinValue<T>();
+            maxValue ??= typeof(T).MaxValue<T>();
 
             return PrivateInverse(source, minValue, maxValue);
         }
@@ -43,10 +41,8 @@ namespace Reynj.Linq
         public static IEnumerable<Range<T>> Inverse<T>(this IEnumerable<Range<T>> source, T? minValue = null, T? maxValue = null)
             where T : struct, IComparable
         {
-            if (minValue == null)
-                minValue = typeof(T).MinValue<T>();
-            if (maxValue == null)
-                maxValue = typeof(T).MaxValue<T>();
+            minValue ??= typeof(T).MinValue<T>();
+            maxValue ??= typeof(T).MaxValue<T>();
 
             return PrivateInverse(source, minValue.Value, maxValue.Value);
         }
