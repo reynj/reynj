@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Reynj.Linq
@@ -8,20 +9,20 @@ namespace Reynj.Linq
     /// </summary>
     public static partial class Enumerable
     {
-        // TODO: Make public after adding unit tests
-        internal static bool IsSingle(this IEnumerable enumerable)
+        /// <summary>
+        /// Returns true when the <see cref="T:System.Collections.Generic.IEnumerable"></see> contains exactly one element.
+        /// </summary>
+        /// <param name="source">An <see cref="T:System.Collections.Generic.IEnumerable"></see> to look for the lowest value.</param>
+        /// <returns>True when the <see cref="T:System.Collections.Generic.IEnumerable"></see> contains exactly one element, otherwise false.</returns>
+        /// <exception cref="T:System.ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
+        public static bool IsSingle(this IEnumerable source)
         {
-            // Alternative
-            // return enumerable.Take(2).Count() == 1;
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
 
-            var enumerator = enumerable.GetEnumerator();
+            var enumerator = source.GetEnumerator();
 
-            if (!enumerator.MoveNext())
-            {
-                return false;
-            }
-
-            return !enumerator.MoveNext();
+            return enumerator.MoveNext() && !enumerator.MoveNext();
         }
     }
 }

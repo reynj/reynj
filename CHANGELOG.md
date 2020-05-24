@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- The IsSingle method on IEnumerable to check if the sequence contains exactly one element.
 <!--
 - The Difference method on IEnumerable<Range<T>> to get the relative complement of two sequences and also reduce the result
 - The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result

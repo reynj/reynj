@@ -50,7 +50,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
         - [x] Lowest/Highest
 	    - [x] IsContiguous
         - [ ] ToRange (only possible for a Contiguous collection)
-        - [ ] IsSingle
+        - [x] IsSingle
 	    - [x] Reduce
         - [x] Sort
 	    - [x] Union
@@ -449,7 +449,7 @@ Returns the [union](https://en.wikipedia.org/wiki/Union_(set_theory)) of two Col
 An exception is thrown when one or both of the ranges are null.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBVbmlvblxuICAgIFxuICAgIHNlY3Rpb24gUmFuZ2VzIDFcbiAgICBSYW5nZVswLDVdICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzMsMTBdICAgICAgICAgOiAyMDE4LTAxLTAxLjAzLCA3aFxuICAgIFJhbmdlWzEwLDE1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xMCwgNWhcblxuXG4gICAgc2VjdGlvbiBSYW5nZXMgMlxuICAgIFJhbmdlWzE1LDE3XSAgICAgICAgIDogMjAxOC0wMS0wMS4xNSwgMmhcbiAgICBSYW5nZVsxOCwyNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTgsIDdoXG5cbiAgICBzZWN0aW9uIFVuaW9uZWRcbiAgICBSYW5nZVswLDE3XSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDAsIDE3aFxuICAgIFJhbmdlWzE4LDI1XSAgICAgICAgIDogYWN0aXZlLCAyMDE4LTAxLTAxLjE4LCA3aCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19)
-![Reduce](./images/union.svg)
+![Union](./images/union.svg)
 
 ```c#
 var ranges1 = new[]
@@ -474,7 +474,7 @@ Returns the [intersection](https://en.wikipedia.org/wiki/Intersection_(set_theor
 An exception is thrown when one or both of the ranges are null.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJbnRlcnNlY3RcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlcyAxXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbMywxMF0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMywgN2hcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTAsIDVoXG4gICAgUmFuZ2VbMTgsMjBdICAgICAgICAgOiAyMDE4LTAxLTAxLjE4LCAyaFxuXG4gICAgc2VjdGlvbiBSYW5nZXMgMlxuICAgIFJhbmdlWzEsOF0gICAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAxLCA3aFxuICAgIFJhbmdlWzEyLDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xMiwgMTNoXG5cbiAgICBzZWN0aW9uIEludGVyc2VjdGlvblxuICAgIFJhbmdlWzEsOF0gICAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDEsIDdoXG4gICAgUmFuZ2VbMTIsMTVdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTIsIDNoXG4gICAgUmFuZ2VbMTgsMjBdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTgsIDJoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Reduce](./images/intersect.svg)
+![Intersect](./images/intersect.svg)
 
 ```c#
 var ranges1 = new[]
@@ -501,7 +501,7 @@ Returns the set difference or [relative complement](https://en.wikipedia.org/wik
 An exception is thrown when one or both of the ranges are null.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBEaWZmZXJlbmNlXG4gICAgXG4gICAgc2VjdGlvbiBSYW5nZXMgMVxuICAgIFJhbmdlWzAsNV0gICAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzMsMTBdICAgICAgICAgICA6IDIwMTgtMDEtMDEuMDMsIDdoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuICAgIFJhbmdlWzE4LDIwXSAgICAgICAgIDogMjAxOC0wMS0wMS4xOCwgMmhcblxuICAgIHNlY3Rpb24gUmFuZ2VzIDJcbiAgICBSYW5nZVsxLDhdICAgICAgICAgICAgIDogMjAxOC0wMS0wMS4wMSwgN2hcbiAgICBSYW5nZVsxMiwyNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTIsIDEzaFxuXG4gICAgc2VjdGlvbiBEaWZmZXJlbmNlT2ZcbiAgICBSYW5nZVsxNSwxOF0gICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4xNSwgM2hcbiAgICBSYW5nZVsyMCwyNV0gICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4yMCwgNWgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
-![Reduce](./images/difference.svg)
+![Difference](./images/difference.svg)
 
 ```c#
 var ranges1 = new[]
@@ -555,7 +555,7 @@ Also known as the [absolute complement](https://en.wikipedia.org/wiki/Complement
 An exception is thrown when the type of Range has no MinValue and MaxValue or when they are not passed.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJbnZlcnNlXG4gICAgXG4gICAgc2VjdGlvbiBSYW5nZXNcbiAgICBSYW5nZVswLDVdICAgICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTAsIDVoXG4gICAgUmFuZ2VbMTgsMjBdICAgICAgICAgOiAyMDE4LTAxLTAxLjE4LCAyaFxuXG4gICAgc2VjdGlvbiBJbnZlcnNpb25cbiAgICBSYW5nZVst4oieLCAwXSAgICAgICAgIDogYWN0aXZlLCAyMDE3LTEyLTMxLjIxLCAzaFxuICAgIFJhbmdlWzUsMTBdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wNSwgNWhcbiAgICBSYW5nZVsxNSwyOF0gICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4xNSwgM2hcbiAgICBSYW5nZVsyMCwr4oieXSAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMjAsIDNoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Reduce](./images/inverse.svg)
+![Inverse](./images/inverse.svg)
 
 ```c#
 var ranges = new[]
@@ -573,7 +573,7 @@ var inversion = ranges.Inverse(); // returns new[] { new Range<int>(int.MinValue
 Check if a collection of Ranges only contains touching Ranges and form a contiguous sequence.
 
 [//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSZWR1Y2VcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbMywxMF0gICAgICAgICA6IDIwMTgtMDEtMDEuMDMsIDdoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuICAgIFJhbmdlWzE4LDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xOCwgN2hcblxuICAgIHNlY3Rpb24gUmVkdWNlZFxuICAgIFJhbmdlWzAsMTVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgMTVoXG4gICAgUmFuZ2VbMTgsMjVdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTgsIDdoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJc0NvbnRpZ3VvdXNcbiAgICBcbiAgICBzZWN0aW9uIElzIENvbnRpZ3VvdXNcbiAgICBSYW5nZVszLDEwXSAgICAgICAgIDogMjAxOC0wMS0wMS4wMywgN2hcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgIDogMjAxOC0wMS0wMS4xMCwgNWhcblxuICAgIHNlY3Rpb24gTm90IENvbnRpZ3VvdXMgKG92ZXJsYXApXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgIDogY3JpdCwgZG9uZSwgMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVszLDEwXSAgICAgICAgOiBjcml0LCBkb25lLCAyMDE4LTAxLTAxLjAzLCA3aFxuICAgIFJhbmdlWzEwLDE1XSAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4xMCwgNWhcblxuICAgIHNlY3Rpb24gTm90IENvbnRpZ3VvdXMgKGdhcClcbiAgICBSYW5nZVszLDEwXSAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDMsIDdoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgIDogY3JpdCwgZG9uZSwgMjAxOC0wMS0wMS4xMCwgNWhcbiAgICBSYW5nZVsxOCwyNV0gICAgICAgOiBjcml0LCBkb25lLCAyMDE4LTAxLTAxLjE4LCA3aCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)
-![Reduce](./images/iscontiguous.svg)
+![IsContiguous](./images/iscontiguous.svg)
 
 ```c#
 var contiguousRanges = new[]
@@ -600,4 +600,27 @@ var notTouchingRanges = new[]
 var isContiguous1 = contiguousRanges.IsContiguous(); // returns true
 var isContiguous2 = withOverlapRanges.IsContiguous(); // returns false
 var isContiguous3 = notTouchingRanges.IsContiguous(); // returns false
+```
+
+###### IsSingle()
+Helper method on IEnumerable that returns true if the sequence contains exacly one element.
+
+```c#
+var emptyList = new List<Range<int>>();
+
+var singleItemList = new[]
+{
+    new Range<int>(0, 5)
+});
+
+var multiItemList = new[]
+{
+    new Range<int>(3, 10),
+    new Range<int>(10, 15)
+});
+
+// IsSingle
+var isSingle1 = emptyList.IsSingle(); // returns false
+var isSingle2 = singleItemList.IsSingle(); // returns true
+var isSingle3 = multiItemList.IsSingle(); // returns false
 ```
