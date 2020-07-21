@@ -53,7 +53,7 @@ namespace Reynj.Linq
             if (source == null) 
                 throw new ArgumentNullException(nameof(source));
             if (minValue.CompareTo(maxValue) > 0)
-                throw new ArgumentException($"{nameof(maxValue)} must be greater than or equal to {nameof(minValue)}",
+                throw new ArgumentException($"{nameof(maxValue)} must be greater than or equal to {nameof(minValue)}.",
                     nameof(maxValue));
 
             var reducedSource = source

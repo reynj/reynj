@@ -688,6 +688,107 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        public void EnumerateBy_Step_CannotBeNull()
+        {
+            // Arrange
+            var range = new Range<string>("a", "z");
+
+            // Act
+            Func<IEnumerable<string>> act = () => range.EnumerateBy(null, (value, step) => value + step);
+
+            // Assert
+            act.Enumerating().Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("step");
+        }
+
+        [Fact]
+        public void EnumerateBy_Stepper_CannotBeNull()
+        {
+            // Arrange
+            var range = new Range<string>("a", "z");
+
+            // Act
+            Func<IEnumerable<string>> act = () => range.EnumerateBy("c", null);
+
+            // Assert
+            act.Enumerating().Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("stepper");
+        }
+
+        [Fact]
+        public void EnumerateBy_ReturnsAnIEnumerableOfAllValuesBetweenStartAndEnd_GivenAStepAndStepperFunc_HavingTypeOfStepSameAsTypeOfRange()
+        {
+            // Arrange
+            var range = new Range<int>(15, 20);
+
+            // Act
+            var enumerable = range.EnumerateBy(1, (value, step) => value + step);
+
+            // Assert
+            enumerable.Should().BeEquivalentTo(new[] { 15, 16, 17, 18, 19 }, options => options.WithStrictOrdering());
+        }
+
+        [Fact]
+        public void EnumerateBy_ReturnsAnIEnumerableOfAllValuesBetweenStartAndEnd_GivenAStepAndStepperFunc_HavingTypeOfStepDifferFromTypeOfRange()
+        {
+            // Arrange
+            var range = new Range<double>(15.0, 20.0);
+
+            // Act
+            var enumerable = range.EnumerateBy<int>(1, (value, step) => value + step);
+
+            // Assert
+            enumerable.Should().BeEquivalentTo(new[] {15, 16, 17, 18, 19}, options => options.WithStrictOrdering());
+        }
+
+        [Fact]
+        public void EnumerateBy_IsNotSupportedWhenStepperResultsInAValueLowerThanStart()
+        {
+            // Arrange
+            var range = new Range<int>(15, 20);
+
+            // Act
+            Func<IEnumerable<int>> act = () => range.EnumerateBy(1, (value, step) => value - step);
+
+            // Assert
+            act.Enumerating().Should().Throw<NotSupportedException>()
+                .And.Message.Should().Be("Enumerating is not possible because the 14 is lower than the start of Range(15, 20).");
+        }
+
+        [Fact]
+        public void EnumerateBy_ReturnsAnEmptyList_WhenExecutedOnAnEmptyRange()
+        {
+            // Arrange
+            var range = Range<int>.Empty;
+
+            // Act
+            var enumerable = range.EnumerateBy(1, (value, step) => value + step);
+
+            // Assert
+            enumerable.Should().BeEquivalentTo(new int[] { }, options => options.WithStrictOrdering());
+        }
+
+        [Fact]
+        public void EnumerateBy_ReturnsAnEmptyList_WhenExecutedOnAnRangeWhereStartEqualsEnd()
+        {
+            // Arrange
+            var range = new Range<int>(15, 15);
+
+            // Act
+            var enumerable = range.EnumerateBy(1, (value, step) => value + step);
+
+            // Assert
+            enumerable.Should().BeEquivalentTo(new int[] { }, options => options.WithStrictOrdering());
+        }
+
+        // TODO: Negative stepper?
+        // TODO: Stepper that keeps returning the same value?
+
+        // TODO: Step bigger than first value
+
+        // TODO: Dates
+
+        [Fact]
         public void Equals_IsFalse_WhenOtherIsNull()
         {
             // Arrange

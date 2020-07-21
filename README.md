@@ -23,6 +23,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
         - [x] IEquatable
 	    - [x] IComparable
 	    - [x] ICloneable
+        - [ ] IEnumerable ??
       - [x] Operators
          - [x] Equals
 	     - [x] CompareTo
@@ -38,13 +39,15 @@ Below is my list of features I want to implement, feel free to open an issue if 
         - [x] Intersection
 	    - [x] Exclusive
 	    - [ ] Enumerate
+           - [ ] Ascending/Descending
 	    - [ ] Expand 
         - [ ] Move 
-        - [ ] CenterValue (get the value in the middel between start and end)
+        - [ ] CenterValue (get the value in the middle between start and end)
       - [ ] Specific implemenations 
         - [ ] DateRange or Period
         - [ ] TimeRange
         - [ ] NumericRange
+           - [ ] IEnumerable
     - [ ] Collection of Ranges
       - [ ] Methods
         - [x] Lowest/Highest
@@ -58,11 +61,13 @@ Below is my list of features I want to implement, feel free to open an issue if 
         - [x] Inverse
 	    - [ ] Difference (Relative complement)
 	    - [ ] Exclusive
+        - [ ] Enumerate (call Enumerate on all ranges)
     - [ ] Serialize/Deserialize
       - [x] SerializableAttribute 
       - [x] JsonConvertor (System.Text.Json)
       - [x] JsonConvertor (Newtonsoft Json.NET)
-      - [ ] Entity Framework/NHibernate support
+      - [ ] Entity Framework ValueConvertor
+      - [ ] NHibernate IUserType
     - [x] Other
       - [x] Range<T>.Empty and methods like Merge, Overlaps, Touches, ...
       - [x] IsEmpty method vs Range<T>.Empty
