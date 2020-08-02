@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <Features>strict</Features>
     <Authors>Jochen Jonckheere</Authors>
     <Company>JxK</Company>
     <Copyright>Jochen Jonckheere</Copyright>
