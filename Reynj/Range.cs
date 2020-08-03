@@ -350,15 +350,17 @@ namespace Reynj
             if (IsEmpty()) 
                 yield break;
 
-            var first = stepper(_start, step);
-            var second = stepper(first, step);
-            if (first.Equals(second))
-                throw new InvalidOperationException($"The stepper should create a higher value on every step. It has returned {second} for two times in a row.");
+            yield return _start; // Always return start
 
-            for (var value = _start; value.CompareTo(_end) < 0; value = stepper(value, step))
+            var previousValue = _start;
+            for (var value = stepper(_start, step); value.CompareTo(_end) < 0; value = stepper(value, step))
             {
                 if (value.CompareTo(_start) < 0)
                     throw new NotSupportedException($"Enumerating is not possible because the {value} is lower than the start of {this}.");
+                if (value.CompareTo(previousValue) <= 0)
+                    throw new InvalidOperationException($"The stepper should create a higher value on every step. It has returned {value} for two times in a row.");
+
+                previousValue = value;
 
                 yield return value;
             }

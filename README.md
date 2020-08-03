@@ -62,7 +62,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
         - [x] Inverse
 	    - [ ] Difference (Relative complement)
 	    - [ ] Exclusive
-        - [ ] Enumerate (call Enumerate on all ranges)
+        - [ ] Enumerate (call EnumerateBy on all ranges)
     - [ ] Serialize/Deserialize
       - [x] SerializableAttribute 
       - [x] JsonConvertor (System.Text.Json)

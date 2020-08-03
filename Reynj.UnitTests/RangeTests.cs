@@ -839,8 +839,6 @@ namespace Reynj.UnitTests
 
         // TODO: EnumerateBy without stepper function (via dynamic or Expressions)
 
-        // TODO: Random Stepper
-
         [Fact]
         public void EnumerateBy_ReturnsAnIEnumerableOfAllValuesBetweenStartAndEnd_ForDatesAndTimespan()
         {
@@ -868,11 +866,11 @@ namespace Reynj.UnitTests
         {
             // Arrange
             var random = new Random();
-            var range = new Range<int>(15, 20);
+            var range = new Range<int>(-200, 2000);
 
             using (new AssertionScope())
             {
-                for (var s = 1; s <= 10; s++) // Poor man's XUnit Repeat
+                for (var s = 1; s <= 100; s++) // Poor man's XUnit Repeat
                 {
                     // Act
                     Func<IEnumerable<int>> act = () => range.EnumerateBy(s, (value, step) => value + random.Next(-step, step));
