@@ -38,17 +38,20 @@ Below is my list of features I want to implement, feel free to open an issue if 
 	    - [x] Split
         - [x] Intersection
 	    - [x] Exclusive
-	    - [ ] Enumerate
-           - [ ] Ascending/Descending
-           - [ ] EnumerateBy without stepper function (via dynamic or Expressions)
+	    - [ ] EnumerateBy
+           - [x] Ascending (protected)
+           - [ ] Descending (protected)
+           - [ ] EnumerateBy without stepper function (via dynamic or Expressions) (public)
 	    - [ ] Expand (change the end)
         - [ ] Move (change the start and keep the gap between the end the same)
         - [ ] CenterValue (get the value in the middle between start and end)
       - [ ] Specific implemenations 
         - [ ] DateRange or Period
+           - [ ] EnumerateBy
         - [ ] TimeRange
+           - [ ] EnumerateBy
         - [ ] NumericRange
-           - [ ] IEnumerable
+           - [ ] EnumerateBy
     - [ ] Collection of Ranges
       - [ ] Methods
         - [x] Lowest/Highest

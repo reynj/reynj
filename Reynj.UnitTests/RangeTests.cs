@@ -1174,7 +1174,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
-        public void Clone_CreatesANewRange_ThatIsEquallyTheSame_ButAlsoClonesStartAndEndIfTheyImplementIClonable()
+        public void Clone_CreatesANewRange_ThatIsEquallyTheSame_ButAlsoClonesStartAndEndIfTheyImplementICloneable()
         {
             // Arrange
             var versionStart = new Version(1, 0);
