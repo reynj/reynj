@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text.Json;
 using System.Xml.Serialization;
 using FluentAssertions;
 using FluentAssertions.Execution;
@@ -1631,18 +1630,6 @@ namespace Reynj.UnitTests
             rangeSerializer.Serialize(stream, range);
             stream.Seek(0, SeekOrigin.Begin);
             var result = rangeSerializer.Deserialize(stream);
-
-            // Assert
-            result.Should().Be(range);
-        }
-
-        [Theory(Skip = "Until a custom JsonConverterFactory has been added")]
-        [MemberData(nameof(SerializeDeserializeRangeData))]
-        public void Serialize_Deserialize_Json_DoesNotChangeTheRange(object range, Type typeOfRange)
-        {
-            // Arrange - Act
-            var jsonRange = JsonSerializer.Serialize(range);
-            var result = JsonSerializer.Deserialize(jsonRange, typeOfRange);
 
             // Assert
             result.Should().Be(range);
