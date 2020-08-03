@@ -842,8 +842,8 @@ namespace Reynj.UnitTests
         public void EnumerateBy_ReturnsAnIEnumerableOfAllValuesBetweenStartAndEnd_ForDatesAndTimespan()
         {
             // Arrange
-            var startDate = new DateTimeOffset(2020,8,1, 16, 45, 33, TimeSpan.FromHours(2));
-            var endDate = new DateTimeOffset(2020,8,2, 0, 0, 0, TimeSpan.FromHours(2));
+            var startDate = new DateTimeOffset(2020, 8,1, 16, 45, 33, TimeSpan.FromHours(2));
+            var endDate = new DateTimeOffset(2020, 8,2, 0, 0, 0, TimeSpan.FromHours(2));
             var range = new Range<DateTimeOffset>(startDate, endDate);
 
             // Act
@@ -1610,7 +1610,7 @@ namespace Reynj.UnitTests
             var result = formatter.Deserialize(stream);
 
             // Assert
-            result.Should().Be(range);
+            result.Should().Be(range, $"{typeOfRange}");
         }
 
         [Theory(Skip = "Until there is a solution for the private setters on Start & End")]
@@ -1632,7 +1632,7 @@ namespace Reynj.UnitTests
             var result = rangeSerializer.Deserialize(stream);
 
             // Assert
-            result.Should().Be(range);
+            result.Should().Be(range, $"{typeOfRange}");
         }
 
         public static IEnumerable<object[]> SerializeDeserializeRangeData()
