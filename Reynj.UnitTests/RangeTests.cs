@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.Json;
 using System.Xml.Serialization;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Xunit;
 
 namespace Reynj.UnitTests
@@ -715,17 +716,58 @@ namespace Reynj.UnitTests
                 .And.ParamName.Should().Be("stepper");
         }
 
-        [Fact]
-        public void EnumerateBy_ReturnsAnIEnumerableOfAllValuesBetweenStartAndEnd_GivenAStepAndStepperFunc_HavingTypeOfStepSameAsTypeOfRange()
+        [Theory]
+        [MemberData(nameof(EnumerateByData))]
+        public void EnumerateBy_ReturnsAnIEnumerableOfAllValuesBetweenStartAndEnd_GivenAStepAndStepperFunc_HavingTypeOfStepSameAsTypeOfRange(Range<int> range, int stepToUse, IEnumerable<int> expectedResult)
         {
-            // Arrange
-            var range = new Range<int>(15, 20);
-
-            // Act
-            var enumerable = range.EnumerateBy(1, (value, step) => value + step);
+            // Arranger - Act
+            var enumerable = range.EnumerateBy(stepToUse, (value, step) => value + step);
 
             // Assert
-            enumerable.Should().BeEquivalentTo(new[] { 15, 16, 17, 18, 19 }, options => options.WithStrictOrdering());
+            enumerable.Should().BeEquivalentTo(expectedResult, options => options.WithStrictOrdering());
+        }
+
+        public static IEnumerable<object[]> EnumerateByData()
+        {
+            // Standard example
+            yield return new object[]
+            {
+                new Range<int>(15, 20),
+                1, // Step
+                new[] { 15, 16, 17, 18, 19 }
+            };
+
+            // Step different than 1
+            yield return new object[]
+            {
+                new Range<int>(15, 20),
+                3, // Step
+                new[] { 15, 18 }
+            };
+
+            // Range as small as one step
+            yield return new object[]
+            {
+                new Range<int>(15, 16),
+                1, // Step
+                new[] { 15 }
+            };
+
+            // Empty Range
+            yield return new object[]
+            {
+                new Range<int>(15, 15),
+                1, // Step
+                new int[] {}
+            };
+
+            // Very big step
+            yield return new object[]
+            {
+                new Range<int>(15, 20),
+                100, // Step
+                new[] { 15 }
+            };
         }
 
         [Fact]
@@ -742,7 +784,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
-        public void EnumerateBy_IsNotSupportedWhenStepperResultsInAValueLowerThanStart()
+        public void EnumerateBy_GivenAStepperThatResultsInAValueLowerThanStart_IsNotSupported()
         {
             // Arrange
             var range = new Range<int>(15, 20);
@@ -753,6 +795,20 @@ namespace Reynj.UnitTests
             // Assert
             act.Enumerating().Should().Throw<NotSupportedException>()
                 .And.Message.Should().Be("Enumerating is not possible because the 14 is lower than the start of Range(15, 20).");
+        }
+
+        [Fact]
+        public void EnumerateBy_GivenAStepperThatResultsInTheSameValueTwice_IsNotSupported()
+        {
+            // Arrange
+            var range = new Range<int>(15, 20);
+
+            // Act
+            Func<IEnumerable<int>> act = () => range.EnumerateBy(1, (value, step) => value);
+
+            // Assert
+            act.Enumerating().Should().Throw<InvalidOperationException>()
+                .And.Message.Should().Be("The stepper should create a higher value on every step. It has returned 15 for two times in a row.");
         }
 
         [Fact]
@@ -781,12 +837,51 @@ namespace Reynj.UnitTests
             enumerable.Should().BeEquivalentTo(new int[] { }, options => options.WithStrictOrdering());
         }
 
-        // TODO: Negative stepper?
-        // TODO: Stepper that keeps returning the same value?
+        // TODO: EnumerateBy without stepper function (via dynamic or Expressions)
 
-        // TODO: Step bigger than first value
+        // TODO: Random Stepper
 
-        // TODO: Dates
+        [Fact]
+        public void EnumerateBy_ReturnsAnIEnumerableOfAllValuesBetweenStartAndEnd_ForDatesAndTimespan()
+        {
+            // Arrange
+            var startDate = new DateTimeOffset(2020,8,1, 16, 45, 33, TimeSpan.FromHours(2));
+            var endDate = new DateTimeOffset(2020,8,2, 0, 0, 0, TimeSpan.FromHours(2));
+            var range = new Range<DateTimeOffset>(startDate, endDate);
+
+            // Act
+            var enumerable = range.EnumerateBy(TimeSpan.FromMinutes(90), (value, step) => value.Add(step));
+
+            // Assert
+            enumerable.Should().BeEquivalentTo(new[]
+            {
+                new DateTimeOffset(2020,8,1, 16, 45, 33, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2020,8,1, 18, 15, 33, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2020,8,1, 19, 45, 33, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2020,8,1, 21, 15, 33, TimeSpan.FromHours(2)),
+                new DateTimeOffset(2020,8,1, 22, 45, 33, TimeSpan.FromHours(2)),
+            }, options => options.WithStrictOrdering());
+        }
+
+        [Fact]
+        public void EnumerateBy_GivenAStepperThatReturnsARandomResult_IsNotSupported()
+        {
+            // Arrange
+            var random = new Random();
+            var range = new Range<int>(15, 20);
+
+            using (new AssertionScope())
+            {
+                for (var s = 1; s <= 10; s++) // Poor man's XUnit Repeat
+                {
+                    // Act
+                    Func<IEnumerable<int>> act = () => range.EnumerateBy(s, (value, step) => value + random.Next(-step, step));
+
+                    // Assert
+                    act.Enumerating().Should().Throw<Exception>();
+                }
+            }
+        }
 
         [Fact]
         public void Equals_IsFalse_WhenOtherIsNull()

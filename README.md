@@ -40,8 +40,9 @@ Below is my list of features I want to implement, feel free to open an issue if 
 	    - [x] Exclusive
 	    - [ ] Enumerate
            - [ ] Ascending/Descending
-	    - [ ] Expand 
-        - [ ] Move 
+           - [ ] EnumerateBy without stepper function (via dynamic or Expressions)
+	    - [ ] Expand (change the end)
+        - [ ] Move (change the start and keep the gap between the end the same)
         - [ ] CenterValue (get the value in the middle between start and end)
       - [ ] Specific implemenations 
         - [ ] DateRange or Period
