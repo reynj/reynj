@@ -1,6 +1,6 @@
 ﻿namespace Reynj.Extensions
 {
-#if NETSTANDARD2_1
+#if !NETSTANDARD2_0
     /// <summary>
     /// Extension methods to support conversion from and to <see cref="System.Range"/>
     /// </summary>
