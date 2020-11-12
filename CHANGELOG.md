@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+<!--
+- The Difference method on IEnumerable<Range<T>> to get the relative complement of two sequences and also reduce the result
+- The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
+-->
+
 ## [1.3.0] - 2020-08-08
 ### Added
 - The IsSingle method on IEnumerable to check if the sequence contains exactly one element.

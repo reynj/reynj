@@ -19,7 +19,7 @@ stages:
     - task: gitversion/setup@0
       displayName: 'Install GitVersion'
       inputs:
-        versionSpec: '5.2.x'
+        versionSpec: '5.x'
 
     - task: gitversion/execute@0
       displayName: 'Determine application version with GitVersion'
@@ -28,7 +28,7 @@ stages:
       displayName: 'Use .NET Core SDK'
       inputs:
         packageType: sdk
-        version: 3.1.x
+        version: 5.0.x
         installationPath: $(Agent.ToolsDirectory)/dotnet
 
     - task: DotNetCoreCLI@2
