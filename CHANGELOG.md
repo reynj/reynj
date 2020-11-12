@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
 -->
 
+## [1.3.1] - 2020-11-12
+### Added
+- NuGet Packages with .NET 5.0 as TargetFramework
+
 ## [1.3.0] - 2020-08-08
 ### Added
 - The IsSingle method on IEnumerable to check if the sequence contains exactly one element.
@@ -96,7 +100,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - This CHANGELOG file to hopefully serve as an evolving example of a
   standardized open source project CHANGELOG.
 
-[Unreleased]: https://github.com/reynj/reynj/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/reynj/reynj/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/reynj/reynj/compare/v1.3.0...v1.3.1
+[1.3.0]: https://github.com/reynj/reynj/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/reynj/reynj/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/reynj/reynj/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/reynj/reynj/compare/v0.2.0...v1.0.0
