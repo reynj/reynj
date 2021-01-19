@@ -87,6 +87,18 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        public void Ctor_End_CannotBeNull()
+        {
+            // Arrange - Act
+            // ReSharper disable once ObjectCreationAsStatement
+            Action act = () => new Range<string>("", null);
+
+            // Assert
+            act.Should().Throw<ArgumentNullException>()
+                .And.ParamName.Should().Be("end");
+        }
+
+        [Fact]
         public void Ctor_StartEnd_EndMustBeLessThanOrEqualToStart()
         {
             // Arrange - Act

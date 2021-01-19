@@ -48,11 +48,15 @@ namespace Reynj
         /// <param name="start">Start of the Range</param>
         /// <param name="end">End of the Range</param>
         /// <exception cref="ArgumentNullException">If <paramref name="start"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">If <paramref name="end"/> is null.</exception>
         /// <exception cref="ArgumentException">If <paramref name="start"/> is greater than <paramref name="end"/>.</exception>
         public Range(T start, T end)
         {
             if (start == null)
                 throw new ArgumentNullException(nameof(start));
+
+            if (end == null)
+                throw new ArgumentNullException(nameof(end));
 
             if (start.CompareTo(end) > 0)
                 throw new ArgumentException($"{nameof(end)} must be greater than or equal to {nameof(start)}.",

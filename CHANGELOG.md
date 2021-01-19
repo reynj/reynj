@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Difference method on IEnumerable<Range<T>> to get the relative complement of two sequences and also reduce the result
 - The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
 -->
+### Changed
+- ArgumentNullException is thrown when end of the Range is null, instead of an ArgumentException with message 'end must be greater than or equal to start' 
 
 ## [1.3.1] - 2020-11-12
 ### Added
