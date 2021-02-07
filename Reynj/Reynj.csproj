@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
-    <Features>strict</Features>
     <LangVersion>latest</LangVersion>
+    <Features>strict</Features>
+    <Nullable>enable</Nullable>
     <Authors>Jochen Jonckheere</Authors>
     <Company>JxK</Company>
     <Copyright>Jochen Jonckheere</Copyright>

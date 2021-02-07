@@ -1170,6 +1170,17 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        public void GetHashCode_OnEmptyRange_DoesNotThrowAnException()
+        {
+            // Arrange
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Action act = () => Range<string>.Empty.GetHashCode();
+
+            // Act - Assert
+            act.Should().NotThrow();
+        }
+
+        [Fact]
         public void Clone_CreatesANewRange_ThatIsEquallyTheSame()
         {
             // Arrange

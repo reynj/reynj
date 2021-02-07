@@ -17,7 +17,7 @@ namespace Reynj.Linq
         /// <param name="second">The sequence to union to the first sequence.</param>
         /// <typeparam name="T">The type of the elements of the input sequences.</typeparam>
         /// <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> that contains the unionized elements of the two input sequences.</returns>
-        /// <exception cref="T:System.ArgumentNullException"><paramref name="first">first</paramref> or <paramref name="second">second</paramref> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="first">first</paramref> or <paramref name="second">second</paramref> is null.</exception>
         public static IEnumerable<Range<T>> Union<T>(this IEnumerable<Range<T>> first, IEnumerable<Range<T>> second)
             where T : IComparable
         {

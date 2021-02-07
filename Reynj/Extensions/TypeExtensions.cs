@@ -21,10 +21,13 @@ namespace Reynj.Extensions
         {
             var field = self.GetField(nameof(MinValue));
 
-            if (field.IsLiteral && !field.IsInitOnly)
-                return (T) field.GetRawConstantValue();
+            if (field == null)
+                throw new InvalidOperationException($"The type {self.Name} does not contain a field with name {nameof(MinValue)}.");
 
-            return (T) field.GetValue(null);
+            if (field.IsLiteral && !field.IsInitOnly)
+                return (T) (field.GetRawConstantValue() ?? throw new InvalidOperationException($"The value of the field {nameof(MinValue)} on {self.Name} is null and not allowed."));
+
+            return (T) (field.GetValue(null) ?? throw new InvalidOperationException($"The value of the field {nameof(MinValue)} on {self.Name} is null and not allowed."));
         }
 
         /// <summary>
@@ -37,10 +40,13 @@ namespace Reynj.Extensions
         {
             var field = self.GetField(nameof(MaxValue));
 
-            if (field.IsLiteral && !field.IsInitOnly)
-                return (T) field.GetRawConstantValue();
+            if (field == null)
+                throw new InvalidOperationException($"The type {self.Name} does not contain a field with name {nameof(MaxValue)}.");
 
-            return (T) field.GetValue(null);
+            if (field.IsLiteral && !field.IsInitOnly)
+                return (T)(field.GetRawConstantValue() ?? throw new InvalidOperationException($"The value of the field {nameof(MaxValue)} on {self.Name} is null and not allowed."));
+
+            return (T)(field.GetValue(null) ?? throw new InvalidOperationException($"The value of the field {nameof(MaxValue)} on {self.Name} is null and not allowed."));
         }
 
         /// <summary>
@@ -48,7 +54,7 @@ namespace Reynj.Extensions
         /// </summary>
         /// <param name="type">Type to get all base types of</param>
         /// <returns>A collection of types</returns>
-        public static IEnumerable<Type> BaseTypesAndSelf(this Type type)
+        public static IEnumerable<Type> BaseTypesAndSelf(this Type? type)
         {
             while (type != null)
             {

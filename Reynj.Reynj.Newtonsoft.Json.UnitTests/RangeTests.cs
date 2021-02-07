@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Newtonsoft.Json;
+#if NETCOREAPP2_1
+using Newtonsoft.Json.Converters;
+#endif
 using Xunit;
 
 namespace Reynj.Newtonsoft.Json.UnitTests
@@ -18,7 +21,11 @@ namespace Reynj.Newtonsoft.Json.UnitTests
             {
                 Converters =
                 {
-                    new RangeConverter()
+                    new RangeConverter(),
+#if NETCOREAPP2_1
+                    // https://stackoverflow.com/questions/13170386/why-system-version-in-json-string-does-not-deserialize-correctly
+                    new VersionConverter()
+#endif
                 }
             };
             
@@ -43,6 +50,7 @@ namespace Reynj.Newtonsoft.Json.UnitTests
             yield return new object[] { new Range<int>(0, 99), typeof(Range<int>), @"{""Start"":0,""End"":99}" };
             yield return new object[] { new Range<double>(-0.5, -0.1), typeof(Range<double>), @"{""Start"":-0.5,""End"":-0.1}" };
             yield return new object[] { new Range<TimeSpan>(TimeSpan.FromDays(10), TimeSpan.FromDays(15)), typeof(Range<TimeSpan>), @"{""Start"":""10.00:00:00"",""End"":""15.00:00:00""}" };
+
             yield return new object[] { new Range<Version>(new Version(1, 0), new Version(1, 1)), typeof(Range<Version>), @"{""Start"":""1.0"",""End"":""1.1""}" };
         }
     }

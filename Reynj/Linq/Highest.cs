@@ -15,8 +15,8 @@ namespace Reynj.Linq
         /// <param name="source">An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> to look for the highest value.</param>
         /// <typeparam name="T">The type of the elements of source.</typeparam>
         /// <returns>The highest End of all Ranges</returns>
-        /// <exception cref="T:System.ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
-        /// <exception cref="T:System.NotSupportedException">When there are no items in the <see cref="T:System.Collections.Generic.IEnumerable`1"></see></exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
+        /// <exception cref="NotSupportedException">When there are no items in the <see cref="T:System.Collections.Generic.IEnumerable`1"></see></exception>
         public static T Highest<T>(this IEnumerable<Range<T>> source)
             where T : IComparable
         {

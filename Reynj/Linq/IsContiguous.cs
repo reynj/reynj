@@ -15,7 +15,7 @@ namespace Reynj.Linq
         /// <param name="source">An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> to check for contiguousness.</param>
         /// <typeparam name="T">The type of the elements of source.</typeparam>
         /// <returns>Returns true if the collection of Ranges only contains touching Ranges and form a contiguous sequence, otherwise false.</returns>
-        /// <exception cref="T:System.ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
         public static bool IsContiguous<T>(this IEnumerable<Range<T>> source)
             where T : IComparable
         {
@@ -25,9 +25,24 @@ namespace Reynj.Linq
             //if (source.IsSingle())
             //    return true;
 
+#if NETSTANDARD2_0
             return source
                 .OrderBy(r => r) // It is easier to aggregate if the Ranges are ordered
                 .Aggregate<Range<T>, Range<T>, bool>(
+                    null!,
+                    (previous, current) =>
+                    {
+                        if (previous == null || (!previous.IsEmpty() && previous.Touches(current)))
+                            return current;
+
+                        return Range<T>.Empty;
+                    },
+                    result => result != null && !result.IsEmpty()
+                );
+#else
+            return source
+                .OrderBy(r => r) // It is easier to aggregate if the Ranges are ordered
+                .Aggregate<Range<T>?, Range<T>?, bool>(
                     null, 
                     (previous, current) =>
                     {
@@ -38,6 +53,7 @@ namespace Reynj.Linq
                     },
                     result => result != null && !result.IsEmpty()
                 );
+#endif
         }
     }
 }

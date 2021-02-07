@@ -11,20 +11,18 @@ namespace Reynj.Linq
     public static partial class Enumerable
     {
         /// <summary>
-        /// Returns the inversed ranges from a sequence (NOT)
+        /// Returns the inversed ranges from a sequence 
         /// </summary>
-        /// <see href="https://en.wikipedia.org/wiki/Complement_(set_theory)#Absolute_complement"/>
         /// <param name="source">An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> to inverse.</param>
-        /// <param name="minValue">MinValue of the given type</param>
-        /// <param name="maxValue">MaxValue of the given type</param>
         /// <typeparam name="T">The type of the elements of source.</typeparam>
         /// <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> that contains the inversed elements from the source sequence.</returns>
-        /// <exception cref="T:System.ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
-        public static IEnumerable<Range<T>> Inverse<T>(this IEnumerable<Range<T>> source, T minValue = null, T maxValue = null)
-            where T : class, IComparable
+        /// <exception cref="ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
+        /// <exception cref="InvalidOperationException">When the <typeparamref name="T"/> has no MinValue and/or MaxValue defined.</exception>
+        public static IEnumerable<Range<T>> Inverse<T>(this IEnumerable<Range<T>> source)
+            where T : IComparable
         {
-            minValue ??= typeof(T).MinValue<T>();
-            maxValue ??= typeof(T).MaxValue<T>();
+            var minValue = typeof(T).MinValue<T>();
+            var maxValue = typeof(T).MaxValue<T>();
 
             return PrivateInverse(source, minValue, maxValue);
         }
@@ -37,14 +35,12 @@ namespace Reynj.Linq
         /// <param name="maxValue">MaxValue of the given type</param>
         /// <typeparam name="T">The type of the elements of source.</typeparam>
         /// <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> that contains the inversed elements from the source sequence.</returns>
-        /// <exception cref="T:System.ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
-        public static IEnumerable<Range<T>> Inverse<T>(this IEnumerable<Range<T>> source, T? minValue = null, T? maxValue = null)
-            where T : struct, IComparable
+        /// <exception cref="ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
+        /// <exception cref="ArgumentException">If <paramref name="minValue"/> is greater than <paramref name="maxValue"/>.</exception>
+        public static IEnumerable<Range<T>> Inverse<T>(this IEnumerable<Range<T>> source, T minValue, T maxValue)
+            where T : IComparable
         {
-            minValue ??= typeof(T).MinValue<T>();
-            maxValue ??= typeof(T).MaxValue<T>();
-
-            return PrivateInverse(source, minValue.Value, maxValue.Value);
+            return PrivateInverse(source, minValue, maxValue);
         }
 
         private static IEnumerable<Range<T>> PrivateInverse<T>(IEnumerable<Range<T>> source, T minValue, T maxValue)

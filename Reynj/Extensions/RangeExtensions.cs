@@ -1,6 +1,6 @@
-﻿namespace Reynj.Extensions
+﻿#if !NETSTANDARD2_0
+namespace Reynj.Extensions
 {
-#if !NETSTANDARD2_0
     /// <summary>
     /// Extension methods to support conversion from and to <see cref="System.Range"/>
     /// </summary>
@@ -38,5 +38,5 @@
             return new System.Range(startIndex, endIndex);
         }
     }
-#endif
 }
+#endif

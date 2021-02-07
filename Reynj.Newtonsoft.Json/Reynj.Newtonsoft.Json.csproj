@@ -4,6 +4,7 @@
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <Features>strict</Features>
+    <Nullable>enable</Nullable>
     <Authors>Jochen Jonckheere</Authors>
     <Company>JxK</Company>
     <Copyright>Jochen Jonckheere</Copyright>

@@ -15,7 +15,7 @@ namespace Reynj.Linq
         /// <param name="source">An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> to reduce.</param>
         /// <typeparam name="T">The type of the elements of source.</typeparam>
         /// <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> that contains the reduced elements from the source sequence.</returns>
-        /// <exception cref="T:System.ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
         public static IEnumerable<Range<T>> Reduce<T>(this IEnumerable<Range<T>> source) // Reduce (In functional programming, fold (also termed reduce, accumulate, aggregate, compress, or inject))
             where T : IComparable
         {

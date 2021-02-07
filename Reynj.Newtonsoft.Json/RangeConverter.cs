@@ -13,7 +13,7 @@ namespace Reynj.Newtonsoft.Json
         private const string StartName = "Start";
         private const string EndName = "End";
 
-        private static Type GetValueType(Type objectType)
+        private static Type? GetValueType(Type objectType)
         {
             return objectType
                 .BaseTypesAndSelf()
@@ -29,17 +29,17 @@ namespace Reynj.Newtonsoft.Json
         }
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
             {
                 return null;
             }
 
-            object start = null;
+            object? start = null;
             var startSet = false;
 
-            object end = null;
+            object? end = null;
             var endSet = false;
 
             var valueType = GetValueType(objectType);
@@ -86,7 +86,7 @@ namespace Reynj.Newtonsoft.Json
         }
 
         /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             if (value == null)
             {

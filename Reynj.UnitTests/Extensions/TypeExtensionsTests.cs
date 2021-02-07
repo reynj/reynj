@@ -8,6 +8,35 @@ namespace Reynj.UnitTests.Extensions
 {
     public class TypeExtensionsTests
     {
+        [Fact]
+        public void MinValue_ForATypeThatHasNoMinValueField_IsNotPossible()
+        {
+            // Arrange
+            var type = typeof(object);
+
+            // Act
+            Action act = () => type.MinValue<object>();
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>()
+                .And.Message.Should().Be("The type Object does not contain a field with name MinValue.");
+        }
+
+        [Fact]
+        public void MinValue_ForAnObjectTypeThatReturnsNullAsMinValue_IsNotPossible()
+        {
+            // Arrange
+            var type = typeof(CustomObjectType);
+
+            // Act
+            Action act = () => type.MinValue<CustomObjectType>();
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>()
+                .And.Message.Should()
+                .Be("The value of the field MinValue on CustomObjectType is null and not allowed.");
+        }
+
         [Theory]
         [MemberData(nameof(MinValueData))]
         public void MinValue_ReturnsTheExpectedMinValue<T>(Type type, object expectedMinValue)
@@ -52,6 +81,35 @@ namespace Reynj.UnitTests.Extensions
             yield return new object[] {typeof(System.Data.SqlTypes.SqlSingle), System.Data.SqlTypes.SqlSingle.MinValue};
         }
 
+        [Fact]
+        public void MaxValue_ForATypeThatHasNoMaxValueField_IsNotPossible()
+        {
+            // Arrange
+            var type = typeof(object);
+
+            // Act
+            Action act = () => type.MaxValue<object>();
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>()
+                .And.Message.Should().Be("The type Object does not contain a field with name MaxValue.");
+        }
+
+        [Fact]
+        public void MaxValue_ForAnObjectTypeThatReturnsNullAsMaxValue_IsNotPossible()
+        {
+            // Arrange
+            var type = typeof(CustomObjectType);
+
+            // Act
+            Action act = () => type.MaxValue<CustomObjectType>();
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>()
+                .And.Message.Should()
+                .Be("The value of the field MaxValue on CustomObjectType is null and not allowed.");
+        }
+
         [Theory]
         [MemberData(nameof(MaxValueData))]
         public void MaxValue_ReturnsTheExpectedMinValue<T>(Type type, object expectedMaxValue)
@@ -94,6 +152,14 @@ namespace Reynj.UnitTests.Extensions
             yield return new object[] {typeof(System.Data.SqlTypes.SqlInt64), System.Data.SqlTypes.SqlInt64.MaxValue};
             yield return new object[] {typeof(System.Data.SqlTypes.SqlMoney), System.Data.SqlTypes.SqlMoney.MaxValue};
             yield return new object[] {typeof(System.Data.SqlTypes.SqlSingle), System.Data.SqlTypes.SqlSingle.MaxValue};
+        }
+
+        public class CustomObjectType
+        {
+#pragma warning disable 414
+            public static readonly CustomObjectType MinValue = null;
+            public static readonly CustomObjectType MaxValue = null;
+#pragma warning restore 414
         }
     }
 }

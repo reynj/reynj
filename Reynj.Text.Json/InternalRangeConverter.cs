@@ -18,7 +18,11 @@ namespace Reynj.Text.Json
         private readonly JsonEncodedText _endName = JsonEncodedText.Encode(EndName);
 
         /// <inheritdoc />
+#if NETSTANDARD2_0
         public override Range<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+#else
+        public override Range<T>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+#endif
         {
             if (reader.TokenType != JsonTokenType.StartObject)
             {
@@ -66,7 +70,7 @@ namespace Reynj.Text.Json
                 return Range<T>.Empty;
             }
 
-            return new Range<T>(start, end);
+            return new Range<T>(start!, end!);
         }
 
         /// <inheritdoc />
@@ -83,7 +87,7 @@ namespace Reynj.Text.Json
             writer.WriteEndObject();
         }
 
-        private static TValue ReadProperty<TValue>(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        private static TValue? ReadProperty<TValue>(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions? options)
         {
             // Attempt to use existing converter first before re-entering through JsonSerializer.Deserialize().
             // The default converter for objects does not parse null objects as null, so it is not used here.
@@ -96,7 +100,7 @@ namespace Reynj.Text.Json
             return JsonSerializer.Deserialize<TValue>(ref reader, options);
         }
 
-        private static void WriteProperty<TValue>(Utf8JsonWriter writer, TValue value, JsonEncodedText name, JsonSerializerOptions options)
+        private static void WriteProperty<TValue>(Utf8JsonWriter writer, TValue value, JsonEncodedText name, JsonSerializerOptions? options)
         {
             var typeToConvert = typeof(TValue);
 

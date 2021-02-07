@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !NETCOREAPP2_1
+using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using Xunit;
@@ -67,3 +68,4 @@ namespace Reynj.UnitTests.Extensions
         }
     }
 }
+#endif

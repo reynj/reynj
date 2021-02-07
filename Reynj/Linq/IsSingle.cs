@@ -13,7 +13,7 @@ namespace Reynj.Linq
         /// </summary>
         /// <param name="source">An <see cref="T:System.Collections.Generic.IEnumerable"></see> to look for the lowest value.</param>
         /// <returns>True when the <see cref="T:System.Collections.Generic.IEnumerable"></see> contains exactly one element, otherwise false.</returns>
-        /// <exception cref="T:System.ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
         public static bool IsSingle(this IEnumerable source)
         {
             if (source == null)
