@@ -1,6 +1,6 @@
 # Reynj
 
-[![Build Status](https://dev.azure.com/reynj/reynj/_apis/build/status/reynj.reynj?branchName=master)](https://dev.azure.com/reynj/reynj/_build/latest?definitionId=1?branchName=master)
+[![Build Status](https://dev.azure.com/reynj/reynj/_apis/build/status/Reynj?branchName=refs%2Ftags%2Fv1.4.0)](https://dev.azure.com/reynj/reynj/_build/latest?definitionId=1&branchName=refs%2Ftags%2Fv1.4.0)
 [![NuGet Badge](https://buildstats.info/nuget/Reynj?includePreReleases=false)](https://www.nuget.org/packages/Reynj)
 
 ### What is Reynj?
