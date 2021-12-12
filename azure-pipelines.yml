@@ -25,24 +25,31 @@ stages:
       displayName: 'Determine application version with GitVersion'
 
     - task: UseDotNet@2
-      displayName: 'Use .NET Core SDK'
+      displayName: 'Use .NET Core SDK 2.1.x'
       inputs:
         packageType: sdk
         version: 2.1.x
         installationPath: $(Agent.ToolsDirectory)/dotnet
 
     - task: UseDotNet@2
-      displayName: 'Use .NET Core SDK'
+      displayName: 'Use .NET Core SDK 3.1.x'
       inputs:
         packageType: sdk
         version: 3.1.x
         installationPath: $(Agent.ToolsDirectory)/dotnet
 
     - task: UseDotNet@2
-      displayName: 'Use .NET Core SDK'
+      displayName: 'Use .NET Core SDK 5.0.x'
       inputs:
         packageType: sdk
         version: 5.0.x
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core SDK 6.0.x'
+      inputs:
+        packageType: sdk
+        version: 6.0.x
         installationPath: $(Agent.ToolsDirectory)/dotnet
 
     - task: DotNetCoreCLI@2

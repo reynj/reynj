@@ -22,12 +22,12 @@ namespace Reynj.Text.Json
         }
 
         /// <inheritdoc />
-        public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
+        public override JsonConverter? CreateConverter(Type typeToConvert, JsonSerializerOptions options)
         {
             var keyType = typeToConvert.GenericTypeArguments[0];
             var converterType = typeof(RangeConverter<>).MakeGenericType(keyType);
 
-            return (JsonConverter) Activator.CreateInstance(converterType);
+            return (JsonConverter?) Activator.CreateInstance(converterType);
         }
     }
 }
