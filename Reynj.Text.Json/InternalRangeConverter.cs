@@ -31,10 +31,10 @@ namespace Reynj.Text.Json
 
             var valueType = typeof(T);
 
-            T start = default;
+            T? start = default;
             var startSet = false;
 
-            T end = default;
+            T? end = default;
             var endSet = false;
 
             reader.Read();
