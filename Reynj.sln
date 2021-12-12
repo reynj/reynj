@@ -16,15 +16,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reynj.Text.Json", "Reynj.Text.Json\Reynj.Text.Json.csproj", "{CF569E29-E96D-4469-91A4-8C8376F03071}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reynj.Text.Json", "Reynj.Text.Json\Reynj.Text.Json.csproj", "{CF569E29-E96D-4469-91A4-8C8376F03071}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B666C923-D31E-42C5-9297-852ACCF14215}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reynj.Text.Json.UnitTests", "Reynj.Text.Json.UnitTests\Reynj.Text.Json.UnitTests.csproj", "{23E830D3-0E10-4C35-B5EF-62419770A1F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reynj.Text.Json.UnitTests", "Reynj.Text.Json.UnitTests\Reynj.Text.Json.UnitTests.csproj", "{23E830D3-0E10-4C35-B5EF-62419770A1F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reynj.Newtonsoft.Json", "Reynj.Newtonsoft.Json\Reynj.Newtonsoft.Json.csproj", "{2EE318FC-460D-477E-8581-04358AE1AF3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reynj.Newtonsoft.Json", "Reynj.Newtonsoft.Json\Reynj.Newtonsoft.Json.csproj", "{2EE318FC-460D-477E-8581-04358AE1AF3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reynj.Newtonsoft.Json.UnitTests", "Reynj.Reynj.Newtonsoft.Json.UnitTests\Reynj.Newtonsoft.Json.UnitTests.csproj", "{B109DD55-AA5E-4DCC-BCB3-EF95D7CF9DF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reynj.Newtonsoft.Json.UnitTests", "Reynj.Newtonsoft.Json.UnitTests\Reynj.Newtonsoft.Json.UnitTests.csproj", "{B109DD55-AA5E-4DCC-BCB3-EF95D7CF9DF2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reynj.NHibernate", "Reynj.NHibernate\Reynj.NHibernate.csproj", "{C13D904D-BA04-4FE1-AB8A-48A0AC01216D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reynj.NHibernate.UnitTests", "Reynj.NHibernate.UnitTests\Reynj.NHibernate.UnitTests.csproj", "{86417668-3E71-4BFA-9F1E-EB4F120A9B06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +60,14 @@ Global
 		{B109DD55-AA5E-4DCC-BCB3-EF95D7CF9DF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B109DD55-AA5E-4DCC-BCB3-EF95D7CF9DF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B109DD55-AA5E-4DCC-BCB3-EF95D7CF9DF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C13D904D-BA04-4FE1-AB8A-48A0AC01216D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C13D904D-BA04-4FE1-AB8A-48A0AC01216D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C13D904D-BA04-4FE1-AB8A-48A0AC01216D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C13D904D-BA04-4FE1-AB8A-48A0AC01216D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86417668-3E71-4BFA-9F1E-EB4F120A9B06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86417668-3E71-4BFA-9F1E-EB4F120A9B06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86417668-3E71-4BFA-9F1E-EB4F120A9B06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86417668-3E71-4BFA-9F1E-EB4F120A9B06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +76,7 @@ Global
 		{6DD67822-3C1C-4838-A3F7-4B83E060EE8F} = {B666C923-D31E-42C5-9297-852ACCF14215}
 		{23E830D3-0E10-4C35-B5EF-62419770A1F3} = {B666C923-D31E-42C5-9297-852ACCF14215}
 		{B109DD55-AA5E-4DCC-BCB3-EF95D7CF9DF2} = {B666C923-D31E-42C5-9297-852ACCF14215}
+		{86417668-3E71-4BFA-9F1E-EB4F120A9B06} = {B666C923-D31E-42C5-9297-852ACCF14215}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24402608-BF99-4B7A-9E90-E98869187CDC}

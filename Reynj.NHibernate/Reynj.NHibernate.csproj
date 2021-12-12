@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Features>strict</Features>
+    <Nullable>enable</Nullable>
+    <Authors>Jochen Jonckheere</Authors>
+    <Company>JxK</Company>
+    <Copyright>Jochen Jonckheere</Copyright>
+    <RepositoryUrl>https://github.com/reynj/reynj</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageDescription>.Net Library that aids in comparison and handling value ranges or time bounded periods. The aim of this library is to provide a base Range class with all possible methods that can be performed on a Range, but also extension methods that can be used to handle and compare lists of Ranges.</PackageDescription>
+    <PackageProjectUrl>https://github.com/reynj/reynj</PackageProjectUrl>
+    <PackageTags>Range,Period,Span,Interval,NHibernate</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageIcon>reynj-logo.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Reynj\reynj-logo.png" Link="reynj-logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NHibernate" Version="[5.1,6)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reynj\Reynj.csproj" />
+  </ItemGroup>
+
+</Project>
