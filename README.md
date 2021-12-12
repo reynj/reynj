@@ -169,7 +169,7 @@ var res5 = range1 >= range2; // returns false
 ##### Tuples
 A Range<T> has two primary properties, Start and End, because of that a Range<T> can also be represented as a Tuple, in the lastest versions of .Net as a [ValueTuple](https://docs.microsoft.com/en-us/dotnet/api/system.valuetuple?view=netcore-2.2).
 The constructor of a Range<T> accepts a Tuple of two elements and there is an AsTuple method to convert a Range<T> to a ValueTuple<T, T>.
-Conversion operators have been implemented to makes this even more smoothly.
+Conversion operators have been implemented to make this even more smoothly.
 
 ```c#
 var tuple = (0, 10);
@@ -340,7 +340,7 @@ var range = new Range<int>(0, 10);
 var values = range1.EnumerateBy(2, (value, step) => value + step); // returns 0, 2, 4, 6, 8
 
 // EnumerateBy(TStep step, Func<T, TStep, T> stepper)
- var startDate = new DateTimeOffset(2020, 8, 1, 8, 0, 0, TimeSpan.FromHours(2));
+var startDate = new DateTimeOffset(2020, 8, 1, 8, 0, 0, TimeSpan.FromHours(2));
 var endDate = new DateTimeOffset(2020, 8, 1, 14, 0, 0, TimeSpan.FromHours(2));
 var range = new Range<DateTimeOffset>(0, 10);
 
