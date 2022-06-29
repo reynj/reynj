@@ -66,6 +66,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
 	    - [ ] Difference (Relative complement)
 	    - [ ] Exclusive
         - [ ] Enumerate (call EnumerateBy on all ranges)
+        - [ ] ContainsOverlaps (if ranges in the collection overlap)
     - [ ] Serialize/Deserialize
       - [x] SerializableAttribute 
       - [x] JsonConvertor (System.Text.Json)
