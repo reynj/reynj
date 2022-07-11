@@ -92,8 +92,14 @@ PM> Install-Package Reynj
 #### What is a Range?
 A Range is best visualized as a bar. It has a start and an end and contains everything between those two. Below is a visualization of Range of integers that start at 0 and end at 10. All whole numbers between 0 and 10 are included in the Range, except 10.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSYW5nZTxpbnQ-XG4gICAgXG4gICAgUmFuZ2VbMCwxMF0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgMTBoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Range<int>](./images/range.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Range<int>
+    
+    Range[0,10]           : 2018-01-01.00, 10h
+```
 
 To create this Range in code, you can do the following:
 
