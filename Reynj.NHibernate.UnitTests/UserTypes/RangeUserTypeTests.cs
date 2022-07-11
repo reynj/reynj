@@ -212,6 +212,8 @@ namespace Reynj.NHibernate.UnitTests.UserTypes
 
         // TODO: NullSafeGet & NullSafeSet
 
+        // TODO: IntegrationTest
+
         [Fact]
         public void DeepCopy_ReturnsACloneOfAGivenRange()
         {
