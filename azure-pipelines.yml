@@ -69,20 +69,20 @@ stages:
         installationPath: $(Agent.ToolsDirectory)/dotnet
 
 
-    - pwsh: |
-        dotnet restore --configfile nuget.config
-      displayName: 'Restore NuGet Packages'
-      #condition: ne(variables['CACHE_RESTORED'], 'true') => Always do the restore to create the project.assets.json files
-      env:
-        DOTNET_NOLOGO: 'true'
+
 
 
     - task: DotNetCoreCLI@2
-      displayName: 'DotNet Restore Local Tools'
+      displayName: 'Restore Local Tools'
       inputs:
         command: custom
         custom: 'tool'
         arguments: 'restore'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore NuGet Packages'
+      inputs:
+        command: restore
 
 
     - task: DotNetCoreCLI@2
