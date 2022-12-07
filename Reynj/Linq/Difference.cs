@@ -17,7 +17,7 @@ namespace Reynj.Linq
         /// <param name="first">The first sequence.</param>
         /// <param name="second">The sequence to do the exclusive comparison with.</param>
         /// <typeparam name="T">The type of the elements of the input sequences.</typeparam>
-        /// <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> that contains the exclusive elements of the two input sequences.</returns>
+        /// <returns>An <see cref="IEnumerable{TRange}"></see> that contains the exclusive elements of the two input sequences.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="first">first</paramref> or <paramref name="second">second</paramref> is null.</exception>
         public static IEnumerable<Range<T>> Difference<T>(this IEnumerable<Range<T>> first, IEnumerable<Range<T>> second)
             where T : IComparable

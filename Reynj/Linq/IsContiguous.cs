@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Reynj.Linq
+﻿namespace Reynj.Linq
 {
     /// <summary>
-    /// Provides a set of static (Shared in Visual Basic) methods for querying objects that implement <see cref="System.Collections.Generic.IEnumerable{TRange}" />
+    /// Provides a set of static (Shared in Visual Basic) methods for querying objects that implement <see cref="IEnumerable{TRange}" />
     /// </summary>
     public static partial class Enumerable
     {
         /// <summary>
         /// Check if a collection of Ranges only contains touching Ranges and form a contiguous sequence.
         /// </summary>
-        /// <param name="source">An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> to check for contiguousness.</param>
+        /// <param name="source">An <see cref="IEnumerable{TRange}"></see> to check for contiguousness.</param>
         /// <typeparam name="T">The type of the elements of source.</typeparam>
         /// <returns>Returns true if the collection of Ranges only contains touching Ranges and form a contiguous sequence, otherwise false.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>

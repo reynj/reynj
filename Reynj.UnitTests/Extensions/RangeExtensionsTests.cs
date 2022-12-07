@@ -1,6 +1,4 @@
 ﻿#if !NETCOREAPP2_1
-using System;
-using System.Collections.Generic;
 using FluentAssertions;
 using Xunit;
 using Reynj.Extensions;

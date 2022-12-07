@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Reynj.Linq;
 using Xunit;
 
@@ -10,10 +7,11 @@ namespace Reynj.UnitTests.Linq
     public class IntersectTests
     {
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1806:Do not ignore method results", Justification = "Specific unit test")]
         public void Intersect_WithNull_IsNotPossible()
         {
             // Arrange
-            IEnumerable<Range<int>> ranges = new Range<int>[] { };
+            IEnumerable<Range<int>> ranges = Array.Empty<Range<int>>();
 
             // Act
             // ReSharper disable once ExpressionIsAlwaysNull
@@ -26,6 +24,7 @@ namespace Reynj.UnitTests.Linq
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1806:Do not ignore method results", Justification = "Specific unit test")]
         public void Intersect_AsNull_IsNotPossible()
         {
             // Arrange
@@ -34,7 +33,7 @@ namespace Reynj.UnitTests.Linq
             // Act
             // ReSharper disable once ExpressionIsAlwaysNull
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Action act = () => ranges.Intersect(new Range<int>[] { }).ToList();
+            Action act = () => ranges.Intersect(Array.Empty<Range<int>>()).ToList();
 
             // Assert
             act.Should().Throw<ArgumentNullException>()

@@ -1,0 +1,24 @@
+﻿# top-most EditorConfig file
+root = true
+
+# .NET formatting rules
+
+[*.cs]
+csharp_style_namespace_declarations= file_scoped:silent
+
+[*.{cs,vb}]
+dotnet_style_namespace_match_folder = true:warning
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+
+# CA1508: Avoid dead conditional code
+dotnet_diagnostic.CA1508.severity = error
+
+#CA1716: Identifiers should not match keywords
+dotnet_diagnostic.CA1716.severity = none
+
+# CA1820: Test for empty strings using string length
+dotnet_diagnostic.CA1820.severity = error
+
+#IDE0005: Remove unnecessary using directives
+dotnet_diagnostic.IDE0005.severity = error

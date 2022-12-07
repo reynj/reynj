@@ -20,9 +20,18 @@ stages:
       displayName: 'Install GitVersion'
       inputs:
         versionSpec: '5.x'
-
+  
     - task: gitversion/execute@0
       displayName: 'Determine application version with GitVersion'
+      name: GitVersion
+
+
+    - task: NuGetToolInstaller@1
+      displayName: 'Install NuGet 6.4.x'
+      inputs:
+        versionSpec: '6.4.x'
+
+    - task: NuGetAuthenticate@1
 
     - task: UseDotNet@2
       displayName: 'Use .NET Core SDK 2.1.x'
@@ -52,34 +61,74 @@ stages:
         version: 6.0.x
         installationPath: $(Agent.ToolsDirectory)/dotnet
 
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core SDK 7.0.x'
+      inputs:
+        packageType: sdk
+        version: 7.0.x
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+
+
+    - pwsh: |
+        dotnet restore --configfile nuget.config
+      displayName: 'Restore NuGet Packages'
+      #condition: ne(variables['CACHE_RESTORED'], 'true') => Always do the restore to create the project.assets.json files
+      env:
+        DOTNET_NOLOGO: 'true'
+
+
+    - task: DotNetCoreCLI@2
+      displayName: 'DotNet Restore Local Tools'
+      inputs:
+        command: custom
+        custom: 'tool'
+        arguments: 'restore'
+
+
     - task: DotNetCoreCLI@2
       displayName: 'Build Project'
       inputs:
-        command: 'build'
-        projects: '**/*.csproj'
-        arguments: '--configuration $(buildConfiguration) /p:AssemblyVersion=$(GitVersion.AssemblySemVer);FileVersion=$(GitVersion.AssemblySemVer);InformationalVersion=$(GitVersion.InformationalVersion)'
+        command: build
+        arguments: '--no-restore --configuration $(buildConfiguration) /p:Version=$(GitVersion.FullSemVer)'
 
     - task: DotNetCoreCLI@2
       displayName: 'Test Project'
       inputs:
         command: test
-        projects: '**/*Tests.csproj'
-        arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+        arguments: '--no-build --no-restore --configuration $(buildConfiguration) --collect "XPlat Code Coverage" -- xunit.parallelizeAssembly=true -- xunit.parallelizeTestCollections=true -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.ExcludeByAttribute="Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute"'
+        publishTestResults: true
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Generate Code Coverage Report'
+      inputs:
+        command: 'custom'
+        custom: 'reportgenerator'
+        arguments: '-reports:"$(Agent.TempDirectory)/**/coverage.cobertura.xml" -targetdir:"$(Agent.TempDirectory)/CoverageReport" -reporttypes:HtmlInline_AzurePipelines;Cobertura -tag:$(GitVersion.FullSemVer)'
+
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish Code Coverage Results'
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: $(Agent.TempDirectory)/CoverageReport/Cobertura.xml
+        reportDirectory: $(Agent.TempDirectory)/CoverageReport
+      env:
+        DISABLE_COVERAGE_AUTOGENERATE: 'true'
+
 
     - task: DotNetCoreCLI@2
       displayName: 'Pack Project'
       inputs:
-        command: 'pack'
+        command: pack
         packagesToPack: '**/*.csproj;!**/*Tests.csproj'
-        outputDir: '$(Build.ArtifactStagingDirectory)/packages'
+        packDirectory: '$(Build.ArtifactStagingDirectory)/packages'
         configuration: '$(buildConfiguration)'
         nobuild: true
         includesymbols: true
-        versioningScheme: 'byEnvVar'
-        versionEnvVar: 'GitVersion.NuGetVersion'
+        buildProperties: 'Version=$(gitVersion_FullSemVer)'
 
     - publish: '$(Build.ArtifactStagingDirectory)/packages'
       artifact: 'packages'
+
 
 - stage: 'Publish'
   dependsOn: 'Build'
@@ -98,8 +147,14 @@ stages:
       runOnce:
         deploy:
           steps:
+          - task: NuGetToolInstaller@1
+            displayName: 'Install NuGet 6.4.x'
+            inputs:
+              versionSpec: '6.4.x'
+
+          - task: NuGetAuthenticate@1
+
           - task: NuGetCommand@2
-            displayName: 'Push NuGet Package'
             inputs:
               command: 'push'
               packagesToPush: '$(Pipeline.Workspace)/packages/*.nupkg;!$(Pipeline.Workspace)/packages/*.symbols.nupkg'

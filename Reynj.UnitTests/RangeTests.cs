@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
@@ -75,6 +72,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1806:Do not ignore method results", Justification = "On purpose")]
         public void Ctor_Start_CannotBeNull()
         {
             // Arrange - Act
@@ -87,6 +85,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1806:Do not ignore method results", Justification = "On purpose")]
         public void Ctor_End_CannotBeNull()
         {
             // Arrange - Act
@@ -99,6 +98,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1806:Do not ignore method results", Justification = "On purpose")]
         public void Ctor_StartEnd_EndMustBeLessThanOrEqualToStart()
         {
             // Arrange - Act
@@ -154,6 +154,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1806:Do not ignore method results", Justification = "On purpose")]
         public void Ctor_Tuple_Item1CannotBeNull()
         {
             // Arrange
@@ -169,6 +170,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1806:Do not ignore method results", Justification = "On purpose")]
         public void Ctor_Tuple_EndMustBeLessThanOrEqualToStart()
         {
             // Arrange - Act
@@ -769,7 +771,7 @@ namespace Reynj.UnitTests
             {
                 new Range<int>(15, 15),
                 1, // Step
-                new int[] {}
+                Array.Empty<int>()
             };
 
             // Very big step
@@ -788,7 +790,7 @@ namespace Reynj.UnitTests
             var range = new Range<double>(15.0, 20.0);
 
             // Act
-            var enumerable = range.EnumerateBy<int>(1, (value, step) => value + step);
+            var enumerable = range.EnumerateBy(1, (value, step) => value + step);
 
             // Assert
             enumerable.Should().BeEquivalentTo(new[] {15, 16, 17, 18, 19}, options => options.WithStrictOrdering());
@@ -832,7 +834,7 @@ namespace Reynj.UnitTests
             var enumerable = range.EnumerateBy(1, (value, step) => value + step);
 
             // Assert
-            enumerable.Should().BeEquivalentTo(new int[] { }, options => options.WithStrictOrdering());
+            enumerable.Should().BeEquivalentTo(Array.Empty<int>(), options => options.WithStrictOrdering());
         }
 
         [Fact]
@@ -845,7 +847,7 @@ namespace Reynj.UnitTests
             var enumerable = range.EnumerateBy(1, (value, step) => value + step);
 
             // Assert
-            enumerable.Should().BeEquivalentTo(new int[] { }, options => options.WithStrictOrdering());
+            enumerable.Should().BeEquivalentTo(Array.Empty<int>(), options => options.WithStrictOrdering());
         }
 
         // TODO: EnumerateBy without stepper function (via dynamic or Expressions)
@@ -893,6 +895,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "On purpose")]
         public void Equals_IsFalse_WhenOtherIsNull()
         {
             // Arrange
@@ -1229,6 +1232,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "On purpose")]
         public void EqualityOperator_IsTrue_WhenBothRangesAreNull()
         {
             // Arrange
@@ -1241,6 +1245,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "On purpose")]
         public void EqualityOperator_IsFalse_WhenOneRangeIsNull()
         {
             // Arrange
@@ -1253,6 +1258,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "On purpose")]
         public void EqualityOperator_IsFalse_WhenTheOtherRangeIsNull()
         {
             // Arrange
@@ -1287,6 +1293,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "On purpose")]
         public void InequalityOperator_IsFalse_WhenBothRangesAreNull()
         {
             // Arrange
@@ -1299,6 +1306,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "On purpose")]
         public void InequalityOperator_IsTrue_WhenOneRangeIsNull()
         {
             // Arrange
@@ -1311,6 +1319,7 @@ namespace Reynj.UnitTests
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Maintainability", "CA1508:Avoid dead conditional code", Justification = "On purpose")]
         public void InequalityOperator_IsTrue_WhenTheOtherRangeIsNull()
         {
             // Arrange
@@ -1638,6 +1647,7 @@ namespace Reynj.UnitTests
 
         [Theory(Skip = "Until there is a solution for the private setters on Start & End")]
         [MemberData(nameof(SerializeDeserializeRangeData))]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5369:Use XmlReader for 'XmlSerializer.Deserialize()'", Justification = "On purpose")]
         public void Serialize_Deserialize_Xml_DoesNotChangeTheRange(object range, Type typeOfRange)
         {
             // Arrange

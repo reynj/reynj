@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 using Reynj.Extensions;
 
@@ -157,8 +155,8 @@ namespace Reynj.UnitTests.Extensions
         public class CustomObjectType
         {
 #pragma warning disable 414
-            public static readonly CustomObjectType MinValue = null;
-            public static readonly CustomObjectType MaxValue = null;
+            public static readonly CustomObjectType MinValue;
+            public static readonly CustomObjectType MaxValue;
 #pragma warning restore 414
         }
     }

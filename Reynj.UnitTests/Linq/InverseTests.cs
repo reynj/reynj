@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Reynj.Linq;
 using Xunit;
 
@@ -10,6 +7,7 @@ namespace Reynj.UnitTests.Linq
     public class InverseTests
     {
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1806:Do not ignore method results", Justification = "Specific unit test")]
         public void Inverse_WithNull_IsNotPossible()
         {
             // Arrange
@@ -26,6 +24,7 @@ namespace Reynj.UnitTests.Linq
         }
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1806:Do not ignore method results", Justification = "Specific unit test")]
         public void Inverse_MinValueMustBeLessThanOrEqualToMaxValue()
         {
             // Arrange

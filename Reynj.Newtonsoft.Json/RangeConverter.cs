@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Reynj.Extensions;
@@ -79,7 +77,7 @@ namespace Reynj.Newtonsoft.Json
             if (!startSet || !endSet)
             {
                 // ReSharper disable once PossibleNullReferenceException
-                return objectType.GetField(nameof(Range<int>.Empty), BindingFlags.Public | BindingFlags.Static).GetValue(objectType);
+                return objectType.GetField(nameof(Range<int>.Empty), BindingFlags.Public | BindingFlags.Static)?.GetValue(objectType);
             }
 
             return Activator.CreateInstance(objectType, start, end);
@@ -100,7 +98,7 @@ namespace Reynj.Newtonsoft.Json
             var resolver = serializer.ContractResolver as DefaultContractResolver;
 
             // ReSharper disable once PossibleNullReferenceException
-            var isEmpty = (bool) rangeType.GetMethod(nameof(Range<int>.IsEmpty)).Invoke(value, new object[] { });
+            var isEmpty = (bool) (rangeType.GetMethod(nameof(Range<int>.IsEmpty))?.Invoke(value, Array.Empty<object>()) ?? true);
 
             writer.WriteStartObject();
 
