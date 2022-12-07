@@ -30,7 +30,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reynj.Newtonsoft.Json.UnitT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reynj.NHibernate", "Reynj.NHibernate\Reynj.NHibernate.csproj", "{C13D904D-BA04-4FE1-AB8A-48A0AC01216D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reynj.NHibernate.UnitTests", "Reynj.NHibernate.UnitTests\Reynj.NHibernate.UnitTests.csproj", "{86417668-3E71-4BFA-9F1E-EB4F120A9B06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reynj.NHibernate.UnitTests", "Reynj.NHibernate.UnitTests\Reynj.NHibernate.UnitTests.csproj", "{86417668-3E71-4BFA-9F1E-EB4F120A9B06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

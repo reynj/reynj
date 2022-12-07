@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Common;
+﻿using System.Data.Common;
 using NHibernate;
 using NHibernate.Engine;
 using NHibernate.Type;

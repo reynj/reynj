@@ -1,59 +1,84 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-    <LangVersion>latest</LangVersion>
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net5.0;net6.0;net7.0</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
+		<IsPackable>false</IsPackable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+		<AnalysisLevel>6.0-recommended</AnalysisLevel>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5.0|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5.0|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="6.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="3.1.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Reynj.Newtonsoft.Json\Reynj.Newtonsoft.Json.csproj" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentAssertions" Version="6.8.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
+		<PackageReference Include="xunit" Version="2.4.2" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" Condition="'$(TargetFramework)' != 'netcoreapp2.1'">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="3.2.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Reynj.Newtonsoft.Json\Reynj.Newtonsoft.Json.csproj" />
+	</ItemGroup>
 
 </Project>
