@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Reynj.Extensions;
+﻿using Reynj.Extensions;
 
 namespace Reynj.Linq
 {
     /// <summary>
-    /// Provides a set of static (Shared in Visual Basic) methods for querying objects that implement <see cref="System.Collections.Generic.IEnumerable{TRange}" />
+    /// Provides a set of static (Shared in Visual Basic) methods for querying objects that implement <see cref="IEnumerable{TRange}" />
     /// </summary>
     public static partial class Enumerable
     {
         /// <summary>
         /// Returns the inversed ranges from a sequence 
         /// </summary>
-        /// <param name="source">An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> to inverse.</param>
+        /// <param name="source">An <see cref="IEnumerable{TRange}"></see> to inverse.</param>
         /// <typeparam name="T">The type of the elements of source.</typeparam>
-        /// <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> that contains the inversed elements from the source sequence.</returns>
+        /// <returns>An <see cref="IEnumerable{TRange}"></see> that contains the inversed elements from the source sequence.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
         /// <exception cref="InvalidOperationException">When the <typeparamref name="T"/> has no MinValue and/or MaxValue defined.</exception>
         public static IEnumerable<Range<T>> Inverse<T>(this IEnumerable<Range<T>> source)
@@ -30,11 +27,11 @@ namespace Reynj.Linq
         /// <summary>
         /// Returns the inversed ranges from a sequence 
         /// </summary>
-        /// <param name="source">An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> to inverse.</param>
+        /// <param name="source">An <see cref="IEnumerable{TRange}"></see> to inverse.</param>
         /// <param name="minValue">MinValue of the given type</param>
         /// <param name="maxValue">MaxValue of the given type</param>
         /// <typeparam name="T">The type of the elements of source.</typeparam>
-        /// <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> that contains the inversed elements from the source sequence.</returns>
+        /// <returns>An <see cref="IEnumerable{TRange}"></see> that contains the inversed elements from the source sequence.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
         /// <exception cref="ArgumentException">If <paramref name="minValue"/> is greater than <paramref name="maxValue"/>.</exception>
         public static IEnumerable<Range<T>> Inverse<T>(this IEnumerable<Range<T>> source, T minValue, T maxValue)

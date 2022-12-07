@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Reynj.Linq
+﻿namespace Reynj.Linq
 {
     /// <summary>
-    /// Provides a set of static (Shared in Visual Basic) methods for querying objects that implement <see cref="System.Collections.Generic.IEnumerable{TRange}" />
+    /// Provides a set of static (Shared in Visual Basic) methods for querying objects that implement <see cref="IEnumerable{TRange}" />
     /// </summary>
     public static partial class Enumerable
     {
         /// <summary>
         /// Returns reduced elements from a sequence by removing the empty ones and merging the overlapping and touching ones
         /// </summary>
-        /// <param name="source">An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> to reduce.</param>
+        /// <param name="source">An <see cref="IEnumerable{TRange}"></see> to reduce.</param>
         /// <typeparam name="T">The type of the elements of source.</typeparam>
-        /// <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"></see> that contains the reduced elements from the source sequence.</returns>
+        /// <returns>An <see cref="IEnumerable{TRange}"></see> that contains the reduced elements from the source sequence.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
         public static IEnumerable<Range<T>> Reduce<T>(this IEnumerable<Range<T>> source) // Reduce (In functional programming, fold (also termed reduce, accumulate, aggregate, compress, or inject))
             where T : IComparable

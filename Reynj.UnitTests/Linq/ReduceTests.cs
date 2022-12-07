@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Reynj.Linq;
 using Xunit;
 
@@ -10,6 +7,7 @@ namespace Reynj.UnitTests.Linq
     public class ReduceTests
     {
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1806:Do not ignore method results", Justification = "On purpose")]
         public void Reduce_WithNull_IsNotPossible()
         {
             // Arrange

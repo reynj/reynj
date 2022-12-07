@@ -1,4 +1,4 @@
-# Reynj
+﻿# Reynj
 
 [![Build Status](https://dev.azure.com/reynj/reynj/_apis/build/status/Reynj?branchName=refs%2Ftags%2Fv1.4.0)](https://dev.azure.com/reynj/reynj/_build/latest?definitionId=1&branchName=refs%2Ftags%2Fv1.4.0)
 [![NuGet Badge](https://buildstats.info/nuget/Reynj?includePreReleases=false)](https://www.nuget.org/packages/Reynj)
@@ -66,6 +66,7 @@ Below is my list of features I want to implement, feel free to open an issue if 
 	    - [ ] Difference (Relative complement)
 	    - [ ] Exclusive
         - [ ] Enumerate (call EnumerateBy on all ranges)
+        - [ ] ContainsOverlaps (if ranges in the collection overlap)
     - [ ] Serialize/Deserialize
       - [x] SerializableAttribute 
       - [x] JsonConvertor (System.Text.Json)
@@ -91,8 +92,14 @@ PM> Install-Package Reynj
 #### What is a Range?
 A Range is best visualized as a bar. It has a start and an end and contains everything between those two. Below is a visualization of Range of integers that start at 0 and end at 10. All whole numbers between 0 and 10 are included in the Range, except 10.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSYW5nZTxpbnQ-XG4gICAgXG4gICAgUmFuZ2VbMCwxMF0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgMTBoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Range<int>](./images/range.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Range<int>
+    
+    Range[0,10]           : 2018-01-01.00, 10h
+```
 
 To create this Range in code, you can do the following:
 
@@ -207,8 +214,15 @@ var res4 = range1.IncludesAll(0, 1, 2, 3, 4, 20, 6, 7, 8, 9); // returns false
 ###### Overlaps(Range<T> range)
 Overlaps will return true if two Ranges overlap. The following example are two overlapping ranges.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBPdmVybGFwc1xuICAgIFxuICAgIFJhbmdlWzAsMTBdICAgICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDEwaFxuICAgIFJhbmdlWzUsMTVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wNSwgMTBoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Overlaps](./images/overlaps.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Overlaps
+    
+    Range[0,10]           : 2018-01-01.00, 10h
+    Range[5,15]           : active, 2018-01-01.05, 10h
+```
 
 ```c#
 var range1 = new Range<int>(0, 10);
@@ -225,8 +239,15 @@ var res3 = range1.Overlaps(range3); // returns false
 ###### Touches(Range<T> range)
 Touches will return true if two Ranges touch each other. The following example are two touching ranges.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBUb3VjaGVzXG4gICAgXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzUsMTBdICAgICAgIDogMjAxOC0wMS0wMS4wNSwgNWgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
-![Touches](./images/touches.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Touches
+    
+    Range[0,5]        : 2018-01-01.00, 5h
+    Range[5,10]       : 2018-01-01.05, 5h
+```
 
 ```c#
 var range1 = new Range<int>(0, 10);
@@ -243,8 +264,19 @@ var res3 = range1.Touches(range3); // returns false
 ###### Gap(Range<T> range)
 Gap returns a new Range that represents the gap between two Ranges.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBHYXBcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuXG4gICAgc2VjdGlvbiBHYXBcbiAgICBSYW5nZVs1LDEwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDUsIDVoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Gap](./images/gap.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Gap
+    
+    section Ranges
+    Range[0,5]         : 2018-01-01.00, 5h
+    Range[10,15]       : 2018-01-01.10, 5h
+
+    section Gap
+    Range[5,10]        : active, 2018-01-01.05, 5h
+```
 
 ```c#
 var range1 = new Range<int>(0, 10);
@@ -259,8 +291,19 @@ var gap2 = range2.Gap(range1); // returns new Range<int>(5, 10)
 Merge returns a new Range that represents the combined/merged Range, a [Logical disjunction](https://en.wikipedia.org/wiki/Logical_disjunction).
 An exception is thrown when the ranges do not overlap or touch each other.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBNZXJnZVxuICAgIFxuICAgIHNlY3Rpb24gUmFuZ2VzXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzUsMjBdICAgICAgICAgOiAyMDE4LTAxLTAxLjA1LCAxNWhcblxuICAgIHNlY3Rpb24gTWVyZ2VcbiAgICBSYW5nZVswLDIwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDAsIDIwaCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19)
-![Merge](./images/merge.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Merge
+    
+    section Ranges
+    Range[0,5]          : 2018-01-01.00, 5h
+    Range[5,20]         : 2018-01-01.05, 15h
+
+    section Merge
+    Range[0,20]         : active, 2018-01-01.00, 20h
+```
 
 ```c#
 var range1 = new Range<int>(0, 10);
@@ -275,8 +318,20 @@ var merge2 = range1 | range2; // returns new Range<int>(0, 20)
 Split returns a Tuple of two Ranges that have been split on the given value.
 An exception is thrown when the value is not included in the Range.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBTcGxpdFxuICAgIFxuICAgIHNlY3Rpb24gUmFuZ2VcbiAgICBSYW5nZVswLDEwXSAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCAxMGhcbiAgICBcblxuICAgIHNlY3Rpb24gU3BsaXRcbiAgICBSYW5nZVswLDVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVs1LDEwXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDUsIDVoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Split](./images/split.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Split
+    
+    section Range
+    Range[0,10]          : 2018-01-01.00, 10h
+    
+
+    section Split
+    Range[0,5]           : active, 2018-01-01.00, 5h
+    Range[5,10]          : active, 2018-01-01.05, 5h
+```
 
 ```c#
 var range = new Range<int>(0, 10);
@@ -289,8 +344,19 @@ var split = range.Split(5); // returns (new Range<int>(0, 5), new Range<int>(5, 
 Intersection returns a new Range that represents the intersection between the current Range and a given Range, a [Logical conjunction](https://en.wikipedia.org/wiki/Logical_conjunction).
 An exception is thrown when the ranges do not overlap each other.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJbnRlcnNlY3Rpb25cbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsMTBdICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCAxMGhcbiAgICBSYW5nZVs1LDIwXSAgICAgICAgIDogMjAxOC0wMS0wMS4wNSwgMTVoXG5cbiAgICBzZWN0aW9uIEludGVyc2VjdGlvblxuICAgIFJhbmdlWzUsMTBdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wNSwgNWgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
-![Intersection](./images/intersection.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Intersection
+    
+    section Ranges
+    Range[0,10]         : 2018-01-01.00, 10h
+    Range[5,20]         : 2018-01-01.05, 15h
+
+    section Intersection
+    Range[5,10]         : active, 2018-01-01.05, 5h
+```
 
 ```c#
 var range1 = new Range<int>(0, 10);
@@ -305,8 +371,20 @@ var intersection2 = range1 & range2; // returns new Range<int>(5, 10)
 Exclusive returns a tuple of Ranges that that represent the parts they do not have in common, an [Exclusive or](https://en.wikipedia.org/wiki/Exclusive_or).
 An exception is thrown when the ranges are null or Empty.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBFeGNsdXNpdmVcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsMTBdICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCAxMGhcbiAgICBSYW5nZVs1LDIwXSAgICAgICAgIDogMjAxOC0wMS0wMS4wNSwgMTVoXG5cbiAgICBzZWN0aW9uIEV4Y2x1c2l2ZVxuICAgIFJhbmdlWzAsIDVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwgMjBdICAgICAgIDogYWN0aXZlLCAyMDE4LTAxLTAxLjEwLCAxMGgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
-![Exclusive](./images/exclusive.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Exclusive
+    
+    section Ranges
+    Range[0,10]         : 2018-01-01.00, 10h
+    Range[5,20]         : 2018-01-01.05, 15h
+
+    section Exclusive
+    Range[0, 5]         : active, 2018-01-01.00, 5h
+    Range[10, 20]       : active, 2018-01-01.10, 10h
+```
 
 ```c#
 var range1 = new Range<int>(0, 10);
@@ -420,8 +498,18 @@ services.AddControllers()
 #### What is a Collection of Ranges?
 A Collection of Ranges is a group or list of Ranges of the same type. 
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSYW5nZUNvbGxlY3Rpb25cbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbNywxMF0gICAgICAgICA6IDIwMTgtMDEtMDEuMDcsIDNoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuICAgIFJhbmdlWzE4LDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xOCwgN2giLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
-![CollectionOfRanges](./images/collection.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title RangeCollection
+    
+    section Ranges
+    Range[0,5]         : 2018-01-01.00, 5h
+    Range[7,10]        : 2018-01-01.07, 3h
+    Range[10,15]       : 2018-01-01.10, 5h
+    Range[18,25]       : 2018-01-01.18, 7h
+```
 
 To create an IEnumerable<Range<T>> in code, you can do the following:
 
@@ -456,8 +544,22 @@ var highest = ranges.Highest(); // returns 20
 ###### Reduce()
 Returns a new Collection of Ranges where all overlapping and touching Ranges have been merged and empty Ranges have been removed.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSZWR1Y2VcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbMywxMF0gICAgICAgICA6IDIwMTgtMDEtMDEuMDMsIDdoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuICAgIFJhbmdlWzE4LDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xOCwgN2hcblxuICAgIHNlY3Rpb24gUmVkdWNlZFxuICAgIFJhbmdlWzAsMTVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgMTVoXG4gICAgUmFuZ2VbMTgsMjVdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTgsIDdoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Reduce](./images/reduce.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Reduce
+    
+    section Ranges
+    Range[0,5]         : 2018-01-01.00, 5h
+    Range[3,10]        : 2018-01-01.03, 7h
+    Range[10,15]       : 2018-01-01.10, 5h
+    Range[18,25]       : 2018-01-01.18, 7h
+
+    section Reduced
+    Range[0,15]        : active, 2018-01-01.00, 15h
+    Range[18,25]       : active, 2018-01-01.18, 7h
+```
 
 ```c#
 var ranges = new[]
@@ -476,8 +578,26 @@ var reduced = ranges.Reduce(); // returns new[] { new Range<int>(0, 15), new Ran
 Returns the [union](https://en.wikipedia.org/wiki/Union_(set_theory)) of two Collections of Ranges while reducing them.
 An exception is thrown when one or both of the ranges are null.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBVbmlvblxuICAgIFxuICAgIHNlY3Rpb24gUmFuZ2VzIDFcbiAgICBSYW5nZVswLDVdICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzMsMTBdICAgICAgICAgOiAyMDE4LTAxLTAxLjAzLCA3aFxuICAgIFJhbmdlWzEwLDE1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xMCwgNWhcblxuXG4gICAgc2VjdGlvbiBSYW5nZXMgMlxuICAgIFJhbmdlWzE1LDE3XSAgICAgICAgIDogMjAxOC0wMS0wMS4xNSwgMmhcbiAgICBSYW5nZVsxOCwyNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTgsIDdoXG5cbiAgICBzZWN0aW9uIFVuaW9uZWRcbiAgICBSYW5nZVswLDE3XSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDAsIDE3aFxuICAgIFJhbmdlWzE4LDI1XSAgICAgICAgIDogYWN0aXZlLCAyMDE4LTAxLTAxLjE4LCA3aCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19)
-![Union](./images/union.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Union
+    
+    section Ranges 1
+    Range[0,5]         : 2018-01-01.00, 5h
+    Range[3,10]        : 2018-01-01.03, 7h
+    Range[10,15]       : 2018-01-01.10, 5h
+
+
+    section Ranges 2
+    Range[15,17]       : 2018-01-01.15, 2h
+    Range[18,25]       : 2018-01-01.18, 7h
+
+    section Unioned
+    Range[0,17]        : active, 2018-01-01.00, 17h
+    Range[18,25]       : active, 2018-01-01.18, 7h
+```
 
 ```c#
 var ranges1 = new[]
@@ -501,8 +621,27 @@ var unioned = ranges1.Union(ranges2); // returns new[] { new Range<int>(0, 17), 
 Returns the [intersection](https://en.wikipedia.org/wiki/Intersection_(set_theory)) of two Collections of Ranges while reducing them.
 An exception is thrown when one or both of the ranges are null.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJbnRlcnNlY3RcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlcyAxXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbMywxMF0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMywgN2hcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTAsIDVoXG4gICAgUmFuZ2VbMTgsMjBdICAgICAgICAgOiAyMDE4LTAxLTAxLjE4LCAyaFxuXG4gICAgc2VjdGlvbiBSYW5nZXMgMlxuICAgIFJhbmdlWzEsOF0gICAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAxLCA3aFxuICAgIFJhbmdlWzEyLDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xMiwgMTNoXG5cbiAgICBzZWN0aW9uIEludGVyc2VjdGlvblxuICAgIFJhbmdlWzEsOF0gICAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDEsIDdoXG4gICAgUmFuZ2VbMTIsMTVdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTIsIDNoXG4gICAgUmFuZ2VbMTgsMjBdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTgsIDJoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Intersect](./images/intersect.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Intersect
+    
+    section Ranges 1
+    Range[0,5]           : 2018-01-01.00, 5h
+    Range[3,10]          : 2018-01-01.03, 7h
+    Range[10,15]         : 2018-01-01.10, 5h
+    Range[18,20]         : 2018-01-01.18, 2h
+
+    section Ranges 2
+    Range[1,8]           : 2018-01-01.01, 7h
+    Range[12,25]         : 2018-01-01.12, 13h
+
+    section Intersection
+    Range[1,8]           : active, 2018-01-01.01, 7h
+    Range[12,15]         : active, 2018-01-01.12, 3h
+    Range[18,20]         : active, 2018-01-01.18, 2h
+```
 
 ```c#
 var ranges1 = new[]
@@ -528,8 +667,26 @@ var intersection = ranges1.Intersect(ranges2); // returns new[] { new Range<int>
 Returns the set difference or [relative complement](https://en.wikipedia.org/wiki/Complement_(set_theory)#Relative_complement) of two Collections of Ranges while reducing them.
 An exception is thrown when one or both of the ranges are null.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBEaWZmZXJlbmNlXG4gICAgXG4gICAgc2VjdGlvbiBSYW5nZXMgMVxuICAgIFJhbmdlWzAsNV0gICAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAwLCA1aFxuICAgIFJhbmdlWzMsMTBdICAgICAgICAgICA6IDIwMTgtMDEtMDEuMDMsIDdoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuICAgIFJhbmdlWzE4LDIwXSAgICAgICAgIDogMjAxOC0wMS0wMS4xOCwgMmhcblxuICAgIHNlY3Rpb24gUmFuZ2VzIDJcbiAgICBSYW5nZVsxLDhdICAgICAgICAgICAgIDogMjAxOC0wMS0wMS4wMSwgN2hcbiAgICBSYW5nZVsxMiwyNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTIsIDEzaFxuXG4gICAgc2VjdGlvbiBEaWZmZXJlbmNlT2ZcbiAgICBSYW5nZVsxNSwxOF0gICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4xNSwgM2hcbiAgICBSYW5nZVsyMCwyNV0gICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4yMCwgNWgiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9fQ)
-![Difference](./images/difference.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Difference
+    
+    section Ranges 1
+    Range[0,5]           : 2018-01-01.00, 5h
+    Range[3,10]          : 2018-01-01.03, 7h
+    Range[10,15]         : 2018-01-01.10, 5h
+    Range[18,20]         : 2018-01-01.18, 2h
+
+    section Ranges 2
+    Range[1,8]           : 2018-01-01.01, 7h
+    Range[12,25]         : 2018-01-01.12, 13h
+
+    section DifferenceOf
+    Range[15,18]         : active, 2018-01-01.15, 3h
+    Range[20,25]         : active, 2018-01-01.20, 5h
+```
 
 ```c#
 var ranges1 = new[]
@@ -554,8 +711,28 @@ var differenceOf = ranges1.Difference(ranges2); // returns new[] { new Range<int
 Returns the [exclusive or](https://en.wikipedia.org/wiki/Symmetric_difference) of two Collections of Ranges while reducing them.
 An exception is thrown when one or both of the ranges are null.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBFeGNsdXNpdmVcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlcyAxXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbMywxMF0gICAgICAgICAgIDogMjAxOC0wMS0wMS4wMywgN2hcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTAsIDVoXG4gICAgUmFuZ2VbMTgsMjBdICAgICAgICAgOiAyMDE4LTAxLTAxLjE4LCAyaFxuXG4gICAgc2VjdGlvbiBSYW5nZXMgMlxuICAgIFJhbmdlWzEsOF0gICAgICAgICAgICAgOiAyMDE4LTAxLTAxLjAxLCA3aFxuICAgIFJhbmdlWzEyLDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xMiwgMTNoXG5cbiAgICBzZWN0aW9uIEV4Y2x1c2l2ZU9mXG4gICAgUmFuZ2VbMCwxXSAgICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgMWhcbiAgICBSYW5nZVs4LDEyXSAgICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDgsIDRoXG4gICAgUmFuZ2VbMTUsMThdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTUsIDNoXG4gICAgUmFuZ2VbMjAsMjVdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMjAsIDVoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Reduce](./images/collection-exclusive.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Exclusive
+    
+    section Ranges 1
+    Range[0,5]           : 2018-01-01.00, 5h
+    Range[3,10]          : 2018-01-01.03, 7h
+    Range[10,15]         : 2018-01-01.10, 5h
+    Range[18,20]         : 2018-01-01.18, 2h
+
+    section Ranges 2
+    Range[1,8]           : 2018-01-01.01, 7h
+    Range[12,25]         : 2018-01-01.12, 13h
+
+    section ExclusiveOf
+    Range[0,1]           : active, 2018-01-01.00, 1h
+    Range[8,12]          : active, 2018-01-01.08, 4h
+    Range[15,18]         : active, 2018-01-01.15, 3h
+    Range[20,25]         : active, 2018-01-01.20, 5h
+```
 
 ```c#
 var ranges1 = new[]
@@ -582,8 +759,23 @@ Returns a new Collection of Ranges that is the inversion of the Ranges. Meaning 
 Also known as the [absolute complement](https://en.wikipedia.org/wiki/Complement_(set_theory)#Absolute_complement).
 An exception is thrown when the type of Range has no MinValue and MaxValue or when they are not passed.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJbnZlcnNlXG4gICAgXG4gICAgc2VjdGlvbiBSYW5nZXNcbiAgICBSYW5nZVswLDVdICAgICAgICAgICAgIDogMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMTAsIDVoXG4gICAgUmFuZ2VbMTgsMjBdICAgICAgICAgOiAyMDE4LTAxLTAxLjE4LCAyaFxuXG4gICAgc2VjdGlvbiBJbnZlcnNpb25cbiAgICBSYW5nZVst4oieLCAwXSAgICAgICAgIDogYWN0aXZlLCAyMDE3LTEyLTMxLjIxLCAzaFxuICAgIFJhbmdlWzUsMTBdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wNSwgNWhcbiAgICBSYW5nZVsxNSwyOF0gICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4xNSwgM2hcbiAgICBSYW5nZVsyMCwr4oieXSAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMjAsIDNoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0)
-![Inverse](./images/inverse.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title Inverse
+    
+    section Ranges
+    Range[0,5]           : 2018-01-01.00, 5h
+    Range[10,15]         : 2018-01-01.10, 5h
+    Range[18,20]         : 2018-01-01.18, 2h
+
+    section Inversion
+    Range[-∞, 0]         : active, 2017-12-31.21, 3h
+    Range[5,10]          : active, 2018-01-01.05, 5h
+    Range[15,28]         : active, 2018-01-01.15, 3h
+    Range[20,+∞]         : active, 2018-01-01.20, 3h
+```
 
 ```c#
 var ranges = new[]
@@ -600,8 +792,26 @@ var inversion = ranges.Inverse(); // returns new[] { new Range<int>(int.MinValue
 ###### IsContiguous()
 Check if a collection of Ranges only contains touching Ranges and form a contiguous sequence.
 
-[//]: # (Mermaid: https://mermaidjs.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBSZWR1Y2VcbiAgICBcbiAgICBzZWN0aW9uIFJhbmdlc1xuICAgIFJhbmdlWzAsNV0gICAgICAgICA6IDIwMTgtMDEtMDEuMDAsIDVoXG4gICAgUmFuZ2VbMywxMF0gICAgICAgICA6IDIwMTgtMDEtMDEuMDMsIDdoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgICAgOiAyMDE4LTAxLTAxLjEwLCA1aFxuICAgIFJhbmdlWzE4LDI1XSAgICAgICAgIDogMjAxOC0wMS0wMS4xOCwgN2hcblxuICAgIHNlY3Rpb24gUmVkdWNlZFxuICAgIFJhbmdlWzAsMTVdICAgICAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4wMCwgMTVoXG4gICAgUmFuZ2VbMTgsMjVdICAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMTgsIDdoIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifX0https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ2FudHRcbiAgICBkYXRlRm9ybWF0ICBZWVlZLU1NLURELkhIXG4gICAgYXhpc0Zvcm1hdCAlLUhcbiAgICB0aXRsZSBJc0NvbnRpZ3VvdXNcbiAgICBcbiAgICBzZWN0aW9uIElzIENvbnRpZ3VvdXNcbiAgICBSYW5nZVszLDEwXSAgICAgICAgIDogMjAxOC0wMS0wMS4wMywgN2hcbiAgICBSYW5nZVsxMCwxNV0gICAgICAgIDogMjAxOC0wMS0wMS4xMCwgNWhcblxuICAgIHNlY3Rpb24gTm90IENvbnRpZ3VvdXMgKG92ZXJsYXApXG4gICAgUmFuZ2VbMCw1XSAgICAgICAgIDogY3JpdCwgZG9uZSwgMjAxOC0wMS0wMS4wMCwgNWhcbiAgICBSYW5nZVszLDEwXSAgICAgICAgOiBjcml0LCBkb25lLCAyMDE4LTAxLTAxLjAzLCA3aFxuICAgIFJhbmdlWzEwLDE1XSAgICAgICA6IGFjdGl2ZSwgMjAxOC0wMS0wMS4xMCwgNWhcblxuICAgIHNlY3Rpb24gTm90IENvbnRpZ3VvdXMgKGdhcClcbiAgICBSYW5nZVszLDEwXSAgICAgICAgOiBhY3RpdmUsIDIwMTgtMDEtMDEuMDMsIDdoXG4gICAgUmFuZ2VbMTAsMTVdICAgICAgIDogY3JpdCwgZG9uZSwgMjAxOC0wMS0wMS4xMCwgNWhcbiAgICBSYW5nZVsxOCwyNV0gICAgICAgOiBjcml0LCBkb25lLCAyMDE4LTAxLTAxLjE4LCA3aCIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)
-![IsContiguous](./images/iscontiguous.svg)
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD.HH
+    axisFormat %-H
+    title IsContiguous
+    
+    section Is Contiguous
+    Range[3,10]          : 2018-01-01.03, 7h
+    Range[10,15]         : 2018-01-01.10, 5h
+
+    section Is Contiguous (overlap)
+    Range[0, 5]          : crit, done, 2018-01-01.00, 5h
+    Range[3,10]          : crit, done, 2018-01-01.03, 7h
+    Range[10,15]         : active, 2018-01-01.10, 5h
+
+    section Is Contiguous (gap)
+    Range[3,10]          : active, done, 2018-01-01.03, 7h
+    Range[10,15]         : crit, done, 2018-01-01.10, 5h
+    Range[18,25]         : crit, done, 2018-01-01.18, 7h
+```
 
 ```c#
 var contiguousRanges = new[]
