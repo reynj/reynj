@@ -124,7 +124,7 @@ stages:
         configuration: '$(buildConfiguration)'
         nobuild: true
         includesymbols: true
-        buildProperties: 'Version=$(gitVersion_FullSemVer)'
+        buildProperties: 'Version=$(GitVersion.FullSemVer)'
 
     - publish: '$(Build.ArtifactStagingDirectory)/packages'
       artifact: 'packages'
