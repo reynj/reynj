@@ -147,6 +147,9 @@ stages:
       runOnce:
         deploy:
           steps:
+          - download: current
+            artifact: packages
+
           - task: NuGetToolInstaller@1
             displayName: 'Install NuGet 6.4.x'
             inputs:
