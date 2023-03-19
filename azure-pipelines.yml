@@ -121,7 +121,7 @@ stages:
         configuration: '$(buildConfiguration)'
         nobuild: true
         includesymbols: true
-        buildProperties: 'Version=$(gitVersion_FullSemVer)'
+        buildProperties: 'Version=$(GitVersion.FullSemVer)'
 
     - publish: '$(Build.ArtifactStagingDirectory)/packages'
       artifact: 'packages'
@@ -144,6 +144,9 @@ stages:
       runOnce:
         deploy:
           steps:
+          - download: current
+            artifact: packages
+
           - task: NuGetToolInstaller@1
             displayName: 'Install NuGet 6.5.x'
             inputs:
