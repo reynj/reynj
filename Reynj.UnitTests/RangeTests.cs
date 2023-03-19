@@ -138,7 +138,7 @@ namespace Reynj.UnitTests
             range.End.Should().Be(new MyComparable {Value = 2});
         }
 
-        private class MyComparable : IComparable, IComparable<MyComparable>
+        private sealed class MyComparable : IComparable, IComparable<MyComparable>
         {
             public int Value { get; set; }
 
@@ -930,7 +930,7 @@ namespace Reynj.UnitTests
             range.Equals((object) numericRange).Should().BeFalse();
         }
 
-        private class NumericRange : Range<int>
+        private sealed class NumericRange : Range<int>
         {
             public NumericRange(int start, int end) : base(start, end)
             {

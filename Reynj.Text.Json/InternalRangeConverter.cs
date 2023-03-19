@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Reynj.Text.Json
 {
     /// <inheritdoc />
-    internal class RangeConverter<T> : JsonConverter<Range<T>>
+    internal sealed class RangeConverter<T> : JsonConverter<Range<T>>
         where T : IComparable
     {
         private const string StartName = "Start";

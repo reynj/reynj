@@ -19,7 +19,7 @@
 		<PackageIcon>reynj-logo.png</PackageIcon>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-		<AnalysisLevel>6.0-recommended</AnalysisLevel>
+		<AnalysisLevel>7.0-recommended</AnalysisLevel>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
