@@ -15,8 +15,12 @@
         public static IEnumerable<Range<T>> Reduce<T>(this IEnumerable<Range<T>> source) // Reduce (In functional programming, fold (also termed reduce, accumulate, aggregate, compress, or inject))
             where T : IComparable
         {
-            if (source == null) 
+#if NET6_0_OR_GREATER && !NETSTANDARD
+            ArgumentNullException.ThrowIfNull(source);
+#else
+            if (source == null)
                 throw new ArgumentNullException(nameof(source));
+#endif
 
             return source
                 .Where(r => !r.IsEmpty()) // Remove all empty Ranges
@@ -25,7 +29,7 @@
                     new List<Range<T>>(),
                     (rc, r1) =>
                     {
-                        if (rc.Any())
+                        if (rc.Count != 0)
                         {
                             var r2 = rc.Last();
 

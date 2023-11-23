@@ -15,8 +15,12 @@
         public static bool IsContiguous<T>(this IEnumerable<Range<T>> source)
             where T : IComparable
         {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
+#if NET6_0_OR_GREATER && !NETSTANDARD
+            ArgumentNullException.ThrowIfNull(source);
+#else
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+#endif
 
             //if (source.IsSingle())
             //    return true;

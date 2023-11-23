@@ -17,17 +17,22 @@
         public static IEnumerable<Range<T>> Intersect<T>(this IEnumerable<Range<T>> first, IEnumerable<Range<T>> second)
             where T : IComparable
         {
-            if (first == null) 
+#if NET6_0_OR_GREATER && !NETSTANDARD
+        ArgumentNullException.ThrowIfNull(first);
+        ArgumentNullException.ThrowIfNull(second);
+#else
+            if (first == null)
                 throw new ArgumentNullException(nameof(first));
-            if (second == null) 
+            if (second == null)
                 throw new ArgumentNullException(nameof(second));
+#endif
 
             // By reducing both sequences the intersection logic becomes easier
             var firstReduced = first.Reduce().ToList();
             var secondReduced = second.Reduce().ToList();
 
             // If one of the lists is empty, the intersection is always empty
-            if (!firstReduced.Any() || !secondReduced.Any())
+            if (firstReduced.Count == 0 || secondReduced.Count == 0)
             {
                 return Array.Empty<Range<T>>(); 
             }

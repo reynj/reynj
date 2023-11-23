@@ -16,12 +16,18 @@
         public static T Highest<T>(this IEnumerable<Range<T>> source)
             where T : IComparable
         {
-            if (source == null) 
-                throw new ArgumentNullException(nameof(source));
+#if NET6_0_OR_GREATER && !NETSTANDARD
+            ArgumentNullException.ThrowIfNull(source);
 
-            var highestRange = source
-                .OrderByDescending(r => r)
-                .FirstOrDefault();
+            var highestRange = source.MaxBy(r => r);
+#else
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+
+        var highestRange = source
+            .OrderByDescending(r => r)
+            .FirstOrDefault();
+#endif
 
             return highestRange != null ? highestRange.End : throw new NotSupportedException("Highest is not supported on an empty collection.");
         }

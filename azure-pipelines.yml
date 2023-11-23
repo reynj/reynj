@@ -27,9 +27,9 @@ stages:
 
 
     - task: NuGetToolInstaller@1
-      displayName: 'Install NuGet 6.5.x'
+      displayName: 'Install NuGet 6.8.x'
       inputs:
-        versionSpec: '6.5.x'
+        versionSpec: '6.8.x'
 
     - task: NuGetAuthenticate@1
 
@@ -66,6 +66,13 @@ stages:
       inputs:
         packageType: sdk
         version: 7.0.x
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core SDK 8.0.x'
+      inputs:
+        packageType: sdk
+        version: 8.0.x
         installationPath: $(Agent.ToolsDirectory)/dotnet
 
 
@@ -148,9 +155,9 @@ stages:
             artifact: packages
 
           - task: NuGetToolInstaller@1
-            displayName: 'Install NuGet 6.5.x'
+            displayName: 'Install NuGet 6.8.x'
             inputs:
-              versionSpec: '6.5.x'
+              versionSpec: '6.8.x'
 
           - task: NuGetAuthenticate@1
 
