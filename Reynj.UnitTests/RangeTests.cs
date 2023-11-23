@@ -330,8 +330,7 @@ namespace Reynj.UnitTests
 
         [Theory]
         [MemberData(nameof(OverlapsRangeData))]
-        public void Overlaps_ForRange_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange,
-            bool expectedResult)
+        public void Overlaps_ForRange_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
         {
             // Act - Assert
             range.Overlaps(otherRange).Should().Be(expectedResult);
@@ -360,8 +359,7 @@ namespace Reynj.UnitTests
 
         [Theory]
         [MemberData(nameof(TouchesRangeData))]
-        public void Touches_ForRange_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange,
-            bool expectedResult)
+        public void Touches_ForRange_ReturnsTheExpectedResult(Range<int> range, Range<int> otherRange, bool expectedResult)
         {
             // Act - Assert
             range.Touches(otherRange).Should().Be(expectedResult);
@@ -393,8 +391,7 @@ namespace Reynj.UnitTests
 
         [Theory]
         [MemberData(nameof(GapRangeData))]
-        public void Gap_ReturnsARange_ThatRepresentsTheGapBetweenTwoRanges(Range<int> range, Range<int> otherRange,
-            Range<int> expectedGap)
+        public void Gap_ReturnsARange_ThatRepresentsTheGapBetweenTwoRanges(Range<int> range, Range<int> otherRange, Range<int> expectedGap)
         {
             // Act - Assert
             range.Gap(otherRange).Should().Be(expectedGap);
@@ -793,7 +790,9 @@ namespace Reynj.UnitTests
             var enumerable = range.EnumerateBy(1, (value, step) => value + step);
 
             // Assert
+#pragma warning disable CA1861 // Avoid constant arrays as arguments
             enumerable.Should().BeEquivalentTo(new[] {15, 16, 17, 18, 19}, options => options.WithStrictOrdering());
+#pragma warning restore CA1861 // Avoid constant arrays as arguments
         }
 
         [Fact]
@@ -1634,7 +1633,11 @@ namespace Reynj.UnitTests
         {
             // Arrange
             var stream = new MemoryStream();
+#pragma warning disable CA1859 // Use concrete types when possible for improved performance
+#pragma warning disable SYSLIB0011
             IFormatter formatter = new BinaryFormatter();
+#pragma warning restore SYSLIB0011
+#pragma warning restore CA1859 // Use concrete types when possible for improved performance
 
             // Act
             formatter.Serialize(stream, range);

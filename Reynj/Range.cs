@@ -244,9 +244,14 @@ namespace Reynj
     /// <exception cref="ArgumentException">If <paramref name="range"/> does not overlap or touches the current <see cref="Range{T}"/></exception>
     public Range<T> Merge(Range<T> range)
     {
+#if NET6_0_OR_GREATER && !NETSTANDARD
+        ArgumentNullException.ThrowIfNull(range);
+#else
         if (range == null)
             throw new ArgumentNullException(nameof(range));
-        if (!Overlaps(range) && !Touches(range))
+#endif
+
+            if (!Overlaps(range) && !Touches(range))
             throw new ArgumentException(
                 $"Merging {this} with {range} is not possible because they do not overlap nor touch each other.",
                 nameof(range));
@@ -284,8 +289,13 @@ namespace Reynj
     /// <exception cref="ArgumentException">If <paramref name="range"/> does not overlap with the current <see cref="Range{T}"/></exception>
     public Range<T> Intersection(Range<T> range)
     {
+#if NET6_0_OR_GREATER && !NETSTANDARD
+        ArgumentNullException.ThrowIfNull(range);
+#else
         if (range == null)
             throw new ArgumentNullException(nameof(range));
+#endif
+
         if (!Overlaps(range))
             throw new ArgumentException(
                 $"Intersecting {this} with {range} is not possible because they do not overlap each other.",
@@ -308,8 +318,12 @@ namespace Reynj
     {
         // IDEA: Return an IEnumerable<Range<T>> instead of a Tuple, and omit Range<T>.Empty
 
+#if NET6_0_OR_GREATER && !NETSTANDARD
+        ArgumentNullException.ThrowIfNull(range);
+#else
         if (range == null)
             throw new ArgumentNullException(nameof(range));
+#endif
 
         if (Equals(range))
             throw new ArgumentException("There are no Exclusive ranges when both are equal.");
@@ -370,11 +384,15 @@ namespace Reynj
     protected internal IEnumerable<T> EnumerateBy<TStep>(TStep step, Func<T, TStep, T> stepper)
         where TStep : notnull
     {
+#if NET6_0_OR_GREATER && !NETSTANDARD
+        ArgumentNullException.ThrowIfNull(step);
+        ArgumentNullException.ThrowIfNull(stepper);
+#else
         if (step == null)
             throw new ArgumentNullException(nameof(step));
-
         if (stepper == null)
             throw new ArgumentNullException(nameof(stepper));
+#endif
 
         if (IsEmpty())
             yield break;
@@ -652,12 +670,17 @@ namespace Reynj
     /// <exception cref="ArgumentNullException">If <paramref name="rightRange"/> is null.</exception>
     public static Range<T> operator |(Range<T>? leftRange, Range<T>? rightRange)
     {
+#if NET6_0_OR_GREATER && !NETSTANDARD
+        ArgumentNullException.ThrowIfNull(leftRange);
+        ArgumentNullException.ThrowIfNull(rightRange);
+#else
         if (leftRange == null)
             throw new ArgumentNullException(nameof(leftRange));
         if (rightRange == null)
             throw new ArgumentNullException(nameof(rightRange));
+#endif
 
-        return leftRange.Merge(rightRange);
+            return leftRange.Merge(rightRange);
     }
 
     /// <summary>
@@ -670,10 +693,15 @@ namespace Reynj
     /// <exception cref="ArgumentNullException">If <paramref name="rightRange"/> is null.</exception>
     public static Range<T> operator &(Range<T> leftRange, Range<T> rightRange)
     {
+#if NET6_0_OR_GREATER && !NETSTANDARD
+        ArgumentNullException.ThrowIfNull(leftRange);
+        ArgumentNullException.ThrowIfNull(rightRange);
+#else
         if (leftRange == null)
             throw new ArgumentNullException(nameof(leftRange));
         if (rightRange == null)
             throw new ArgumentNullException(nameof(rightRange));
+#endif
 
         return leftRange.Intersection(rightRange);
     }
@@ -688,10 +716,15 @@ namespace Reynj
     /// <exception cref="ArgumentNullException">If <paramref name="rightRange"/> is null.</exception>
     public static (Range<T>, Range<T>) operator ^(Range<T> leftRange, Range<T> rightRange)
     {
+#if NET6_0_OR_GREATER && !NETSTANDARD
+        ArgumentNullException.ThrowIfNull(leftRange);
+        ArgumentNullException.ThrowIfNull(rightRange);
+#else
         if (leftRange == null)
             throw new ArgumentNullException(nameof(leftRange));
         if (rightRange == null)
             throw new ArgumentNullException(nameof(rightRange));
+#endif
 
         return leftRange.Exclusive(rightRange);
     }
@@ -702,8 +735,12 @@ namespace Reynj
     /// <param name="range"><see cref="Range{T}"/> to convert</param>
     public static implicit operator ValueTuple<T, T>(Range<T> range)
     {
+#if NET6_0_OR_GREATER && !NETSTANDARD
+        ArgumentNullException.ThrowIfNull(range);
+#else
         if (range == null)
             throw new ArgumentNullException(nameof(range));
+#endif
 
         return range.AsTuple();
     }

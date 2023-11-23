@@ -43,8 +43,13 @@ namespace Reynj.Linq
         private static IEnumerable<Range<T>> PrivateInverse<T>(IEnumerable<Range<T>> source, T minValue, T maxValue)
             where T : IComparable
         {
-            if (source == null) 
-                throw new ArgumentNullException(nameof(source));
+#if NET6_0_OR_GREATER && !NETSTANDARD
+            ArgumentNullException.ThrowIfNull(source);
+#else
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+#endif
+
             if (minValue.CompareTo(maxValue) > 0)
                 throw new ArgumentException($"{nameof(maxValue)} must be greater than or equal to {nameof(minValue)}.",
                     nameof(maxValue));
@@ -56,7 +61,7 @@ namespace Reynj.Linq
             var inversed = new List<Range<T>>();
 
             // If the ranges are empty, return a single range between minvalue & maxvalue
-            if (!reducedSource.Any())
+            if (reducedSource.Count == 0)
                 return new[] { new Range<T>(minValue, maxValue) };
 
             // First range is from MinValue to the start of the first range

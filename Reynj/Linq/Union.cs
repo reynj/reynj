@@ -17,10 +17,15 @@
         public static IEnumerable<Range<T>> Union<T>(this IEnumerable<Range<T>> first, IEnumerable<Range<T>> second)
             where T : IComparable
         {
-            if (first == null) 
-                throw new ArgumentNullException(nameof(first));
-            if (second == null) 
-                throw new ArgumentNullException(nameof(second));
+#if NET6_0_OR_GREATER && !NETSTANDARD
+            ArgumentNullException.ThrowIfNull(first);
+            ArgumentNullException.ThrowIfNull(second);
+#else
+        if (first == null)
+            throw new ArgumentNullException(nameof(first));
+        if (second == null)
+            throw new ArgumentNullException(nameof(second));
+#endif
 
             return first
                 .Concat(second) // Merge the two range collections (Concat is used instead of Union, because the Reduce removes the doubles)

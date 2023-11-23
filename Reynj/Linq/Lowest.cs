@@ -16,12 +16,18 @@
         public static T Lowest<T>(this IEnumerable<Range<T>> source)
             where T : IComparable
         {
-            if (source == null) 
-                throw new ArgumentNullException(nameof(source));
+#if NET6_0_OR_GREATER && !NETSTANDARD
+            ArgumentNullException.ThrowIfNull(source);
 
-            var lowestRange = source
-                .OrderBy(r => r)
-                .FirstOrDefault();
+            var lowestRange = source.MinBy(r => r);
+#else
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+
+        var lowestRange = source
+            .OrderBy(r => r)
+            .FirstOrDefault();
+#endif
 
             return lowestRange != null ? lowestRange.Start : throw new NotSupportedException("Lowest is not supported on an empty collection.");
         }

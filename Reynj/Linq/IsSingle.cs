@@ -15,8 +15,12 @@ namespace Reynj.Linq
         /// <exception cref="ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
         public static bool IsSingle(this IEnumerable source)
         {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
+#if NET6_0_OR_GREATER && !NETSTANDARD
+            ArgumentNullException.ThrowIfNull(source);
+#else
+        if (source == null)
+            throw new ArgumentNullException(nameof(source));
+#endif
 
             var enumerator = source.GetEnumerator();
 
