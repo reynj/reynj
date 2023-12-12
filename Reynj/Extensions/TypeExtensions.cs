@@ -1,4 +1,7 @@
-﻿using System.Runtime.CompilerServices;
+﻿#if NET7_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+#endif
+using System.Runtime.CompilerServices;
 
 [assembly:InternalsVisibleTo("Reynj.Newtonsoft.Json")]
 
@@ -15,14 +18,18 @@ namespace Reynj.Extensions
         /// <typeparam name="T">Type to get the MinValue of</typeparam>
         /// <param name="self"></param>
         /// <returns></returns>
+#if NET7_0_OR_GREATER
+        public static T MinValue<T>([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields)] this Type self)
+#else
         public static T MinValue<T>(this Type self)
+#endif
         {
             var field = self.GetField(nameof(MinValue));
 
             if (field == null)
                 throw new InvalidOperationException($"The type {self.Name} does not contain a field with name {nameof(MinValue)}.");
 
-            if (field.IsLiteral && !field.IsInitOnly)
+            if (field is { IsLiteral: true, IsInitOnly: false })
                 return (T) (field.GetRawConstantValue() ?? throw new InvalidOperationException($"The value of the field {nameof(MinValue)} on {self.Name} is null and not allowed."));
 
             return (T) (field.GetValue(null) ?? throw new InvalidOperationException($"The value of the field {nameof(MinValue)} on {self.Name} is null and not allowed."));
@@ -34,14 +41,18 @@ namespace Reynj.Extensions
         /// <typeparam name="T">Type to get the MaxValue of</typeparam>
         /// <param name="self"></param>
         /// <returns></returns>
+#if NET7_0_OR_GREATER
+        public static T MaxValue<T>([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields)] this Type self)
+#else
         public static T MaxValue<T>(this Type self)
+#endif
         {
             var field = self.GetField(nameof(MaxValue));
 
             if (field == null)
                 throw new InvalidOperationException($"The type {self.Name} does not contain a field with name {nameof(MaxValue)}.");
 
-            if (field.IsLiteral && !field.IsInitOnly)
+            if (field is { IsLiteral: true, IsInitOnly: false })
                 return (T)(field.GetRawConstantValue() ?? throw new InvalidOperationException($"The value of the field {nameof(MaxValue)} on {self.Name} is null and not allowed."));
 
             return (T)(field.GetValue(null) ?? throw new InvalidOperationException($"The value of the field {nameof(MaxValue)} on {self.Name} is null and not allowed."));

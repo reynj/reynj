@@ -27,7 +27,7 @@ namespace Reynj.Newtonsoft.Json
         }
 
         /// <inheritdoc />
-        public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
             {
@@ -43,7 +43,7 @@ namespace Reynj.Newtonsoft.Json
             var valueType = GetValueType(objectType);
 
             reader.Read();
-            
+
             while (reader.TokenType == JsonToken.PropertyName)
             {
                 var propertyName = reader.Value!.ToString();
@@ -76,7 +76,6 @@ namespace Reynj.Newtonsoft.Json
 
             if (!startSet || !endSet)
             {
-                // ReSharper disable once PossibleNullReferenceException
                 return objectType.GetField(nameof(Range<int>.Empty), BindingFlags.Public | BindingFlags.Static)?.GetValue(objectType);
             }
 
@@ -97,8 +96,7 @@ namespace Reynj.Newtonsoft.Json
 
             var resolver = serializer.ContractResolver as DefaultContractResolver;
 
-            // ReSharper disable once PossibleNullReferenceException
-            var isEmpty = (bool) (rangeType.GetMethod(nameof(Range<int>.IsEmpty))?.Invoke(value, Array.Empty<object>()) ?? true);
+            var isEmpty = (bool)(rangeType.GetMethod(nameof(Range<int>.IsEmpty))?.Invoke(value, Array.Empty<object>()) ?? true);
 
             writer.WriteStartObject();
 
@@ -110,7 +108,7 @@ namespace Reynj.Newtonsoft.Json
                 writer.WritePropertyName(resolver != null ? resolver.GetResolvedPropertyName(EndName) : EndName);
                 serializer.Serialize(writer, rangeType.GetProperty(nameof(Range<int>.End))?.GetValue(value), valueType);
             }
-                
+
             writer.WriteEndObject();
         }
     }

@@ -1,4 +1,7 @@
-﻿using Reynj.Extensions;
+﻿#if NET7_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+#endif
+using Reynj.Extensions;
 
 namespace Reynj.Linq
 {
@@ -15,7 +18,12 @@ namespace Reynj.Linq
         /// <returns>An <see cref="IEnumerable{TRange}"></see> that contains the inversed elements from the source sequence.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
         /// <exception cref="InvalidOperationException">When the <typeparamref name="T"/> has no MinValue and/or MaxValue defined.</exception>
+#if NET7_0_OR_GREATER
+        public static IEnumerable<Range<T>> Inverse<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields)] T>(this IEnumerable<Range<T>> source)
+#else
         public static IEnumerable<Range<T>> Inverse<T>(this IEnumerable<Range<T>> source)
+#endif
+
             where T : IComparable
         {
             var minValue = typeof(T).MinValue<T>();

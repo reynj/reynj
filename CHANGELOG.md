@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
 -->
 
+## [1.5.0] - 2023-12-14
+### Added
+- Native AOT Compatibility (except for the Json Serialization)
+
+### Changed
+- Upgrade dependencies: Newtonsoft.Json 13.0.1 (and higher)
+
 ## [1.4.3] - 2023-11-23
 ### Added
 - NuGet Packages with .NET 8.0 as TargetFramework
