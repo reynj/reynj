@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
 -->
 
-## [1.5.0] - 2023-12-14
+## [1.5.0] - 2023-12-12
 ### Added
 - Native AOT Compatibility (except for the Json Serialization)
 
