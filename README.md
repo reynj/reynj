@@ -415,14 +415,14 @@ This function is protected and should be used in class that inherits from Range<
 // EnumerateBy(T step, Func<T, T, T> stepper)
 var range = new Range<int>(0, 10);
 
-var values = range1.EnumerateBy(2, (value, step) => value + step); // returns 0, 2, 4, 6, 8
+var values = range.EnumerateBy(2, (value, step) => value + step); // returns 0, 2, 4, 6, 8
 
 // EnumerateBy(TStep step, Func<T, TStep, T> stepper)
 var startDate = new DateTimeOffset(2020, 8, 1, 8, 0, 0, TimeSpan.FromHours(2));
 var endDate = new DateTimeOffset(2020, 8, 1, 14, 0, 0, TimeSpan.FromHours(2));
-var range = new Range<DateTimeOffset>(0, 10);
+var range = new Range<DateTimeOffset>(startDate, endDate);
 
-var values = range1.EnumerateBy(TimeSpan.FromHours(2), (value, step) => value.Add(step)); // returns 2020-08-01 08:00, 2020-08-01 10:00, 2020-08-01 12:00
+var values = range.EnumerateBy(TimeSpan.FromHours(2), (value, step) => value.Add(step)); // returns 2020-08-01 08:00, 2020-08-01 10:00, 2020-08-01 12:00
 ```
 
 ##### Extension Methods
