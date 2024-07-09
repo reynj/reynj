@@ -84,7 +84,7 @@
 		<PackageReference Include="System.Text.Json" Version="5" Condition="'$(TargetFramework)' == 'net5.0'" />
 		<PackageReference Include="System.Text.Json" Version="6" Condition="'$(TargetFramework)' == 'net6.0'" />
 		<PackageReference Include="System.Text.Json" Version="7" Condition="'$(TargetFramework)' == 'net7.0'" />
-		<PackageReference Include="System.Text.Json" Version="8" Condition="'$(TargetFramework)' == 'net8.0'" />
+		<PackageReference Include="System.Text.Json" Version="8.0.4" Condition="'$(TargetFramework)' == 'net8.0'" />
 	</ItemGroup>
 
 	<ItemGroup>
