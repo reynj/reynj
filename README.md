@@ -1,7 +1,7 @@
 ﻿# Reynj
 
-[![Build Status](https://dev.azure.com/reynj/reynj/_apis/build/status/Reynj?branchName=refs%2Ftags%2Fv1.4.2)](https://dev.azure.com/reynj/reynj/_build/latest?definitionId=1&branchName=refs%2Ftags%2Fv1.4.2)
-[![NuGet Badge](https://buildstats.info/nuget/Reynj?includePreReleases=false)](https://www.nuget.org/packages/Reynj)
+[![Build Status](https://dev.azure.com/reynj/reynj/_apis/build/status/Reynj?branchName=refs%2Ftags%2Fv1.6.0)](https://dev.azure.com/reynj/reynj/_build/latest?definitionId=1&branchName=refs%2Ftags%2Fv1.6.0)
+[![NuGet](https://img.shields.io/nuget/vpre/reynj.svg)](https://www.nuget.org/packages/Reynj)
 
 ### What is Reynj?
 
