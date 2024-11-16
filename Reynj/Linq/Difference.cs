@@ -30,8 +30,6 @@ namespace Reynj.Linq
             // By reducing both sequences the set difference logic becomes easier
             var firstReduced = first.Reduce().ToList();
             var secondReduced = second.Reduce().ToList();
-
-
         }
     }
 }
