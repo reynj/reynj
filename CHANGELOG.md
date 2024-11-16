@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
 -->
 
+## [1.6.0] - 2024-11-16
+### Added
+- NuGet Packages with .NET 9.0 as TargetFramework
+
+### Changed
+- Upgrade dependencies: System.Text.Json to the lowest invulnerable version per target framework
+
 ## [1.5.0] - 2023-12-12
 ### Added
 - Native AOT Compatibility (except for the Json Serialization)
@@ -131,7 +138,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - This CHANGELOG file to hopefully serve as an evolving example of a
   standardized open source project CHANGELOG.
 
-[Unreleased]: https://github.com/reynj/reynj/compare/v1.3.1...HEAD
+[Unreleased]: https://github.com/reynj/reynj/compare/v1.6.0...HEAD
+[1.6.0]: https://github.com/reynj/reynj/compare/v1.5.0...v1.6.0
+[1.5.0]: https://github.com/reynj/reynj/compare/v1.4.3...v1.5.0
+[1.4.3]: https://github.com/reynj/reynj/compare/v1.4.2...v1.4.3
+[1.4.2]: https://github.com/reynj/reynj/compare/v1.4.1...v1.4.2
+[1.4.1]: https://github.com/reynj/reynj/compare/v1.4.0...v1.4.1
+[1.4.0]: https://github.com/reynj/reynj/compare/v1.3.1...v1.4.0
 [1.3.1]: https://github.com/reynj/reynj/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/reynj/reynj/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/reynj/reynj/compare/v1.1.0...v1.2.0

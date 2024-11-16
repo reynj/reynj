@@ -1,5 +1,7 @@
+#if NET9_0_OR_LOWER
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+#endif
 using System.Xml.Serialization;
 using FluentAssertions;
 using FluentAssertions.Execution;
@@ -1627,6 +1629,7 @@ namespace Reynj.UnitTests
             emptyRange.ToString().Should().Be("Range.Empty");
         }
 
+#if NET9_0_OR_LOWER
         [Theory]
         [MemberData(nameof(SerializeDeserializeRangeData))]
         public void Serialize_Deserialize_Binary_DoesNotChangeTheRange(object range, Type typeOfRange)
@@ -1647,6 +1650,7 @@ namespace Reynj.UnitTests
             // Assert
             result.Should().Be(range, $"{typeOfRange}");
         }
+#endif
 
         [Theory(Skip = "Until there is a solution for the private setters on Start & End")]
         [MemberData(nameof(SerializeDeserializeRangeData))]

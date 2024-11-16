@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net5.0;net6.0;net7.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net5.0;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<Features>strict</Features>
 		<Nullable>enable</Nullable>
@@ -19,7 +19,7 @@
 		<PackageIcon>reynj-logo.png</PackageIcon>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-		<AnalysisLevel>8.0-recommended</AnalysisLevel>
+		<AnalysisLevel>9.0-recommended</AnalysisLevel>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
@@ -68,6 +68,16 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0|AnyCPU'">
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
 	</PropertyGroup>
