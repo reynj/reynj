@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
 -->
 
+## [1.7.0] - 2025-11-??
+### Added
+- NuGet Packages with .NET 10.0 as TargetFramework
+
+### Changed
+- Upgrade dependencies: System.Text.Json for .NETStandard 2.0 has been upgraded to 4.7.2 and System.Text.Encodings.Web has also been upgraded to 4.7.2 to fix security vulnerabilities
+
 ## [1.6.0] - 2024-11-16
 ### Added
 - NuGet Packages with .NET 9.0 as TargetFramework
@@ -138,7 +145,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - This CHANGELOG file to hopefully serve as an evolving example of a
   standardized open source project CHANGELOG.
 
-[Unreleased]: https://github.com/reynj/reynj/compare/v1.6.0...HEAD
+[Unreleased]: https://github.com/reynj/reynj/compare/v1.7.0...HEAD
+[1.7.0]: https://github.com/reynj/reynj/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/reynj/reynj/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/reynj/reynj/compare/v1.4.3...v1.5.0
 [1.4.3]: https://github.com/reynj/reynj/compare/v1.4.2...v1.4.3
