@@ -1,6 +1,4 @@
 ﻿#if !NETCOREAPP2_1
-using FluentAssertions;
-using Xunit;
 using Reynj.Extensions;
 
 namespace Reynj.UnitTests.Extensions

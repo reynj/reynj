@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using Reynj.Linq;
-using Xunit;
+﻿using Reynj.Linq;
 
 namespace Reynj.UnitTests.Linq
 {

@@ -1,10 +1,8 @@
-using FluentAssertions;
 using FluentAssertions.Execution;
 using Newtonsoft.Json;
 #if NETCOREAPP2_1
 using Newtonsoft.Json.Converters;
 #endif
-using Xunit;
 
 namespace Reynj.Newtonsoft.Json.UnitTests
 {
