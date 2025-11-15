@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
 using System.Xml.Serialization;
-using FluentAssertions.Execution;
+using AwesomeAssertions.Execution;
 
 namespace Reynj.UnitTests
 {

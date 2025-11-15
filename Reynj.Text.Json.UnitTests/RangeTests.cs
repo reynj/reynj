@@ -1,5 +1,5 @@
 using System.Text.Json;
-using FluentAssertions.Execution;
+using AwesomeAssertions.Execution;
 
 namespace Reynj.Text.Json.UnitTests
 {

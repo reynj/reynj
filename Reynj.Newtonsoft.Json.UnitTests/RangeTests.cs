@@ -1,4 +1,4 @@
-using FluentAssertions.Execution;
+using AwesomeAssertions.Execution;
 using Newtonsoft.Json;
 #if NETCOREAPP2_1
 using Newtonsoft.Json.Converters;

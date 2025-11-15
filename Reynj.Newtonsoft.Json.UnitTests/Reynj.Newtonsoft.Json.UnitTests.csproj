@@ -98,7 +98,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FluentAssertions" Version="[7.2.0, 8)" />
+		<PackageReference Include="AwesomeAssertions" Version="9.3.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1' Or '$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0' Or '$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0'">
@@ -139,7 +139,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Using Include="FluentAssertions" />
+		<Using Include="AwesomeAssertions" />
 		<Using Include="Xunit" />
 	</ItemGroup>
 

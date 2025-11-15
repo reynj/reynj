@@ -9,6 +9,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<AnalysisLevel>10.0-recommended</AnalysisLevel>
+		<WarningsNotAsErrors>NU1510</WarningsNotAsErrors>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
@@ -82,7 +83,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FluentAssertions" Version="[7.2.0, 8)" />
+		<PackageReference Include="AwesomeAssertions" Version="9.3.0" />
 		<PackageReference Include="System.Text.Encodings.Web" Version="4.7.2" Condition="'$(TargetFramework)' == 'netcoreapp3.1'" />
 		<PackageReference Include="System.Text.Json" Version="4.7.2" Condition="'$(TargetFramework)' == 'netcoreapp3.1'" />
 	</ItemGroup>
@@ -120,7 +121,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Using Include="FluentAssertions" />
+		<Using Include="AwesomeAssertions" />
 		<Using Include="Xunit" />
 	</ItemGroup>
 
