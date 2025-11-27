@@ -43,4 +43,4 @@ jobs:
       run: dotnet build --no-restore --configuration Release /p:Version=${{ steps.version_step.outputs.FullSemVer }}
     
     - name: Test
-      run: dotnet test --no-build --no-restore --configuration Release --verbosity normal # --results-directory "$(Agent.TempDirectory)" --report-trx --coverage --coverage-output-format cobertura --coverage-settings "$(Build.SourcesDirectory)\coverage.runsettings"
+      run: dotnet test --test-modules "**/bin/Release/net8.0/*.UnitTests.dll;**/bin/Release/net9.0/*.UnitTests.dll;**/bin/Release/net10.0/*.UnitTests.dll" --no-build --no-restore --configuration Release --verbosity normal # --results-directory "$(Agent.TempDirectory)" --report-trx --coverage --coverage-output-format cobertura --coverage-settings "$(Build.SourcesDirectory)\coverage.runsettings"
