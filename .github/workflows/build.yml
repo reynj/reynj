@@ -43,4 +43,4 @@ jobs:
       run: dotnet build --no-restore --configuration Release /p:Version=${{ steps.version_step.outputs.FullSemVer }}
     
     - name: Test
-      run: dotnet test --no-build --no-restore --verbosity normal
+      run: dotnet test --no-build --no-restore --configuration Release --verbosity normal # --results-directory "$(Agent.TempDirectory)" --report-trx --coverage --coverage-output-format cobertura --coverage-settings "$(Build.SourcesDirectory)\coverage.runsettings"
