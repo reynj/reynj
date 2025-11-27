@@ -11,10 +11,6 @@ jobs:
 
     runs-on: windows-latest
 
-    strategy:
-      matrix:
-        dotnet-version: [ '8.0.x', '9.0.x', '10.0.x' ]
-
     env:
       DOTNET_NOLOGO: true
 
@@ -32,13 +28,13 @@ jobs:
       id: version_step # step id used as a reference for output values
       uses: gittools/actions/gitversion/execute@v4.2.0
 
-    - name: Setup .NET ${{ matrix.dotnet-version }} SDK
+    - name: Setup .NET
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: ${{ matrix.dotnet-version }}
+        global-json-file: "./global.json"
 
     - name: Restore Local Tools
-      run: dotnet tool restore
+      run: dotnet tool restore --locked-mode
 
     - name: Restore NuGet Packages
       run: dotnet restore

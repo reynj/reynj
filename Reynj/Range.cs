@@ -489,7 +489,7 @@ namespace Reynj
         if (other.IsEmpty())
             return 1;
 
-        // If current is empty, than this instance is lower
+        // If current is empty, then this instance is lower
         if (IsEmpty())
             return -1;
 
@@ -526,7 +526,7 @@ namespace Reynj
         if (other.IsEmpty())
             return false;
 
-        // If current is empty, than this instance is lower
+        // If current is empty, then this instance is lower
         if (IsEmpty())
             return true;
 
@@ -552,7 +552,7 @@ namespace Reynj
         if (other.IsEmpty())
             return true;
 
-        // If current is empty, than this instance is lower
+        // If current is empty, then this instance is lower
         if (IsEmpty())
             return false;
 

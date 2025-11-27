@@ -747,7 +747,7 @@ namespace Reynj.UnitTests
                 new[] { 15, 16, 17, 18, 19 }
             };
 
-            // Step different than 1
+            // Step different then 1
             yield return new object[]
             {
                 new Range<int>(15, 20),

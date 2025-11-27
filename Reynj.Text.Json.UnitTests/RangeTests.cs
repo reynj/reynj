@@ -32,9 +32,9 @@ namespace Reynj.Text.Json.UnitTests
 
         public static IEnumerable<object[]> SerializeDeserializeRangeData()
         {
-            yield return new object[] { Range<int>.Empty, typeof(Range<int>), @"{}" };
-            yield return new object[] { Range<string>.Empty, typeof(Range<string>), @"{}" };
-            yield return new object[] { Range<Version>.Empty, typeof(Range<Version>), @"{}" };
+            yield return new object[] { Range<int>.Empty, typeof(Range<int>), "{}" };
+            yield return new object[] { Range<string>.Empty, typeof(Range<string>), "{}" };
+            yield return new object[] { Range<Version>.Empty, typeof(Range<Version>), "{}" };
             yield return new object[] { null, typeof(Range<int>), "null" };
             yield return new object[] { new Range<int>(0, 99), typeof(Range<int>), @"{""Start"":0,""End"":99}" };
             
