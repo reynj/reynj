@@ -40,7 +40,7 @@ jobs:
       run: dotnet restore # --locked-mode
       
     - name: Build
-      run: dotnet build --no-restore --configuration $BUILD_CONFIGURATION /p:Version=${{ steps.version_step.outputs.FullSemVer }}
+      run: dotnet build --no-restore --configuration Release /p:Version=${{ steps.version_step.outputs.FullSemVer }}
     
     - name: Test
       run: dotnet test --no-build --no-restore --verbosity normal
