@@ -17,7 +17,7 @@
         public static IEnumerable<Range<T>> Union<T>(this IEnumerable<Range<T>> first, IEnumerable<Range<T>> second)
             where T : IComparable
         {
-#if NET6_0_OR_GREATER && !NETSTANDARD
+#if NET8_0_OR_GREATER
             ArgumentNullException.ThrowIfNull(first);
             ArgumentNullException.ThrowIfNull(second);
 #else

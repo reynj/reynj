@@ -97,39 +97,6 @@
         "type": "Project"
       }
     },
-    ".NETCoreApp,Version=v5.0": {
-      "System.Text.Json": {
-        "type": "Direct",
-        "requested": "[5.0.0, )",
-        "resolved": "5.0.0",
-        "contentHash": "+luxMQNZ2WqeffBU7Ml6njIvxc8169NW2oU+ygNudXQGZiarjE7DOtN7bILiQjTZjkmwwRZGTtLzmdrSI/Ustw=="
-      },
-      "reynj": {
-        "type": "Project"
-      }
-    },
-    "net6.0": {
-      "System.Text.Json": {
-        "type": "Direct",
-        "requested": "[6.0.10, )",
-        "resolved": "6.0.10",
-        "contentHash": "NSB0kDipxn2ychp88NXWfFRFlmi1bst/xynOutbnpEfRCT9JZkZ7KOmF/I/hNKo2dILiMGnqblm+j1sggdLB9g=="
-      },
-      "reynj": {
-        "type": "Project"
-      }
-    },
-    "net7.0": {
-      "System.Text.Json": {
-        "type": "Direct",
-        "requested": "[7.0.0, )",
-        "resolved": "7.0.0",
-        "contentHash": "DaGSsVqKsn/ia6RG8frjwmJonfos0srquhw09TlT8KRw5I43E+4gs+/bZj4K0vShJ5H9imCuXupb4RmS+dBy3w=="
-      },
-      "reynj": {
-        "type": "Project"
-      }
-    },
     "net8.0": {
       "System.Text.Json": {
         "type": "Direct",

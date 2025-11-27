@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
@@ -10,12 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
 -->
 
-## [1.7.0] - 2025-11-??
+## [2.0.0] - 2025-11-??
 ### Added
 - NuGet Packages with .NET 10.0 as TargetFramework
+- Added UnitTests for all .NET Framework versions that are still supported, see https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-framework
 
 ### Changed
 - Upgrade dependencies: System.Text.Json for .NETStandard 2.0 has been upgraded to 4.7.2 and System.Text.Encodings.Web has also been upgraded to 4.7.2 to fix security vulnerabilities
+
+### Removed
+- Support for all out of support .NET versions (.NET 5, .NET 6 and .NET 7), see https://dotnet.microsoft.com/en-us/platform/support/policy
+- Support for .NET Standard 2.1, because everything that targets .NET Standard 2.1 can also target .NET 8 or higher, see https://learn.microsoft.com/en-us/dotnet/standard/net-standard
 
 ## [1.6.0] - 2024-11-16
 ### Added

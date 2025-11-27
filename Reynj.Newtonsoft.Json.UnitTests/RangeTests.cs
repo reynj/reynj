@@ -1,6 +1,6 @@
 using AwesomeAssertions.Execution;
 using Newtonsoft.Json;
-#if NETCOREAPP2_1
+#if NETFRAMEWORK
 using Newtonsoft.Json.Converters;
 #endif
 
@@ -18,7 +18,7 @@ namespace Reynj.Newtonsoft.Json.UnitTests
                 Converters =
                 {
                     new RangeConverter(),
-#if NETCOREAPP2_1
+#if NETFRAMEWORK
                     // https://stackoverflow.com/questions/13170386/why-system-version-in-json-string-does-not-deserialize-correctly
                     new VersionConverter()
 #endif

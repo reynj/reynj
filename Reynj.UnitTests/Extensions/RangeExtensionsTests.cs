@@ -1,4 +1,4 @@
-﻿#if !NETCOREAPP2_1
+﻿#if NET8_0_OR_GREATER
 using Reynj.Extensions;
 
 namespace Reynj.UnitTests.Extensions

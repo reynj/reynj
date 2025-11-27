@@ -9,11 +9,11 @@ jobs:
   build:
     name: "Build, Test, Analyze and Publish"
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     strategy:
       matrix:
-        dotnet-version: [ '6.0.x', '7.0.x', '8.0.x', '9.0.x', '10.0.x' ]
+        dotnet-version: [ '8.0.x', '9.0.x', '10.0.x' ]
 
     env:
       DOTNET_NOLOGO: true

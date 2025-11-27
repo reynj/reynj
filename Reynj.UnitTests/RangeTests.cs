@@ -1653,6 +1653,7 @@ namespace Reynj.UnitTests
         [Theory(Skip = "Until there is a solution for the private setters on Start & End")]
         [MemberData(nameof(SerializeDeserializeRangeData))]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5369:Use XmlReader for 'XmlSerializer.Deserialize()'", Justification = "On purpose")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA3075:Insecure DTD processing in XML", Justification = "On purpose")]
         public void Serialize_Deserialize_Xml_DoesNotChangeTheRange(object range, Type typeOfRange)
         {
             // Arrange

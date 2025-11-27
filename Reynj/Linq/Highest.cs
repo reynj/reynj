@@ -16,7 +16,7 @@
         public static T Highest<T>(this IEnumerable<Range<T>> source)
             where T : IComparable
         {
-#if NET6_0_OR_GREATER && !NETSTANDARD
+#if NET8_0_OR_GREATER
             ArgumentNullException.ThrowIfNull(source);
 
             var highestRange = source.MaxBy(r => r);

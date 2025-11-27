@@ -17,9 +17,9 @@
         public static IEnumerable<Range<T>> Intersect<T>(this IEnumerable<Range<T>> first, IEnumerable<Range<T>> second)
             where T : IComparable
         {
-#if NET6_0_OR_GREATER && !NETSTANDARD
-        ArgumentNullException.ThrowIfNull(first);
-        ArgumentNullException.ThrowIfNull(second);
+#if NET8_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(first);
+            ArgumentNullException.ThrowIfNull(second);
 #else
             if (first == null)
                 throw new ArgumentNullException(nameof(first));
