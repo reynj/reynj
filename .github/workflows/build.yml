@@ -35,6 +35,13 @@ jobs:
       id: version_step # step id used as a reference for output values
       uses: gittools/actions/gitversion/execute@v4.2.0
 
+    - name: Transform Version
+      id: transformed_version_step
+      shell: pwsh
+      run: |
+        $version = "${{ steps.version_step.outputs.FullSemVer }}" -replace '\+', '-'
+        echo "NuGetSemVer=$version" >> $env:GITHUB_OUTPUT
+
     - name: Restore Local Tools
       run: dotnet tool restore
 
@@ -55,13 +62,13 @@ jobs:
       if: ${{ always() }} # Use always() to always run this step to publish test results when there are test failures
       
     - name: Pack
-      run: dotnet pack --no-build --configuration Release --include-symbols /p:Version=${{ steps.version_step.outputs.FullSemVer }} /p:SymbolPackageFormat=snupkg
+      run: dotnet pack --no-build --configuration Release --include-symbols /p:Version=${{ steps.transformed_version_step.outputs.NuGetSemVer }} /p:SymbolPackageFormat=snupkg
 
     - name: NuGet login (OIDC → temp API key) # Get a short-lived NuGet API key
       uses: NuGet/login@v1
-      id: login
+      id: nuget_login_step
       with:
         user: ${{ secrets.NUGET_USER }}
     
     - name: NuGet push
-      run: dotnet nuget push "**/bin/Release/*.nupkg" --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json #'$(Pipeline.Workspace)/packages/*.nupkg;!$(Pipeline.Workspace)/packages/*.symbols.nupkg'
+      run: dotnet nuget push "**/bin/Release/*.nupkg" --api-key ${{steps.nuget_login_step.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
