@@ -55,7 +55,7 @@ jobs:
       if: ${{ always() }} # Use always() to always run this step to publish test results when there are test failures
       
     - name: Pack
-      run: dotnet pack --no-build --configuration Release --include-symbols /p:Version=${{ steps.version_step.outputs.FullSemVer }}
+      run: dotnet pack --no-build --configuration Release --include-symbols /p:Version=${{ steps.version_step.outputs.FullSemVer }} /p:SymbolPackageFormat=snupkg
 
     - name: NuGet login (OIDC → temp API key) # Get a short-lived NuGet API key
       uses: NuGet/login@v1

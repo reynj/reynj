@@ -17,6 +17,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageIcon>reynj-logo.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<AnalysisLevel>10.0-recommended</AnalysisLevel>
@@ -71,10 +72,8 @@
 	<ItemGroup>
 		<None Include="Linq\Difference.cs" />
 		<None Include="Linq\Exclusive.cs" />
-		<None Include="reynj-logo.png">
-			<Pack>True</Pack>
-			<PackagePath></PackagePath>
-		</None>
+		<None Include="..\README.md" Link="README.md" Pack="true" PackagePath="\" />
+		<None Include="..\Reynj\reynj-logo.png" Link="reynj-logo.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>
