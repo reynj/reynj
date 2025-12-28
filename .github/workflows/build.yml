@@ -11,6 +11,9 @@ jobs:
     env:
       DOTNET_NOLOGO: true
 
+    permissions:
+      id-token: write  # enable GitHub OIDC token issuance for this job
+
     steps:
     - uses: actions/checkout@v5
       with:
@@ -43,3 +46,19 @@ jobs:
     
     - name: Test
       run: dotnet test --test-modules "**/bin/Release/net8.0/*.UnitTests.dll;**/bin/Release/net9.0/*.UnitTests.dll;**/bin/Release/net10.0/*.UnitTests.dll" --results-directory TestResults --report-trx --coverage --coverage-output-format cobertura --coverage-settings ./coverage.runsettings --verbosity normal
+
+    - name: Upload dotnet test results
+      uses: actions/upload-artifact@v6
+      with:
+        name: dotnet-results
+        path: TestResults      
+      if: ${{ always() }} # Use always() to always run this step to publish test results when there are test failures
+
+    - name: NuGet login (OIDC → temp API key) # Get a short-lived NuGet API key
+      uses: NuGet/login@v1
+      id: login
+      with:
+        user: ${{ secrets.NUGET_USER }}
+    
+    - name: NuGet push
+      run: dotnet nuget push artifacts/my-sdk.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
