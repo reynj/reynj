@@ -51,7 +51,7 @@ jobs:
       uses: actions/upload-artifact@v6
       with:
         name: dotnet-results
-        path: TestResults      
+        path: TestResults
       if: ${{ always() }} # Use always() to always run this step to publish test results when there are test failures
       
     - name: Pack
@@ -64,4 +64,4 @@ jobs:
         user: ${{ secrets.NUGET_USER }}
     
     - name: NuGet push
-      run: dotnet nuget push Artifacts/*.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json #'$(Pipeline.Workspace)/packages/*.nupkg;!$(Pipeline.Workspace)/packages/*.symbols.nupkg'
+      run: dotnet nuget push "**/bin/Release/*.nupkg" --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json #'$(Pipeline.Workspace)/packages/*.nupkg;!$(Pipeline.Workspace)/packages/*.symbols.nupkg'
