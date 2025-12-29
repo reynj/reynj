@@ -76,7 +76,7 @@ namespace Reynj.Newtonsoft.Json
 
             if (!startSet || !endSet)
             {
-                return objectType.GetField(nameof(Range<int>.Empty), BindingFlags.Public | BindingFlags.Static)?.GetValue(objectType);
+                return objectType.GetField(nameof(Range<>.Empty), BindingFlags.Public | BindingFlags.Static)?.GetValue(objectType);
             }
 
             return Activator.CreateInstance(objectType, start, end);
@@ -96,17 +96,17 @@ namespace Reynj.Newtonsoft.Json
 
             var resolver = serializer.ContractResolver as DefaultContractResolver;
 
-            var isEmpty = (bool)(rangeType.GetMethod(nameof(Range<int>.IsEmpty))?.Invoke(value, Array.Empty<object>()) ?? true);
+            var isEmpty = (bool)(rangeType.GetMethod(nameof(Range<>.IsEmpty))?.Invoke(value, Array.Empty<object>()) ?? true);
 
             writer.WriteStartObject();
 
             if (!isEmpty)
             {
                 writer.WritePropertyName(resolver != null ? resolver.GetResolvedPropertyName(StartName) : StartName);
-                serializer.Serialize(writer, rangeType.GetProperty(nameof(Range<int>.Start))?.GetValue(value), valueType);
+                serializer.Serialize(writer, rangeType.GetProperty(nameof(Range<>.Start))?.GetValue(value), valueType);
 
                 writer.WritePropertyName(resolver != null ? resolver.GetResolvedPropertyName(EndName) : EndName);
-                serializer.Serialize(writer, rangeType.GetProperty(nameof(Range<int>.End))?.GetValue(value), valueType);
+                serializer.Serialize(writer, rangeType.GetProperty(nameof(Range<>.End))?.GetValue(value), valueType);
             }
 
             writer.WriteEndObject();

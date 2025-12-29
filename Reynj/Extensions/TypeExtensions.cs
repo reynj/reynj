@@ -1,4 +1,4 @@
-﻿#if NET7_0_OR_GREATER
+﻿#if NET8_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
 #endif
 using System.Runtime.CompilerServices;
@@ -18,7 +18,7 @@ namespace Reynj.Extensions
         /// <typeparam name="T">Type to get the MinValue of</typeparam>
         /// <param name="self"></param>
         /// <returns></returns>
-#if NET7_0_OR_GREATER
+#if NET8_0_OR_GREATER
         public static T MinValue<T>([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields)] this Type self)
 #else
         public static T MinValue<T>(this Type self)
@@ -41,7 +41,7 @@ namespace Reynj.Extensions
         /// <typeparam name="T">Type to get the MaxValue of</typeparam>
         /// <param name="self"></param>
         /// <returns></returns>
-#if NET7_0_OR_GREATER
+#if NET8_0_OR_GREATER
         public static T MaxValue<T>([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields)] this Type self)
 #else
         public static T MaxValue<T>(this Type self)

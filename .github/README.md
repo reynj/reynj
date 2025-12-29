@@ -1,7 +1,7 @@
 ﻿# Reynj
 
-[![Build Status](https://dev.azure.com/reynj/reynj/_apis/build/status/Reynj?branchName=refs%2Ftags%2Fv1.6.0)](https://dev.azure.com/reynj/reynj/_build/latest?definitionId=1&branchName=refs%2Ftags%2Fv1.6.0)
-[![NuGet](https://img.shields.io/nuget/vpre/reynj.svg)](https://www.nuget.org/packages/Reynj)
+[![Build](https://github.com/reynj/reynj/actions/workflows/build.yml/badge.svg)](https://github.com/reynj/reynj/actions/workflows/build.yml)
+[![NuGet](https://img.shields.io/nuget/v/reynj?logo=nuget&logoSize=auto)](https://www.nuget.org/packages/Reynj)
 
 ### What is Reynj?
 
@@ -82,11 +82,15 @@ Below is my list of features I want to implement, feel free to open an issue if 
 
 ### Where can I get it?
 
-First, [install NuGet](http://docs.nuget.org/docs/start-here/installing-nuget). Then, install [Reynj](https://www.nuget.org/packages/Reynj/) from the package manager console:
+You can install [Reynj with NuGet](https://www.nuget.org/packages/Reynj):
 
-```
-PM> Install-Package Reynj
-```
+    Install-Package Reynj
+    
+Or via the .NET Core command line interface:
+
+    dotnet add package Reynj
+
+Either commands, from Package Manager Console or .NET Core CLI, will download and install Reynj and all required dependencies.
 
 ### How to use it?
 #### What is a Range?

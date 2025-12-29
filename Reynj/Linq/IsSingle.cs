@@ -15,7 +15,7 @@ namespace Reynj.Linq
         /// <exception cref="ArgumentNullException"><paramref name="source">source</paramref> is null.</exception>
         public static bool IsSingle(this IEnumerable source)
         {
-#if NET6_0_OR_GREATER && !NETSTANDARD
+#if NET8_0_OR_GREATER
             ArgumentNullException.ThrowIfNull(source);
 #else
         if (source == null)

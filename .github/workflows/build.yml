@@ -1,0 +1,74 @@
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: "Build, Test, Analyze and Publish"
+
+    runs-on: windows-latest
+
+    env:
+      DOTNET_NOLOGO: true
+
+    permissions:
+      id-token: write  # enable GitHub OIDC token issuance for this job
+
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        global-json-file: "./global.json"
+        cache: true
+        cache-dependency-path: "**/packages.lock.json"
+
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v4.2.0
+      with:
+        versionSpec: "6.5.x"
+
+    - name: Determine Version
+      id: version_step # step id used as a reference for output values
+      uses: gittools/actions/gitversion/execute@v4.2.0
+
+    - name: Transform Version
+      id: transformed_version_step
+      shell: pwsh
+      run: |
+        $version = "${{ steps.version_step.outputs.FullSemVer }}" -replace '\+', '-'
+        echo "NuGetSemVer=$version" >> $env:GITHUB_OUTPUT
+
+    - name: Restore Local Tools
+      run: dotnet tool restore
+
+    - name: Restore NuGet Packages
+      run: dotnet restore # --locked-mode
+      
+    - name: Build
+      run: dotnet build --no-restore --configuration Release /p:Version=${{ steps.version_step.outputs.FullSemVer }}
+    
+    - name: Test
+      run: dotnet test --test-modules "**/bin/Release/net8.0/*.UnitTests.dll;**/bin/Release/net9.0/*.UnitTests.dll;**/bin/Release/net10.0/*.UnitTests.dll" --results-directory TestResults --report-trx --coverage --coverage-output-format cobertura --coverage-settings ./coverage.runsettings --verbosity normal
+
+    - name: Upload Results
+      uses: actions/upload-artifact@v6
+      with:
+        name: dotnet-results
+        path: TestResults
+      if: ${{ always() }} # Use always() to always run this step to publish test results when there are test failures
+      
+    - name: Pack
+      run: dotnet pack --no-build --configuration Release --include-symbols /p:Version=${{ steps.transformed_version_step.outputs.NuGetSemVer }} /p:SymbolPackageFormat=snupkg
+
+    - name: NuGet login (OIDC → temp API key) # Get a short-lived NuGet API key
+      uses: NuGet/login@v1
+      id: nuget_login_step
+      with:
+        user: ${{ secrets.NUGET_USER }}
+    
+    - name: NuGet push
+      run: dotnet nuget push "**/bin/Release/*.nupkg" --api-key ${{steps.nuget_login_step.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json

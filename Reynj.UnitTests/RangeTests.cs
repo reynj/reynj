@@ -3,9 +3,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
 using System.Xml.Serialization;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Xunit;
+using AwesomeAssertions.Execution;
 
 namespace Reynj.UnitTests
 {
@@ -707,7 +705,7 @@ namespace Reynj.UnitTests
             var range = new Range<string>("a", "z");
 
             // Act
-            Func<IEnumerable<string>> act = () => range.EnumerateBy(null, (value, step) => value + step);
+            var act = () => range.EnumerateBy(null, (value, step) => value + step);
 
             // Assert
             act.Enumerating().Should().Throw<ArgumentNullException>()
@@ -721,7 +719,7 @@ namespace Reynj.UnitTests
             var range = new Range<string>("a", "z");
 
             // Act
-            Func<IEnumerable<string>> act = () => range.EnumerateBy("c", null);
+            var act = () => range.EnumerateBy("c", null);
 
             // Assert
             act.Enumerating().Should().Throw<ArgumentNullException>()
@@ -749,7 +747,7 @@ namespace Reynj.UnitTests
                 new[] { 15, 16, 17, 18, 19 }
             };
 
-            // Step different than 1
+            // Step different from 1
             yield return new object[]
             {
                 new Range<int>(15, 20),
@@ -804,7 +802,7 @@ namespace Reynj.UnitTests
             var range = new Range<int>(15, 20);
 
             // Act
-            Func<IEnumerable<int>> act = () => range.EnumerateBy(1, (value, step) => value - step);
+            var act = () => range.EnumerateBy(1, (value, step) => value - step);
 
             // Assert
             act.Enumerating().Should().Throw<NotSupportedException>()
@@ -818,7 +816,7 @@ namespace Reynj.UnitTests
             var range = new Range<int>(15, 20);
 
             // Act
-            Func<IEnumerable<int>> act = () => range.EnumerateBy(1, (value, step) => value);
+            var act = () => range.EnumerateBy(1, (value, _) => value);
 
             // Assert
             act.Enumerating().Should().Throw<InvalidOperationException>()
@@ -887,7 +885,7 @@ namespace Reynj.UnitTests
                 for (var s = 1; s <= 100; s++) // Poor man's XUnit Repeat
                 {
                     // Act
-                    Func<IEnumerable<int>> act = () => range.EnumerateBy(s, (value, step) => value + random.Next(-step, step));
+                    var act = () => range.EnumerateBy(s, (value, step) => value + random.Next(-step, step));
 
                     // Assert
                     act.Enumerating().Should().Throw<Exception>();
@@ -1586,7 +1584,7 @@ namespace Reynj.UnitTests
         public void ExplicitConversionOperator_FromTupleToRangeWithItem1GreaterThanItem2_ThrowsAnArgumentException()
         {
             // Arrange - Act
-            Func<Range<int>> act = () => (Range<int>) (99, 1);
+            var act = () => (Range<int>) (99, 1);
 
             // Assert
             act.Should().Throw<ArgumentException>()
@@ -1610,7 +1608,7 @@ namespace Reynj.UnitTests
         public void ImplicitConversionOperator_WithNull_IsNotPossible()
         {
             // Arrange - Act
-            Func<(int, int)> act = () => (ValueTuple<int, int>) (Range<int>) null;
+            var act = () => (ValueTuple<int, int>) (Range<int>) null;
 
             // - Assert
             act.Should().Throw<ArgumentNullException>()
@@ -1655,6 +1653,7 @@ namespace Reynj.UnitTests
         [Theory(Skip = "Until there is a solution for the private setters on Start & End")]
         [MemberData(nameof(SerializeDeserializeRangeData))]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5369:Use XmlReader for 'XmlSerializer.Deserialize()'", Justification = "On purpose")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA3075:Insecure DTD processing in XML", Justification = "On purpose")]
         public void Serialize_Deserialize_Xml_DoesNotChangeTheRange(object range, Type typeOfRange)
         {
             // Arrange

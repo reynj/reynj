@@ -1,4 +1,4 @@
-﻿#if !NETSTANDARD2_0
+﻿#if NET8_0_OR_GREATER
 namespace Reynj.Extensions
 {
     /// <summary>

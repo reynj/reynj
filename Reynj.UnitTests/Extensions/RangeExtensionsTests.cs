@@ -1,6 +1,4 @@
-﻿#if !NETCOREAPP2_1
-using FluentAssertions;
-using Xunit;
+﻿#if NET8_0_OR_GREATER
 using Reynj.Extensions;
 
 namespace Reynj.UnitTests.Extensions
