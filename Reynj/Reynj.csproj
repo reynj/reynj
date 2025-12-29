@@ -72,7 +72,7 @@
 	<ItemGroup>
 		<None Include="Linq\Difference.cs" />
 		<None Include="Linq\Exclusive.cs" />
-		<None Include="..\README.md" Link="README.md" Pack="true" PackagePath="\" />
+		<None Include="README.md" Pack="true" PackagePath="\" />
 		<None Include="..\Reynj\reynj-logo.png" Link="reynj-logo.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
