@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
 -->
 
+## [1.7.1] - 2026-02-17
+## Changed
+- Removed direct references to System.Text.Json for .NET 8.0 and higher, because pruning in the .NET 10 SDK does it anyway (NU1510)
+
 ## [1.7.0] - 2025-12-29
 ### Added
 - NuGet Packages with .NET 10.0 as TargetFramework
