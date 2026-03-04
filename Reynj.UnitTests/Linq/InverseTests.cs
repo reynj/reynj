@@ -282,6 +282,68 @@ namespace Reynj.UnitTests.Linq
         }
 
         [Theory]
+        [MemberData(nameof(InverseValueTypeWithBoundsData))]
+        public void Inverse_ValueType_WithBounds_ReturnsTheExpectedResult(IEnumerable<Range<int>> ranges, int minValue, int maxValue, IEnumerable<Range<int>> expectedInversed)
+        {
+            // Act
+            var inversed = ranges.Inverse(minValue, maxValue);
+
+            // Assert
+            inversed.Should().BeEquivalentTo(expectedInversed);
+        }
+
+        public static IEnumerable<object[]> InverseValueTypeWithBoundsData()
+        {
+            // Ranges entirely before minValue should be ignored
+            yield return new object[]
+            {
+                new List<Range<int>> { new(0, 1), new(7, 8) },
+                5, 10,
+                new List<Range<int>> { new(5, 7), new(8, 10) }
+            };
+
+            // Ranges entirely after maxValue should be ignored
+            yield return new object[]
+            {
+                new List<Range<int>> { new(2, 3), new(12, 15) },
+                5, 10,
+                new List<Range<int>> { new(5, 10) }
+            };
+
+            // Range that partially extends before minValue should be clipped
+            yield return new object[]
+            {
+                new List<Range<int>> { new(3, 8) },
+                5, 10,
+                new List<Range<int>> { new(8, 10) }
+            };
+
+            // Range that partially extends after maxValue should be clipped
+            yield return new object[]
+            {
+                new List<Range<int>> { new(7, 12) },
+                5, 10,
+                new List<Range<int>> { new(5, 7) }
+            };
+
+            // Range that spans the entire [minValue, maxValue] interval should yield empty
+            yield return new object[]
+            {
+                new List<Range<int>> { new(3, 12) },
+                5, 10,
+                new List<Range<int>>()
+            };
+
+            // Ranges both before and within bounds, with a gap inside bounds
+            yield return new object[]
+            {
+                new List<Range<int>> { new(0, 1), new(7, 8) },
+                0, 10,
+                new List<Range<int>> { new(1, 7), new(8, 10) }
+            };
+        }
+
+        [Theory]
         [MemberData(nameof(InverseReferenceTypeData))]
         public void Inverse_ReferenceType_ReturnsTheExpectedResult(IEnumerable<Range<Version>> ranges, IEnumerable<Range<Version>> expectedInversed)
         {

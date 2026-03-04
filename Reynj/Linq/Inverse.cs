@@ -64,6 +64,10 @@ namespace Reynj.Linq
 
             var reducedSource = source
                 .Reduce() // Sorts the collection, merges overlapping and touching ranges and removes empty ranges
+                .Where(r => r.Start.CompareTo(maxValue) < 0 && r.End.CompareTo(minValue) > 0) // filter ranges entirely outside [minValue, maxValue]
+                .Select(r => new Range<T>(
+                    r.Start.CompareTo(minValue) < 0 ? minValue : r.Start, // clip start to minValue
+                    r.End.CompareTo(maxValue) > 0 ? maxValue : r.End))    // clip end to maxValue
                 .ToList();
 
             var inversed = new List<Range<T>>();
