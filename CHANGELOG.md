@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
 -->
 
+## [1.7.2] - 2026-03-04
+### Fixed
+- `Inverse` on `IEnumerable<Range<T>>` now correctly ignores ranges that are completely outside the specified `minValue`/`maxValue` bounds
+
 ## [1.7.1] - 2026-02-17
 ## Changed
 - Removed direct references to System.Text.Json for .NET 8.0 and higher, because pruning in the .NET 10 SDK does it anyway (NU1510)
