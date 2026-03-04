@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The Exclusive method on IEnumerable<Range<T>> to get the symmetric difference of two sequences and also reduce the result
 -->
 
+## [1.7.2] - 2026-03-04
 ### Fixed
 - `Inverse` on `IEnumerable<Range<T>>` now correctly ignores ranges that are completely outside the specified `minValue`/`maxValue` bounds
 
