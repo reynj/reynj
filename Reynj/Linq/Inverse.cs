@@ -64,10 +64,6 @@ namespace Reynj.Linq
 
             var reducedSource = source
                 .Reduce() // Sorts the collection, merges overlapping and touching ranges and removes empty ranges
-                .Where(r => r.Start.CompareTo(maxValue) < 0 && r.End.CompareTo(minValue) > 0) // filter ranges entirely outside [minValue, maxValue]
-                .Select(r => new Range<T>(
-                    r.Start.CompareTo(minValue) < 0 ? minValue : r.Start, // clip start to minValue
-                    r.End.CompareTo(maxValue) > 0 ? maxValue : r.End))    // clip end to maxValue
                 .ToList();
 
             var inversed = new List<Range<T>>();
@@ -76,25 +72,31 @@ namespace Reynj.Linq
             if (reducedSource.Count == 0)
                 return new[] { new Range<T>(minValue, maxValue) };
 
-            // First range is from MinValue to the start of the first range
+            // First range is from MinValue to the start of the first range (clipped to maxValue)
             if (reducedSource.First().Start.CompareTo(minValue) > 0)
             {
-                inversed.Add(new Range<T>(minValue, reducedSource.First().Start));
+                var leadEnd = reducedSource.First().Start.CompareTo(maxValue) > 0 ? maxValue : reducedSource.First().Start;
+                inversed.Add(new Range<T>(minValue, leadEnd));
             }
 
-            // Add a range for each Gap between the currentRange and the next Range
+            // Add a range for each Gap between the currentRange and the next Range, clipped to [minValue, maxValue]
             for (var i = 0; i < reducedSource.Count - 1; i++)
             {
-                var range = reducedSource[i];
-                var nextRange = reducedSource[i+1];
+                var gapStart = reducedSource[i].End;
+                var gapEnd = reducedSource[i + 1].Start;
 
-                inversed.Add(range.Gap(nextRange));
+                var clippedStart = gapStart.CompareTo(minValue) < 0 ? minValue : gapStart;
+                var clippedEnd = gapEnd.CompareTo(maxValue) > 0 ? maxValue : gapEnd;
+
+                if (clippedStart.CompareTo(clippedEnd) < 0)
+                    inversed.Add(new Range<T>(clippedStart, clippedEnd));
             }
 
-            // Last range is from the end of the last range to MaxValue
+            // Last range is from the end of the last range to MaxValue (clipped to minValue)
             if (reducedSource.Last().End.CompareTo(maxValue) < 0)
             {
-                inversed.Add(new Range<T>(reducedSource.Last().End, maxValue));
+                var trailStart = reducedSource.Last().End.CompareTo(minValue) < 0 ? minValue : reducedSource.Last().End;
+                inversed.Add(new Range<T>(trailStart, maxValue));
             }
 
             return inversed;
