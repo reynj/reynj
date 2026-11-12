@@ -2,13 +2,13 @@
 
 	<PropertyGroup>
 		<OutputType Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0')) Or $([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net472'))">Exe</OutputType>
-		<TargetFrameworks>net462;net47;net471;net472;net48;net481;net8.0;net9.0;net10.0</TargetFrameworks>
+		<TargetFrameworks>net462;net47;net471;net472;net48;net481;net8.0;net9.0;net10.0;net11.0</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<IsTestProject>true</IsTestProject>
 		<IsPackable>false</IsPackable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-		<AnalysisLevel>10.0-recommended</AnalysisLevel>
+		<AnalysisLevel>11.0-recommended</AnalysisLevel>
 		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
 	</PropertyGroup>
 
@@ -103,6 +103,18 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<WarningsNotAsErrors>SYSLIB0011</WarningsNotAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net11.0|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<WarningsNotAsErrors>SYSLIB0011</WarningsNotAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net11.0|AnyCPU'">
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 		<WarningsNotAsErrors>SYSLIB0011</WarningsNotAsErrors>
 		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>

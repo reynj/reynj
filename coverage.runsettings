@@ -13,7 +13,7 @@
 								<Attribute>^System\.Diagnostics\.DebuggerHiddenAttribute$</Attribute>
 								<Attribute>^System\.Diagnostics\.DebuggerNonUserCodeAttribute$</Attribute>
 								<Attribute>^System\.CodeDom\.Compiler\.GeneratedCodeAttribute$</Attribute>
-								<Attribute>^System\.Runtime\.ObsoleteAttribute$</Attribute>
+								<Attribute>^System\.ObsoleteAttribute$</Attribute>
 								<Attribute>^System\.Runtime\.CompilerServices\.CompilerGeneratedAttribute$</Attribute>
 								<Attribute>^System\.Diagnostics\.CodeAnalysis\.ExcludeFromCodeCoverageAttribute$</Attribute>
 							</Exclude>
