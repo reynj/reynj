@@ -2,13 +2,13 @@
 
 	<PropertyGroup>
 		<OutputType Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0')) Or $([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net472'))">Exe</OutputType>
-		<TargetFrameworks>net462;net47;net471;net472;net48;net481;net8.0;net9.0;net10.0</TargetFrameworks>
+		<TargetFrameworks>net462;net47;net471;net472;net48;net481;net8.0;net9.0;net10.0;net11.0</TargetFrameworks>
 		<LangVersion>latest</LangVersion>
 		<IsTestProject>true</IsTestProject>
 		<IsPackable>false</IsPackable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-		<AnalysisLevel>10.0-recommended</AnalysisLevel>
+		<AnalysisLevel>11.0-recommended</AnalysisLevel>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net462|AnyCPU'">
@@ -101,11 +101,21 @@
 		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net11.0|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net11.0|AnyCPU'">
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+	</PropertyGroup>
+
 	<ItemGroup>
-		<PackageReference Include="AwesomeAssertions" Version="9.4.0" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
-		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.5.2" />
-		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="2.1.0" />
+		<PackageReference Include="AwesomeAssertions" Version="9.6.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.12.0" />
+		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.12.0" />
+		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport" Version="2.5.3" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net462' Or '$(TargetFramework)' == 'net47' Or '$(TargetFramework)' == 'net471'">
@@ -117,8 +127,8 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0')) Or $([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net472'))">
-		<PackageReference Include="xunit.v3.mtp-v2" Version="3.2.2" />
-		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
+		<PackageReference Include="xunit.v3.mtp-v2" Version="4.0.3" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="4.0.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

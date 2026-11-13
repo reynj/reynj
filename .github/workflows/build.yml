@@ -15,25 +15,25 @@ jobs:
       id-token: write  # enable GitHub OIDC token issuance for this job
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 0
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v5
+      uses: actions/setup-dotnet@v6
       with:
         global-json-file: "./global.json"
         cache: true
         cache-dependency-path: "**/packages.lock.json"
 
     - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v4.2.0
+      uses: gittools/actions/gitversion/setup@v4.7.0
       with:
-        versionSpec: "6.6.x"
+        versionSpec: "6.8.x"
 
     - name: Determine Version
       id: version_step # step id used as a reference for output values
-      uses: gittools/actions/gitversion/execute@v4.2.0
+      uses: gittools/actions/gitversion/execute@v4.7.0
 
     - name: Transform Version
       id: transformed_version_step
@@ -52,10 +52,10 @@ jobs:
       run: dotnet build --no-restore --configuration Release /p:Version=${{ steps.version_step.outputs.FullSemVer }}
     
     - name: Test
-      run: dotnet test --test-modules "**/bin/Release/net8.0/*.UnitTests.dll;**/bin/Release/net9.0/*.UnitTests.dll;**/bin/Release/net10.0/*.UnitTests.dll" --results-directory TestResults --report-trx --coverage --coverage-output-format cobertura --coverage-settings ./coverage.runsettings --verbosity normal
+      run: dotnet test --test-modules "**/bin/Release/net8.0/*.UnitTests.dll;**/bin/Release/net9.0/*.UnitTests.dll;**/bin/Release/net10.0/*.UnitTests.dll;**/bin/Release/net11.0/*.UnitTests.dll" --results-directory TestResults --report-trx --coverage --coverage-output-format cobertura --coverage-settings ./coverage.runsettings --verbosity normal
 
     - name: Upload Results
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: dotnet-results
         path: TestResults

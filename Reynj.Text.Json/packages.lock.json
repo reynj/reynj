@@ -91,6 +91,11 @@
         "type": "Project"
       }
     },
+    "net11.0": {
+      "reynj": {
+        "type": "Project"
+      }
+    },
     "net8.0": {
       "reynj": {
         "type": "Project"

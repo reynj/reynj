@@ -96,7 +96,7 @@ namespace Reynj.Newtonsoft.Json
 
             var resolver = serializer.ContractResolver as DefaultContractResolver;
 
-            var isEmpty = (bool)(rangeType.GetMethod(nameof(Range<>.IsEmpty))?.Invoke(value, Array.Empty<object>()) ?? true);
+            var isEmpty = (bool)(rangeType.GetMethod(nameof(Range<>.IsEmpty))?.Invoke(value, []) ?? true);
 
             writer.WriteStartObject();
 

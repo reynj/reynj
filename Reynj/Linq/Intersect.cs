@@ -34,13 +34,13 @@
             // If one of the lists is empty, the intersection is always empty
             if (firstReduced.Count == 0 || secondReduced.Count == 0)
             {
-                return Array.Empty<Range<T>>(); 
+                return []; 
             }
 
             // Check if both sequences overlap, if not the intersection is empty
             if (firstReduced.Highest().CompareTo(secondReduced.Lowest()) < 0 || secondReduced.Highest().CompareTo(firstReduced.Lowest()) < 0)
             {
-                 return Array.Empty<Range<T>>(); 
+                 return []; 
             }
 
             // Loop over the first list and find the overlapping ranges with the second list, then return the intersection
